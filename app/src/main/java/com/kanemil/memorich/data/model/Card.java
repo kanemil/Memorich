@@ -3,6 +3,7 @@ package com.kanemil.memorich.data.model;
 /**
  * Basic card
  */
+
 public class Card {
     private String mFront;
     private String mBack;

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Deck;
+import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksFragmentAdapter;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 
@@ -24,10 +24,11 @@ import java.util.List;
 public class DecksFragment extends Fragment {
 
     private static final String TAG = "DecksFragment";
-    View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(requireContext(), "FAB CLICKED!", Toast.LENGTH_SHORT).show();
+            OnShowAddDeckDialogClickListener listener = (OnShowAddDeckDialogClickListener) requireActivity();
+            listener.showAddDeckDialog();
         }
     };
     private DecksViewModel mViewModel;

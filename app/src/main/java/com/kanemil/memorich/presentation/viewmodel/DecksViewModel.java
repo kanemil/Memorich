@@ -20,6 +20,17 @@ public class DecksViewModel extends ViewModel {
         mDecksList.setValue((mDecksProvider.provideDecks()));
     }
 
+    /**
+     * Adds deck to list.
+     *
+     * @param deck
+     */
+    public void addDeck(Deck deck) {
+        if (mDecksList.getValue() != null) {
+            mDecksList.getValue().add(deck);
+        }
+    }
+
     public LiveData<List<Deck>> getDecksList() {
         return mDecksList;
     }
