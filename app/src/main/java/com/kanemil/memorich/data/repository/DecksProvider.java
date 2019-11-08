@@ -27,6 +27,18 @@ public class DecksProvider {
         Card card0 = new Card("f0", "b0");
         Card card1 = new Card("f1", "b1");
         Card card2 = new Card("f2", "b2");
+        Card card3 = new Card("f3", "b3");
+        Card card4 = new Card("f4", "b4");
+        Card card5 = new Card("f5", "b5");
+        Card card6 = new Card("f6", "b6");
+        Card card7 = new Card("f7", "b7");
+        Card card8 = new Card("f8", "b8");
+        Card card9 = new Card("f9", "b9");
+        Card card10 = new Card("f10", "b10");
+        Card card11 = new Card("f11", "b11");
+        Card card12 = new Card("f12", "b12");
+        Card card13 = new Card("f13", "b13");
+        Card card14 = new Card("f14", "b14");
         for (int i = 0; i < 15; i++) {
             Deck deck = new Deck("Deck #" + i);
             deck.addCard(card0);

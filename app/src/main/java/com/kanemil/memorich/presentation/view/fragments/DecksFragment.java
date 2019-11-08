@@ -27,8 +27,10 @@ public class DecksFragment extends Fragment {
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            OnShowAddDeckDialogClickListener listener = (OnShowAddDeckDialogClickListener) requireActivity();
-            listener.showAddDeckDialog();
+            if (requireActivity() instanceof OnShowAddDeckDialogClickListener) {
+                OnShowAddDeckDialogClickListener listener = (OnShowAddDeckDialogClickListener) requireActivity();
+                listener.showAddDeckDialog();
+            }
         }
     };
     private DecksViewModel mViewModel;
