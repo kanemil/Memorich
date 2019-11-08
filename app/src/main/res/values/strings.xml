@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Memorich</string>
+    <string name="size">Size:</string>
+    <string name="size_formatter">%s %d</string>
+</resources>
