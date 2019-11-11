@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Deck;
+import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksFragmentAdapter;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
@@ -45,13 +46,13 @@ public class DecksFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new DecksFragmentAdapter();
+        mAdapter = new DecksFragmentAdapter((OnDeckClickedListener) requireActivity());
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.decks_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_decks, container, false);
         mRecyclerView = root.findViewById(R.id.rv_decks);
         mRecyclerView.setAdapter(mAdapter);
         fab = root.findViewById(R.id.fab_add_deck);

@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.fragments;
+package com.kanemil.memorich.presentation.view.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -31,12 +31,14 @@ public class AddDeckDialogFragment extends DialogFragment {
         mEditTextDeckName = root.findViewById(R.id.et_deck_name);
         builder.setView(root);
 
-        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(requireActivity(), mEditTextDeckName.getText().toString() + " Deck added!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        builder
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(requireActivity(), mEditTextDeckName.getText().toString() + " Deck added!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setTitle(R.string.set_name_for_deck);
 
         return builder.create();
     }

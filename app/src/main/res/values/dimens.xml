@@ -5,4 +5,5 @@
     <dimen name="item_height_72">72dp</dimen>
     <dimen name="margin_small">2dp</dimen>
     <dimen name="elevation_small">2dp</dimen>
+    <dimen name="elevation_2">2dp</dimen>
 </resources>

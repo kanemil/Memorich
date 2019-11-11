@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Deck;
+import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 
 import java.util.List;
 
@@ -20,6 +21,12 @@ public class DecksFragmentAdapter extends RecyclerView.Adapter<DecksFragmentAdap
     private static final String TAG = "DecksFragmentAdapter";
 
     private List<Deck> mDecks;
+
+    private OnDeckClickedListener mOnDeckClickedListener;
+
+    public DecksFragmentAdapter(OnDeckClickedListener onDeckClickedListener) {
+        mOnDeckClickedListener = onDeckClickedListener;
+    }
 
     public void setDecks(List<Deck> decks) {
         mDecks = decks;
@@ -31,13 +38,19 @@ public class DecksFragmentAdapter extends RecyclerView.Adapter<DecksFragmentAdap
     @Override
     public DeckHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.deck_item_view, parent, false);
+                .inflate(R.layout.item_view_deck, parent, false);
         return new DeckHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeckHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DeckHolder holder, final int position) {
         holder.bind(mDecks.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnDeckClickedListener.onDeckClicked(position);
+            }
+        });
     }
 
     @Override

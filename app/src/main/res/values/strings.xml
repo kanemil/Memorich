@@ -4,4 +4,5 @@
     <string name="size_formatter">%s %d</string>
     <string name="enter_new_deck_name">Enter new deck name</string>
     <string name="add">Add</string>
+    <string name="set_name_for_deck">Set name for a new deck</string>
 </resources>

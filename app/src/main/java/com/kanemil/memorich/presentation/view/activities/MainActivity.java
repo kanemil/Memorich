@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.presentation.view.fragments.AddDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements OnShowAddDeckDialogClickListener {
+public class MainActivity extends AppCompatActivity implements OnShowAddDeckDialogClickListener,
+        OnDeckClickedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +29,13 @@ public class MainActivity extends AppCompatActivity
         if (getFragmentManager() != null) {
             dialogFragment.show(getSupportFragmentManager(), null);
         }
+    }
+
+    @Override
+    public void onDeckClicked(int position) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_view, CardsFragment.newInstance(position), "cardsFragment: " + position)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -44,6 +44,18 @@ public class DecksProvider {
             deck.addCard(card0);
             deck.addCard(card1);
             deck.addCard(card2);
+            deck.addCard(card3);
+            deck.addCard(card4);
+            deck.addCard(card5);
+            deck.addCard(card6);
+            deck.addCard(card7);
+            deck.addCard(card8);
+            deck.addCard(card9);
+            deck.addCard(card10);
+            deck.addCard(card11);
+            deck.addCard(card12);
+            deck.addCard(card13);
+            deck.addCard(card14);
             decks.add(deck);
         }
         return decks;
