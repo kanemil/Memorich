@@ -9,29 +9,18 @@ import com.kanemil.memorich.data.repository.DecksProvider;
 
 import java.util.List;
 
-public class CardsViewModel extends ViewModel {
+public class TrainingViewModel extends ViewModel {
     private DecksProvider mDecksProvider;
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private int mDeckId;
 
-    public CardsViewModel(int deckId, DecksProvider decksProvider) {
+    public TrainingViewModel(int deckId, DecksProvider decksProvider) {
         mDeckId = deckId;
         mDecksProvider = decksProvider;
     }
 
     public void loadCards() {
         mCardsList.setValue((mDecksProvider.provideDecks().get(mDeckId).getCardList()));
-    }
-
-    /**
-     * Adds deck to list.
-     * // TODO Сделать механизм добавления карты, но уже после того как реализую БД
-     *
-     * @param card
-     */
-
-    public void addDeck(Card card) {
-        // TODO
     }
 
     public LiveData<List<Card>> getCardsList() {

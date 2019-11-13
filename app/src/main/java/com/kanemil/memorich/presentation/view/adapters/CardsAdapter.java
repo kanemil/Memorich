@@ -11,11 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CardsFragmentAdapter extends RecyclerView.Adapter<CardsFragmentAdapter.CardHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> {
 
-    private List<Card> mCards;
+    private List<Card> mCards = new ArrayList<>();
+
+    /**
+     * DisplayMode is needed because ViewPager2 requires root view of page to be match_parent
+     * both in height and width
+     */
+    private DisplayMode mDisplayMode;
+
+    public CardsAdapter(DisplayMode displayMode) {
+        mDisplayMode = displayMode;
+    }
 
     public void setCards(List<Card> cards) {
         mCards = cards;
@@ -25,8 +36,18 @@ public class CardsFragmentAdapter extends RecyclerView.Adapter<CardsFragmentAdap
     @NonNull
     @Override
     public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        int cardLayout;
+        switch (mDisplayMode) {
+            case GRID:
+                cardLayout = R.layout.item_card;
+                break;
+            case PAGE:
+            default:
+                cardLayout = R.layout.item_card_page;
+                break;
+        }
         View root = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_view_card, parent, false);
+                .inflate(cardLayout, parent, false);
         return new CardHolder(root);
     }
 
@@ -54,5 +75,9 @@ public class CardsFragmentAdapter extends RecyclerView.Adapter<CardsFragmentAdap
             mCardFront.setText(card.getFront());
             mCardBack.setText(card.getBack());
         }
+    }
+
+    public enum DisplayMode {
+        GRID, PAGE
     }
 }

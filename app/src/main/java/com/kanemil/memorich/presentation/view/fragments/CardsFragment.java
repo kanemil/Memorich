@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Card;
-import com.kanemil.memorich.presentation.view.adapters.CardsFragmentAdapter;
+import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModelFactory;
 
@@ -26,7 +26,7 @@ import java.util.List;
 public class CardsFragment extends Fragment {
 
     private static final int SPAN_COUNT = 3;
-    private static final String CARD_ID = "cardId";
+    private static final String DECK_ID = "cardId";
 
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
@@ -38,11 +38,11 @@ public class CardsFragment extends Fragment {
     private CardsViewModel mCardsViewModel;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
-    private CardsFragmentAdapter mAdapter;
+    private CardsAdapter mAdapter;
 
-    public static CardsFragment newInstance(int cardId) {
+    public static CardsFragment newInstance(int deckId) {
         Bundle args = new Bundle();
-        args.putInt(CARD_ID, cardId);
+        args.putInt(DECK_ID, deckId);
         CardsFragment fragment = new CardsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +51,7 @@ public class CardsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new CardsFragmentAdapter();
+        mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.GRID);
     }
 
     @Nullable
@@ -76,7 +76,7 @@ public class CardsFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mCardsViewModel = ViewModelProviders
-                    .of(this, new CardsViewModelFactory(getArguments().getInt(CARD_ID)))
+                    .of(this, new CardsViewModelFactory(getArguments().getInt(DECK_ID)))
                     .get(CardsViewModel.class);
         }
         mCardsViewModel.getCardsList().observe(this, new Observer<List<Card>>() {

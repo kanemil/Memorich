@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.kanemil.memorich.data.repository.DecksProvider;
 
 public class CardsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
-    private int mCardId;
+    private int mDeckId;
 
-    public CardsViewModelFactory(int cardId) {
-        mCardId = cardId;
+    public CardsViewModelFactory(int deckId) {
+        mDeckId = deckId;
     }
 
     // ВОПРОС тут с ветвлением if-else, которое содержит проверку, как в конвертере веалют:
@@ -20,7 +20,7 @@ public class CardsViewModelFactory extends ViewModelProvider.NewInstanceFactory 
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         DecksProvider decksProvider = new DecksProvider();
-        return (T) new CardsViewModel(mCardId, decksProvider);
+        return (T) new CardsViewModel(mDeckId, decksProvider);
 
     }
 }

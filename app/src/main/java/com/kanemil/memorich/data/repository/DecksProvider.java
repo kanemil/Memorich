@@ -39,7 +39,8 @@ public class DecksProvider {
         Card card12 = new Card("f12", "b12");
         Card card13 = new Card("f13", "b13");
         Card card14 = new Card("f14", "b14");
-        for (int i = 0; i < 15; i++) {
+        Card card15 = new Card("f15", "b15");
+        for (int i = 0; i < 16; i++) {
             Deck deck = new Deck("Deck #" + i);
             deck.addCard(card0);
             deck.addCard(card1);
@@ -56,6 +57,7 @@ public class DecksProvider {
             deck.addCard(card12);
             deck.addCard(card13);
             deck.addCard(card14);
+            deck.addCard(card15);
             decks.add(deck);
         }
         return decks;

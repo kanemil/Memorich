@@ -14,17 +14,18 @@ import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DecksFragmentAdapter extends RecyclerView.Adapter<DecksFragmentAdapter.DeckHolder> {
+public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> {
 
-    private static final String TAG = "DecksFragmentAdapter";
+    private static final String TAG = "DecksAdapter";
 
-    private List<Deck> mDecks;
+    private List<Deck> mDecks = new ArrayList<>();
 
     private OnDeckClickedListener mOnDeckClickedListener;
 
-    public DecksFragmentAdapter(OnDeckClickedListener onDeckClickedListener) {
+    public DecksAdapter(OnDeckClickedListener onDeckClickedListener) {
         mOnDeckClickedListener = onDeckClickedListener;
     }
 
@@ -45,6 +46,13 @@ public class DecksFragmentAdapter extends RecyclerView.Adapter<DecksFragmentAdap
     @Override
     public void onBindViewHolder(@NonNull DeckHolder holder, final int position) {
         holder.bind(mDecks.get(position));
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mOnDeckClickedListener.onDeckLongClicked(position);
+                return true;
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

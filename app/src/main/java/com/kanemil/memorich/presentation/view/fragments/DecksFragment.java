@@ -17,8 +17,9 @@ import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
-import com.kanemil.memorich.presentation.view.adapters.DecksFragmentAdapter;
+import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
+import com.kanemil.memorich.presentation.viewmodel.DecksViewModelFactory;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class DecksFragment extends Fragment {
     private DecksViewModel mViewModel;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
-    private DecksFragmentAdapter mAdapter;
+    private DecksAdapter mAdapter;
 
     public static DecksFragment newInstance() {
         return new DecksFragment();
@@ -46,7 +47,7 @@ public class DecksFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new DecksFragmentAdapter((OnDeckClickedListener) requireActivity());
+        mAdapter = new DecksAdapter((OnDeckClickedListener) requireActivity());
     }
 
     @Override
@@ -67,7 +68,9 @@ public class DecksFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        mViewModel = ViewModelProviders.of(this).get(DecksViewModel.class);
+        mViewModel = ViewModelProviders
+                .of(this, new DecksViewModelFactory())
+                .get(DecksViewModel.class);
         mViewModel.getDecksList().observe(this, new Observer<List<Deck>>() {
             @Override
             public void onChanged(List<Deck> decks) {

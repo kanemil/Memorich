@@ -12,8 +12,12 @@ import java.util.List;
 public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
-    private DecksProvider mDecksProvider = new DecksProvider();
+    private DecksProvider mDecksProvider;
     private MutableLiveData<List<Deck>> mDecksList = new MutableLiveData<>();
+
+    public DecksViewModel(DecksProvider decksProvider) {
+        mDecksProvider = decksProvider;
+    }
 
     public void loadDecks() {
         mDecksList.setValue((mDecksProvider.provideDecks()));
@@ -24,6 +28,7 @@ public class DecksViewModel extends ViewModel {
      * // TODO Сделать механизм добавления колоды, но уже после того как реализую БД
      * @param deck
      */
+
 
     public void addDeck(Deck deck) {
         if (mDecksList.getValue() != null) {
