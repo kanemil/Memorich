@@ -32,7 +32,7 @@ public class CardsFragment extends Fragment {
         @Override
         public void onClick(View view) {
             // TODO  добавление новой карты
-            Toast.makeText(requireContext(), "HELLO THERE", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "New card will be added in the future", Toast.LENGTH_SHORT).show();
         }
     };
     private CardsViewModel mCardsViewModel;
