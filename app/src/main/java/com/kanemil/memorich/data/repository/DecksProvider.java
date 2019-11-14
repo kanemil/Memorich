@@ -24,7 +24,7 @@ public class DecksProvider {
      */
     private List<Deck> provideMockedDecks() {
         ArrayList<Deck> decks = new ArrayList<>();
-        Card card0 = new Card("f0", "b0");
+        Card card0 = new Card("f0 stub stub stub stub", "b0 stub stub stub");
         Card card1 = new Card("f1", "b1");
         Card card2 = new Card("f2", "b2");
         Card card3 = new Card("f3", "b3");

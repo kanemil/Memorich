@@ -7,4 +7,7 @@
     <dimen name="elevation_small">2dp</dimen>
     <dimen name="elevation_2">2dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="corner_radius_small">8dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
 </resources>

@@ -7,6 +7,7 @@ package com.kanemil.memorich.data.model;
 public class Card {
     private String mFront;
     private String mBack;
+    private boolean mRevealedInTraining = false;
 
     /**
      * Default constructor
@@ -33,5 +34,13 @@ public class Card {
 
     public void setBack(String back) {
         mBack = back;
+    }
+
+    public boolean isRevealedInTraining() {
+        return mRevealedInTraining;
+    }
+
+    public void setRevealedInTraining(boolean revealedInTraining) {
+        mRevealedInTraining = revealedInTraining;
     }
 }

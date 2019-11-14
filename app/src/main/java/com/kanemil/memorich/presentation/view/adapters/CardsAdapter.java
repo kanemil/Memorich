@@ -39,7 +39,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
         int cardLayout;
         switch (mDisplayMode) {
             case GRID:
-                cardLayout = R.layout.item_card;
+                cardLayout = R.layout.item_card_small;
                 break;
             case PAGE:
             default:
@@ -61,7 +61,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
         return mCards.size();
     }
 
-    static class CardHolder extends RecyclerView.ViewHolder {
+    public enum DisplayMode {
+        GRID, PAGE
+    }
+
+    class CardHolder extends RecyclerView.ViewHolder {
         private TextView mCardFront;
         private TextView mCardBack;
 
@@ -71,13 +75,28 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
             mCardBack = itemView.findViewById(R.id.tv_card_back);
         }
 
-        void bind(Card card) {
+        void bind(final Card card) {
             mCardFront.setText(card.getFront());
             mCardBack.setText(card.getBack());
-        }
-    }
 
-    public enum DisplayMode {
-        GRID, PAGE
+            /**
+             * Reveals back side of card after click on bottom part of card
+             */
+            if (mDisplayMode == DisplayMode.PAGE) {
+                itemView.findViewById(R.id.layout_back).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        card.setRevealedInTraining(true);
+                        mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.black));
+                    }
+                });
+
+                if (card.isRevealedInTraining()) {
+                    mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.black));
+                } else {
+                    mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.white));
+                }
+            }
+        }
     }
 }

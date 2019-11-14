@@ -2,12 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="200dp"
+    android:layout_width="100dp"
+    android:layout_height="66dp"
     android:layout_margin="@dimen/margin_16"
     android:elevation="@dimen/elevation_2"
-    app:cardCornerRadius="@dimen/corner_radius"
-    tools:showIn="@layout/item_card_page">
+    app:cardCornerRadius="@dimen/corner_radius_small">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,12 +25,12 @@
                 android:id="@+id/tv_card_front"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_margin="@dimen/margin_8"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                tools:text="Front side" />
+                tools:text="Front sideаааааааааааа" />
         </LinearLayout>
 
         <View
@@ -39,13 +38,10 @@
             android:layout_gravity="center" />
 
         <LinearLayout
-            android:id="@+id/layout_back"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,10 +49,15 @@
                 android:id="@+id/tv_card_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_margin="@dimen/margin_8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
-                tools:text="Back side" />
+                tools:text="Back sidefffffffffffff" />
         </LinearLayout>
+
+
     </LinearLayout>
 
 
