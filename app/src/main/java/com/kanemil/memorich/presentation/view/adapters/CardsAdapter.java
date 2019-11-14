@@ -38,10 +38,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
     public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int cardLayout;
         switch (mDisplayMode) {
-            case GRID:
+            case EDIT:
                 cardLayout = R.layout.item_card_small;
                 break;
-            case PAGE:
+            case TRAINING:
             default:
                 cardLayout = R.layout.item_card_page;
                 break;
@@ -62,7 +62,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
     }
 
     public enum DisplayMode {
-        GRID, PAGE
+        EDIT, TRAINING
     }
 
     class CardHolder extends RecyclerView.ViewHolder {
@@ -79,23 +79,27 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
             mCardFront.setText(card.getFront());
             mCardBack.setText(card.getBack());
 
-            /**
-             * Reveals back side of card after click on bottom part of card
-             */
-            if (mDisplayMode == DisplayMode.PAGE) {
-                itemView.findViewById(R.id.layout_back).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        card.setRevealedInTraining(true);
-                        mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.black));
-                    }
-                });
+            if (mDisplayMode == DisplayMode.TRAINING) {
+                setUpRevealMechanicsForTrainingMode(card);
+            }
+        }
 
-                if (card.isRevealedInTraining()) {
+        /**
+         * Reveals back side of card after click on bottom part of card
+         */
+        private void setUpRevealMechanicsForTrainingMode(final Card card) {
+            itemView.findViewById(R.id.layout_back).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    card.setRevealedInTraining(true);
                     mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.black));
-                } else {
-                    mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.white));
                 }
+            });
+
+            if (card.isRevealedInTraining()) {
+                mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.black));
+            } else {
+                mCardBack.setTextColor(mCardBack.getContext().getResources().getColor(android.R.color.white));
             }
         }
     }
