@@ -10,4 +10,6 @@
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="corner_radius_small">8dp</dimen>
     <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_72">72dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
 </resources>

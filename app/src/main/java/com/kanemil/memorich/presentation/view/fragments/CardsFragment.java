@@ -51,7 +51,7 @@ public class CardsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.GRID);
+        mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.EDIT);
     }
 
     @Nullable
