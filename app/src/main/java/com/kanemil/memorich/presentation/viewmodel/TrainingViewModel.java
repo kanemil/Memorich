@@ -7,15 +7,15 @@ import androidx.lifecycle.ViewModel;
 import com.kanemil.memorich.data.model.Card;
 import com.kanemil.memorich.data.repository.DecksProvider;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeSet;
 
 public class TrainingViewModel extends ViewModel {
     private DecksProvider mDecksProvider;
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
-    private MutableLiveData<HashSet<Integer>> mAnsweredCards = new MutableLiveData<>(new HashSet<Integer>());
+    private MutableLiveData<TreeSet<Integer>> mAnsweredCards = new MutableLiveData<>(new TreeSet<Integer>());
     private int mDeckId;
 
     TrainingViewModel(int deckId, DecksProvider decksProvider) {
@@ -35,7 +35,7 @@ public class TrainingViewModel extends ViewModel {
         return mCorrectAnswers;
     }
 
-    public LiveData<HashSet<Integer>> getAnsweredCards() {
+    public LiveData<TreeSet<Integer>> getAnsweredCards() {
         return mAnsweredCards;
     }
 
@@ -46,7 +46,7 @@ public class TrainingViewModel extends ViewModel {
     }
 
     public void disableButtonAfterButtonPressed(int position) {
-        HashSet<Integer> modifiedSet = new HashSet<>(Objects.requireNonNull(mAnsweredCards.getValue()));
+        TreeSet<Integer> modifiedSet = new TreeSet<>(Objects.requireNonNull(mAnsweredCards.getValue()));
         modifiedSet.add(position);
         mAnsweredCards.setValue(modifiedSet);
     }
