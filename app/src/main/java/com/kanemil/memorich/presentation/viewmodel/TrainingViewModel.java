@@ -45,7 +45,7 @@ public class TrainingViewModel extends ViewModel {
         }
     }
 
-    public void disableButtonAfterCorrectAnswer(int position) {
+    public void disableButtonAfterButtonPressed(int position) {
         HashSet<Integer> modifiedSet = new HashSet<>(Objects.requireNonNull(mAnsweredCards.getValue()));
         modifiedSet.add(position);
         mAnsweredCards.setValue(modifiedSet);

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,11 +68,14 @@ public class TrainingFragment extends Fragment {
                 super.onPageSelected(position);
                 if (mViewModel.getAnsweredCards().getValue().contains(position)) {
                     mButtonRemember.setEnabled(false);
+                    mButtonRepeat.setEnabled(false);
                 } else {
                     mButtonRemember.setEnabled(true);
+                    mButtonRepeat.setEnabled(true);
                 }
             }
         });
+        mViewPager2.setUserInputEnabled(false);
         return root;
     }
 
@@ -80,8 +84,15 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mViewModel.incrementCorrectAnswers();
-                mViewModel.disableButtonAfterCorrectAnswer(mViewPager2.getCurrentItem());
-                swipeToNextCard();
+                mViewModel.disableButtonAfterButtonPressed(mViewPager2.getCurrentItem());
+                finishOrContinueTraining();
+            }
+        });
+        mButtonRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.disableButtonAfterButtonPressed(mViewPager2.getCurrentItem());
+                finishOrContinueTraining();
             }
         });
     }
@@ -115,17 +126,32 @@ public class TrainingFragment extends Fragment {
         });
         mViewModel.getAnsweredCards().observe(this, new Observer<HashSet<Integer>>() {
             @Override
-            public void onChanged(HashSet<Integer> correctAnswerPages) {
-                // Disable "I REMEMBER" button if already pressed to avoid double counting.
-                if (correctAnswerPages.contains(mViewPager2.getCurrentItem())) {
+            public void onChanged(HashSet<Integer> answeredCards) {
+                // Disable button if already pressed to avoid double counting.
+                if (answeredCards.contains(mViewPager2.getCurrentItem())) {
                     mButtonRemember.setEnabled(false);
+                    mButtonRepeat.setEnabled(false);
                 }
             }
         });
     }
 
     /**
-     * Swipes to next card
+     * Shows result if it is the last card or swipes to the next card.
+     */
+    private void finishOrContinueTraining() {
+        if (mViewPager2.getCurrentItem() == mAdapter.getItemCount() - 1) {
+            // Механика конца тренировки будет модифицирована позже, поэтому здесь пока просто тост.
+            Toast.makeText(requireContext(),
+                    "Your result is: " + mViewModel.getCorrectAnswers().getValue() * 1f / mAdapter.getItemCount() * 100 + "%",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            swipeToNextCard();
+        }
+    }
+
+    /**
+     * Swipes to the next card.
      */
     private void swipeToNextCard() {
         mViewPager2.beginFakeDrag();
