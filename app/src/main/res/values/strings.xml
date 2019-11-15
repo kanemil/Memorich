@@ -7,4 +7,7 @@
     <string name="set_name_for_deck">Set name for a new deck</string>
     <string name="i_remember">I remember</string>
     <string name="repeat_later">Repeat later</string>
+    <string name="cards_size">/%d</string>
+    <string name="zero_number">0</string>
+
 </resources>

@@ -14,7 +14,7 @@ public class CardsViewModel extends ViewModel {
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private int mDeckId;
 
-    public CardsViewModel(int deckId, DecksProvider decksProvider) {
+    CardsViewModel(int deckId, DecksProvider decksProvider) {
         mDeckId = deckId;
         mDecksProvider = decksProvider;
     }

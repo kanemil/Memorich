@@ -15,7 +15,7 @@ public class DecksViewModel extends ViewModel {
     private DecksProvider mDecksProvider;
     private MutableLiveData<List<Deck>> mDecksList = new MutableLiveData<>();
 
-    public DecksViewModel(DecksProvider decksProvider) {
+    DecksViewModel(DecksProvider decksProvider) {
         mDecksProvider = decksProvider;
     }
 
