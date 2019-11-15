@@ -177,14 +177,19 @@ public class TrainingFragment extends Fragment {
                     "Your result is: " + mViewModel.getCorrectAnswers().getValue() * 1f / mAdapter.getItemCount() * 100 + "%",
                     Toast.LENGTH_SHORT).show();
         } else {
-            swipeToNextCard();
+            moveToNextUnansweredCard();
         }
     }
 
     /**
-     * Swipes to the next card.
+     * Swipes to the next unanswered card.
      */
-    private void swipeToNextCard() {
-        mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1, true);
+    private void moveToNextUnansweredCard() {
+        if (mViewPager2.getCurrentItem() != mAdapter.getItemCount() - 1
+                && !mViewModel.getAnsweredCards().getValue().contains(mViewPager2.getCurrentItem() + 1)) {
+            mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1, true);
+        } else {
+            mViewPager2.setCurrentItem(mViewModel.getFirstUnansweredCard());
+        }
     }
 }

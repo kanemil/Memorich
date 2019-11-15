@@ -50,4 +50,18 @@ public class TrainingViewModel extends ViewModel {
         modifiedSet.add(position);
         mAnsweredCards.setValue(modifiedSet);
     }
+
+    /**
+     * Method for scrolling ViewPager to the first unanswered position if we are looking at the last card
+     *
+     * @return if returns -1, a user completed training
+     */
+    public int getFirstUnansweredCard() {
+        for (int i = 0; i < mCardsList.getValue().size(); i++) {
+            if (!mAnsweredCards.getValue().contains(i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

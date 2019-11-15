@@ -35,7 +35,8 @@ public class AddDeckDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(requireActivity(), mEditTextDeckName.getText().toString() + " Deck will be added after DB programmed in the future", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireActivity(), mEditTextDeckName.getText().toString() +
+                                " Deck will be added after DB programmed in the future", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setTitle(R.string.set_name_for_deck);
