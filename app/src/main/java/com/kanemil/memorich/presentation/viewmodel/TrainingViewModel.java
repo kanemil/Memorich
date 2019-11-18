@@ -15,16 +15,16 @@ public class TrainingViewModel extends ViewModel {
     private DecksProvider mDecksProvider;
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
-    private MutableLiveData<TreeSet<Integer>> mAnsweredCards = new MutableLiveData<>(new TreeSet<Integer>());
+    private MutableLiveData<TreeSet<Integer>> mAnsweredCardsPositions = new MutableLiveData<>(new TreeSet<Integer>());
+    private MutableLiveData<Boolean> mIsCardAlreadyAnswered = new MutableLiveData<>(false);
+    private MutableLiveData<String> mTrainingScore = new MutableLiveData<>();
+    private MutableLiveData<Integer> mFirstUnansweredCard = new MutableLiveData<>();
+
     private int mDeckId;
 
     TrainingViewModel(int deckId, DecksProvider decksProvider) {
         mDeckId = deckId;
         mDecksProvider = decksProvider;
-    }
-
-    public void loadCards() {
-        mCardsList.setValue((mDecksProvider.provideDecks().get(mDeckId).getCardList()));
     }
 
     public LiveData<List<Card>> getCardsList() {
@@ -35,33 +35,69 @@ public class TrainingViewModel extends ViewModel {
         return mCorrectAnswers;
     }
 
-    public LiveData<TreeSet<Integer>> getAnsweredCards() {
-        return mAnsweredCards;
+    public LiveData<TreeSet<Integer>> getAnsweredCardsPositions() {
+        return mAnsweredCardsPositions;
     }
 
-    public void incrementCorrectAnswers() {
+    public LiveData<Boolean> getIsCardAlreadyAnswered() {
+        return mIsCardAlreadyAnswered;
+    }
+
+    public LiveData<String> getTrainingScore() {
+        return mTrainingScore;
+    }
+
+    public LiveData<Integer> getFirstUnansweredCard() {
+        return mFirstUnansweredCard;
+    }
+
+    public void loadCards() {
+        mCardsList.setValue((mDecksProvider.provideDecks().get(mDeckId).getCardList()));
+    }
+
+    public void incrementCorrectAnswersNumber(boolean incrementOrNot) {
         if (mCorrectAnswers.getValue() != null && mCorrectAnswers.getValue() < Objects.requireNonNull(mCardsList.getValue()).size()) {
-            mCorrectAnswers.setValue(mCorrectAnswers.getValue() + 1);
-        }
-    }
-
-    public void disableButtonAfterButtonPressed(int position) {
-        TreeSet<Integer> modifiedSet = new TreeSet<>(Objects.requireNonNull(mAnsweredCards.getValue()));
-        modifiedSet.add(position);
-        mAnsweredCards.setValue(modifiedSet);
-    }
-
-    /**
-     * Method for scrolling ViewPager to the first unanswered position if we are looking at the last card
-     *
-     * @return if returns -1, a user completed training
-     */
-    public int getFirstUnansweredCard() {
-        for (int i = 0; i < mCardsList.getValue().size(); i++) {
-            if (!mAnsweredCards.getValue().contains(i)) {
-                return i;
+            if (incrementOrNot) {
+                mCorrectAnswers.setValue(mCorrectAnswers.getValue() + 1);
             }
         }
-        return -1;
+    }
+
+    public void markCardAsAnswered(int position) {
+        TreeSet<Integer> answeredCardPositions = new TreeSet<>(Objects.requireNonNull(mAnsweredCardsPositions.getValue()));
+        answeredCardPositions.add(position);
+        mAnsweredCardsPositions.setValue(answeredCardPositions);
+        updateFirstUnansweredCardPosition();
+    }
+
+    public void checkIfCardAlreadyAnswered(int position) {
+        if (mAnsweredCardsPositions.getValue() != null) {
+            if (mAnsweredCardsPositions.getValue().contains(position)) {
+                mIsCardAlreadyAnswered.setValue(true);
+            } else {
+                mIsCardAlreadyAnswered.setValue(false);
+            }
+        }
+    }
+
+    public void checkIfAllCardsAreAnswered() {
+        if (mCardsList.getValue() != null && mAnsweredCardsPositions.getValue() != null) {
+            if (mCardsList.getValue().size() == mAnsweredCardsPositions.getValue().size() && mCorrectAnswers.getValue() != null) {
+                mTrainingScore.setValue("Your result is: " + mCorrectAnswers.getValue() * 1f / mCardsList.getValue().size() * 100 + "%");
+            }
+        }
+    }
+
+    private void updateFirstUnansweredCardPosition() {
+        if (mCardsList.getValue() != null) {
+            for (int i = 0; i < mCardsList.getValue().size(); i++) {
+                if (mAnsweredCardsPositions.getValue() != null) {
+                    if (!mAnsweredCardsPositions.getValue().contains(i)) {
+                        mFirstUnansweredCard.setValue(i);
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

@@ -69,14 +69,7 @@ public class TrainingFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                // ВОПРОС можно ли во фрагменте вызывать у LiveData метод .getValue()?
-                if (mViewModel.getAnsweredCards().getValue().contains(position)) {
-                    mButtonRemember.setEnabled(false);
-                    mButtonRepeat.setEnabled(false);
-                } else {
-                    mButtonRemember.setEnabled(true);
-                    mButtonRepeat.setEnabled(true);
-                }
+                mViewModel.checkIfCardAlreadyAnswered(position);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     mSeekBar.setProgress(position, true);
                 } else {
@@ -91,20 +84,18 @@ public class TrainingFragment extends Fragment {
         mButtonRemember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.incrementCorrectAnswers();
-                finishOrContinueTraining();
+                finishOrContinueTraining(true);
             }
         });
         mButtonRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finishOrContinueTraining();
+                finishOrContinueTraining(false);
             }
         });
     }
 
     private void initSeekBarListener() {
-
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -149,17 +140,37 @@ public class TrainingFragment extends Fragment {
         mViewModel.getCorrectAnswers().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                // update number of correct answers
                 mTextViewProgress.setText(String.valueOf(integer));
             }
         });
-        mViewModel.getAnsweredCards().observe(this, new Observer<TreeSet<Integer>>() {
+        mViewModel.getAnsweredCardsPositions().observe(this, new Observer<TreeSet<Integer>>() {
             @Override
             public void onChanged(TreeSet<Integer> answeredCards) {
-                // Disable button if already pressed to avoid double counting.
+                // Disable button if already pressed on current card
                 if (answeredCards.contains(mViewPager2.getCurrentItem())) {
-                    mButtonRemember.setEnabled(false);
-                    mButtonRepeat.setEnabled(false);
+                    toggleButtons(false);
                 }
+            }
+        });
+        mViewModel.getIsCardAlreadyAnswered().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean b) {
+                // Disable buttons on previously answered cards
+                toggleButtons(!b);
+            }
+        });
+        mViewModel.getTrainingScore().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                // Finish training with a result toast
+                Toast.makeText(requireContext(), s, Toast.LENGTH_LONG).show();
+            }
+        });
+        mViewModel.getFirstUnansweredCard().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer position) {
+                mViewPager2.setCurrentItem(position);
             }
         });
     }
@@ -167,29 +178,14 @@ public class TrainingFragment extends Fragment {
     /**
      * Shows result if it is the last card or swipes to the next card.
      */
-    private void finishOrContinueTraining() {
-        mViewModel.disableButtonAfterButtonPressed(mViewPager2.getCurrentItem());
-        // ВОПРОС можно ли во фрагменте вызывать у LiveData метод .getValue()?
-        if (mViewModel.getAnsweredCards().getValue().size() == mAdapter.getItemCount()) {
-            // Механика конца тренировки будет модифицирована позже, поэтому здесь пока просто тост.
-            // ВОПРОС можно ли во фрагменте вызывать у LiveData метод .getValue()?
-            Toast.makeText(requireContext(),
-                    "Your result is: " + mViewModel.getCorrectAnswers().getValue() * 1f / mAdapter.getItemCount() * 100 + "%",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            moveToNextUnansweredCard();
-        }
+    private void finishOrContinueTraining(boolean incrementOrNot) {
+        mViewModel.markCardAsAnswered(mViewPager2.getCurrentItem());
+        mViewModel.checkIfAllCardsAreAnswered();
+        mViewModel.incrementCorrectAnswersNumber(incrementOrNot);
     }
 
-    /**
-     * Swipes to the next unanswered card.
-     */
-    private void moveToNextUnansweredCard() {
-        if (mViewPager2.getCurrentItem() != mAdapter.getItemCount() - 1
-                && !mViewModel.getAnsweredCards().getValue().contains(mViewPager2.getCurrentItem() + 1)) {
-            mViewPager2.setCurrentItem(mViewPager2.getCurrentItem() + 1, true);
-        } else {
-            mViewPager2.setCurrentItem(mViewModel.getFirstUnansweredCard());
-        }
+    private void toggleButtons(boolean b) {
+        mButtonRemember.setEnabled(b);
+        mButtonRepeat.setEnabled(b);
     }
 }
