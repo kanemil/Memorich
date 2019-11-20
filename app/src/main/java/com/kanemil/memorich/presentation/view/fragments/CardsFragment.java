@@ -19,7 +19,7 @@ import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
-import com.kanemil.memorich.presentation.viewmodel.CardsViewModelFactory;
+import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class CardsFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mCardsViewModel = ViewModelProviders
-                    .of(this, new CardsViewModelFactory(getArguments().getInt(DECK_ID)))
+                    .of(this, new CustomViewModelFactory(getArguments().getInt(DECK_ID)))
                     .get(CardsViewModel.class);
         }
         mCardsViewModel.getCardsList().observe(this, new Observer<List<Card>>() {

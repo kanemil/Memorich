@@ -63,5 +63,4 @@
         android:layout_marginBottom="@dimen/margin_16"
         android:text="@string/repeat_later" />
 
-
 </LinearLayout>

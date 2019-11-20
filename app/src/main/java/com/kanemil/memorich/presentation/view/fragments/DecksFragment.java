@@ -18,8 +18,8 @@ import com.kanemil.memorich.data.model.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
+import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
-import com.kanemil.memorich.presentation.viewmodel.DecksViewModelFactory;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class DecksFragment extends Fragment {
 
     private void setupViewModel() {
         mViewModel = ViewModelProviders
-                .of(this, new DecksViewModelFactory())
+                .of(this, new CustomViewModelFactory())
                 .get(DecksViewModel.class);
         mViewModel.getDecksList().observe(this, new Observer<List<Deck>>() {
             @Override

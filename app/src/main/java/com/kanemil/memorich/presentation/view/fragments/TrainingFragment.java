@@ -20,8 +20,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.model.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
+import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;
-import com.kanemil.memorich.presentation.viewmodel.TrainingViewModelFactory;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -125,7 +125,7 @@ public class TrainingFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mViewModel = ViewModelProviders
-                    .of(this, new TrainingViewModelFactory(getArguments().getInt(DECK_ID)))
+                    .of(this, new CustomViewModelFactory(getArguments().getInt(DECK_ID)))
                     .get(TrainingViewModel.class);
         }
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
