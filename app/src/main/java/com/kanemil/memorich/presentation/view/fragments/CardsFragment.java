@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.model.Card;
+import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;

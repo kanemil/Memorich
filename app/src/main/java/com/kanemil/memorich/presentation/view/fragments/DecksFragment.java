@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.model.Deck;
+import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
@@ -23,7 +23,7 @@ import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 
 import java.util.List;
 
-public class DecksFragment extends Fragment {
+public class DecksFragment extends Fragment implements OnDeckAddedListener {
 
     private static final String TAG = "DecksFragment";
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
@@ -78,5 +78,10 @@ public class DecksFragment extends Fragment {
             }
         });
         mViewModel.loadDecks();
+    }
+
+    @Override
+    public void onDeckAdded(String deckName) {
+        mViewModel.addDeck(deckName);
     }
 }

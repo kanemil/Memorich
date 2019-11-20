@@ -4,35 +4,29 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kanemil.memorich.data.model.Deck;
-import com.kanemil.memorich.data.repository.DecksProvider;
+import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.repository.DecksRepository;
 
 import java.util.List;
 
 public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
-    private DecksProvider mDecksProvider;
-    private MutableLiveData<List<Deck>> mDecksList = new MutableLiveData<>();
+    private DecksRepository mDecksRepository;
+    private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
 
-    DecksViewModel(DecksProvider decksProvider) {
-        mDecksProvider = decksProvider;
+    DecksViewModel(DecksRepository decksRepository) {
+        mDecksRepository = decksRepository;
     }
 
     public void loadDecks() {
-        mDecksList.setValue((mDecksProvider.provideDecks()));
+        mDecksList = mDecksRepository.getDecks();
     }
 
-    /**
-     * Adds deck to list.
-     * // TODO Сделать механизм добавления колоды, но уже после того как реализую БД
-     * @param deck
-     */
-
-
-    public void addDeck(Deck deck) {
+    public void addDeck(String deckName) {
         if (mDecksList.getValue() != null) {
-            mDecksList.getValue().add(deck);
+            Deck deck = new Deck(deckName);
+            mDecksRepository.insertDeck(deck);
         }
     }
 

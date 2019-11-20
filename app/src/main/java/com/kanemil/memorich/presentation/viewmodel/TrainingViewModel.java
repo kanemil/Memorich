@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kanemil.memorich.data.model.Card;
-import com.kanemil.memorich.data.repository.DecksProvider;
+import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.repository.DecksRepository;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
 public class TrainingViewModel extends ViewModel {
-    private DecksProvider mDecksProvider;
+    private DecksRepository mDecksRepository;
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
     private MutableLiveData<TreeSet<Integer>> mAnsweredCardsPositions = new MutableLiveData<>(new TreeSet<Integer>());
@@ -22,9 +22,9 @@ public class TrainingViewModel extends ViewModel {
 
     private int mDeckId;
 
-    TrainingViewModel(int deckId, DecksProvider decksProvider) {
+    TrainingViewModel(int deckId, DecksRepository decksRepository) {
         mDeckId = deckId;
-        mDecksProvider = decksProvider;
+        mDecksRepository = decksRepository;
     }
 
     public LiveData<List<Card>> getCardsList() {
@@ -52,7 +52,7 @@ public class TrainingViewModel extends ViewModel {
     }
 
     public void loadCards() {
-        mCardsList.setValue((mDecksProvider.provideDecks().get(mDeckId).getCardList()));
+//        mCardsList.setValue((mDecksRepository.getDecks().get(mDeckId).getCardList()));
     }
 
     public void incrementCorrectAnswersNumber(boolean incrementOrNot) {

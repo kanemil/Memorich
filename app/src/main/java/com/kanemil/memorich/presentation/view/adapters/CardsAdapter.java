@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.model.Card;
+import com.kanemil.memorich.data.db.entity.Card;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.kanemil.memorich.presentation.view.adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.model.Deck;
+import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 
 import java.util.ArrayList;
@@ -78,9 +77,10 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
         private void bind(Deck deck) {
             mTextViewDeckName.setText(deck.getName());
-            Context ctx = mTextViewDeckSize.getContext();
-            mTextViewDeckSize.setText(String.format(ctx.getString(R.string.size_formatter),
-                    ctx.getString(R.string.size), deck.getCardList().size()));
+            // TODO разобраться с отображением размера колоды
+//            Context ctx = mTextViewDeckSize.getContext();
+//            mTextViewDeckSize.setText(String.format(ctx.getString(R.string.size_formatter),
+//                    ctx.getString(R.string.size), deck.getCardList().size()));
         }
     }
 }

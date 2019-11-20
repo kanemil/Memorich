@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.model.Card;
+import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;

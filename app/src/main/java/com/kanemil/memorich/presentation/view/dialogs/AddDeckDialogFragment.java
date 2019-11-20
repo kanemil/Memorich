@@ -6,14 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.presentation.view.activities.OnDeckAddedDialogClick;
 
 /**
  * Adds new deck to list.
@@ -35,8 +36,11 @@ public class AddDeckDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(requireActivity(), mEditTextDeckName.getText().toString() +
-                                " Deck will be added after DB programmed in the future", Toast.LENGTH_SHORT).show();
+                        final FragmentActivity activity = requireActivity();
+                        if (activity instanceof OnDeckAddedDialogClick) {
+                            ((OnDeckAddedDialogClick) activity)
+                                    .onDeckAddedDialogClick(mEditTextDeckName.getText().toString());
+                        }
                     }
                 })
                 .setTitle(R.string.set_name_for_deck);

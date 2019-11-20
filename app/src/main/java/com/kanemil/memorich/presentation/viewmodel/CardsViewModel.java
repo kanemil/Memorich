@@ -4,23 +4,23 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kanemil.memorich.data.model.Card;
-import com.kanemil.memorich.data.repository.DecksProvider;
+import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.repository.DecksRepository;
 
 import java.util.List;
 
 public class CardsViewModel extends ViewModel {
-    private DecksProvider mDecksProvider;
+    private DecksRepository mDecksRepository;
     private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private int mDeckId;
 
-    CardsViewModel(int deckId, DecksProvider decksProvider) {
+    CardsViewModel(int deckId, DecksRepository decksRepository) {
         mDeckId = deckId;
-        mDecksProvider = decksProvider;
+        mDecksRepository = decksRepository;
     }
 
     public void loadCards() {
-        mCardsList.setValue((mDecksProvider.provideDecks().get(mDeckId).getCardList()));
+//        mCardsList.setValue((mDecksRepository.getDecks().get(mDeckId).getCardList()));
     }
 
     /**
