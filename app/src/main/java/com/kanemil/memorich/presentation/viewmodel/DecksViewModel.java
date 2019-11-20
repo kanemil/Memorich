@@ -17,10 +17,7 @@ public class DecksViewModel extends ViewModel {
 
     DecksViewModel(DecksRepository decksRepository) {
         mDecksRepository = decksRepository;
-    }
-
-    public void loadDecks() {
-        mDecksList = mDecksRepository.getDecks();
+        loadDecks();
     }
 
     public void addDeck(String deckName) {
@@ -32,5 +29,9 @@ public class DecksViewModel extends ViewModel {
 
     public LiveData<List<Deck>> getDecksList() {
         return mDecksList;
+    }
+
+    private void loadDecks() {
+        mDecksList = mDecksRepository.getDecks();
     }
 }

@@ -4,7 +4,10 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kanemil.memorich.data.db.AppDatabase;
 
@@ -18,13 +21,6 @@ public class App extends Application {
         return sInstance;
     }
 
-    //                .addCallback(new RoomDatabase.Callback() {
-//                    @Override
-//                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-//                        db.execSQL("INSERT INTO Deck (id, name) VALUES (1, 'My First Deck')");
-//                    }
-//                })
-//                .allowMainThreadQueries()
 
     // TODO разобраться с препопуляцией базы данных
     // TODO переделать на асинхронные обращения
@@ -34,6 +30,13 @@ public class App extends Application {
         sInstance = this;
         Log.d(TAG, "onCreate: ");
         mDatabase = Room.databaseBuilder(this.getApplicationContext(), AppDatabase.class, "database")
+                .addCallback(new RoomDatabase.Callback() {
+                    @Override
+                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                        db.execSQL("INSERT INTO decks (id, name) VALUES (0, 'My First Deck')");
+                    }
+                })
+                //                .allowMainThreadQueries()
                 .build();
         Log.d(TAG, "db created ");
         Toast.makeText(sInstance, mDatabase.toString(), Toast.LENGTH_LONG).show();

@@ -77,7 +77,6 @@ public class DecksFragment extends Fragment implements OnDeckAddedListener {
                 mAdapter.setDecks(decks);
             }
         });
-        mViewModel.loadDecks();
     }
 
     @Override
