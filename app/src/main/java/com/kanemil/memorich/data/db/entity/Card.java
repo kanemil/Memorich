@@ -30,7 +30,7 @@ public class Card {
     @ColumnInfo(name = "back")
     private String mBack;
 
-    @ColumnInfo(name = "deck_id")
+    @ColumnInfo(name = "deck_id", index = true)
     private long mDeckId;
 
     @Ignore
@@ -42,9 +42,10 @@ public class Card {
      * @param front front side of a card.
      * @param back  back side of a card.
      */
-    public Card(String front, String back) {
+    public Card(String front, String back, long deckId) {
         mFront = front;
         mBack = back;
+        mDeckId = deckId;
     }
 
     public long getId() {

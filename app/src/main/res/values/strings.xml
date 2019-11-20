@@ -9,5 +9,10 @@
     <string name="repeat_later">Repeat later</string>
     <string name="cards_size">/%d</string>
     <string name="zero_number">0</string>
+    <string name="enter_card_s_front_side">Enter card\'s front side</string>
+    <string name="enter_card_s_back_side">Enter card\'s back side</string>
+    <string name="enter_front_side_of_a_card">Enter front side of a card</string>
+    <string name="enter_back_side_of_a_card">Enter back side of a card</string>
+    <string name="add_card">Add card</string>
 
 </resources>

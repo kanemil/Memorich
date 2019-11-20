@@ -5,26 +5,24 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.data.repository.DecksRepository;
+import com.kanemil.memorich.data.repository.Repository;
 
 import java.util.List;
 
 public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
-    private DecksRepository mDecksRepository;
+    private Repository mRepository;
     private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
 
-    DecksViewModel(DecksRepository decksRepository) {
-        mDecksRepository = decksRepository;
+    DecksViewModel(Repository repository) {
+        mRepository = repository;
         loadDecks();
     }
 
     public void addDeck(String deckName) {
-        if (mDecksList.getValue() != null) {
-            Deck deck = new Deck(deckName);
-            mDecksRepository.insertDeck(deck);
-        }
+        Deck deck = new Deck(deckName);
+        mRepository.insertDeck(deck);
     }
 
     public LiveData<List<Deck>> getDecksList() {
@@ -32,6 +30,6 @@ public class DecksViewModel extends ViewModel {
     }
 
     private void loadDecks() {
-        mDecksList = mDecksRepository.getDecks();
+        mDecksList = mRepository.getDecks();
     }
 }

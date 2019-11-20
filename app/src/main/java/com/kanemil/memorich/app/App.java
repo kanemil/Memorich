@@ -1,8 +1,6 @@
 package com.kanemil.memorich.app;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.room.Room;
@@ -21,25 +19,20 @@ public class App extends Application {
         return sInstance;
     }
 
-
-    // TODO разобраться с препопуляцией базы данных
-    // TODO переделать на асинхронные обращения
     @Override
     public void onCreate() {
         super.onCreate();
         sInstance = this;
-        Log.d(TAG, "onCreate: ");
         mDatabase = Room.databaseBuilder(this.getApplicationContext(), AppDatabase.class, "database")
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         db.execSQL("INSERT INTO decks (id, name) VALUES (0, 'My First Deck')");
+                        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (0, 'first front', 'first back', 0)");
+                        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (1, 'second front', 'second back', 0)");
                     }
                 })
-                //                .allowMainThreadQueries()
                 .build();
-        Log.d(TAG, "db created ");
-        Toast.makeText(sInstance, mDatabase.toString(), Toast.LENGTH_LONG).show();
     }
 
     public AppDatabase getDatabase() {

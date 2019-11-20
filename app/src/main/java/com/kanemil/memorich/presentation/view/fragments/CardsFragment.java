@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.presentation.view.activities.OnAddCardButtonClickListener;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
@@ -26,23 +26,27 @@ import java.util.List;
 public class CardsFragment extends Fragment {
 
     private static final int SPAN_COUNT = 3;
-    private static final String DECK_ID = "cardId";
+    private static final String DECK_ID = "deckId";
 
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            // TODO  добавление новой карты
-            Toast.makeText(requireContext(), "New card will be added in the future", Toast.LENGTH_SHORT).show();
+            if (requireActivity() instanceof OnAddCardButtonClickListener) {
+                if (getArguments() != null) {
+                    OnAddCardButtonClickListener listener = (OnAddCardButtonClickListener) requireActivity();
+                    listener.showAddCardScreen(getArguments().getLong(DECK_ID));
+                }
+            }
         }
     };
-    private CardsViewModel mCardsViewModel;
+    private CardsViewModel mViewModel;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
     private CardsAdapter mAdapter;
 
-    public static CardsFragment newInstance(int deckId) {
+    public static CardsFragment newInstance(long deckId) {
         Bundle args = new Bundle();
-        args.putInt(DECK_ID, deckId);
+        args.putLong(DECK_ID, deckId);
         CardsFragment fragment = new CardsFragment();
         fragment.setArguments(args);
         return fragment;
@@ -75,16 +79,15 @@ public class CardsFragment extends Fragment {
 
     private void setupViewModel() {
         if (getArguments() != null) {
-            mCardsViewModel = ViewModelProviders
-                    .of(this, new CustomViewModelFactory(getArguments().getInt(DECK_ID)))
+            mViewModel = ViewModelProviders
+                    .of(this, new CustomViewModelFactory(getArguments().getLong(DECK_ID)))
                     .get(CardsViewModel.class);
         }
-        mCardsViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
+        mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
                 mAdapter.setCards(cards);
             }
         });
-        mCardsViewModel.loadCards();
     }
 }

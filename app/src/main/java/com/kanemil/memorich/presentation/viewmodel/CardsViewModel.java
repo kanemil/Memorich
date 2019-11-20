@@ -5,33 +5,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kanemil.memorich.data.db.entity.Card;
-import com.kanemil.memorich.data.repository.DecksRepository;
+import com.kanemil.memorich.data.repository.Repository;
 
 import java.util.List;
 
 public class CardsViewModel extends ViewModel {
-    private DecksRepository mDecksRepository;
-    private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
-    private int mDeckId;
+    private Repository mRepository;
+    private LiveData<List<Card>> mCardsList = new MutableLiveData<>();
+    private long mDeckId;
 
-    CardsViewModel(int deckId, DecksRepository decksRepository) {
+    CardsViewModel(long deckId, Repository repository) {
         mDeckId = deckId;
-        mDecksRepository = decksRepository;
+        mRepository = repository;
+        loadCards();
     }
 
-    public void loadCards() {
-//        mCardsList.setValue((mDecksRepository.getDecks().get(mDeckId).getCardList()));
+    private void loadCards() {
+        mCardsList = mRepository.getCards(mDeckId);
     }
 
-    /**
-     * Adds deck to list.
-     * // TODO Сделать механизм добавления карты, но уже после того как реализую БД
-     *
-     * @param card
-     */
-
-    public void addDeck(Card card) {
-        // TODO
+    public void addCard(Card card) {
+        mRepository.insertCard(card);
     }
 
     public LiveData<List<Card>> getCardsList() {

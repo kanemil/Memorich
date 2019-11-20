@@ -4,10 +4,10 @@ public interface OnDeckClickedListener {
     /**
      * Shows content of deck
      */
-    void onDeckLongClicked(int position);
+    void onDeckLongClicked(long deckId);
 
     /**
      * Starts training
      */
-    void onDeckClicked(int position);
+    void onDeckClicked(long deckId);
 }

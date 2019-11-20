@@ -11,6 +11,8 @@ import com.kanemil.memorich.data.db.entity.Card;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+
 @Dao
 public interface CardDao {
 
@@ -18,7 +20,7 @@ public interface CardDao {
     LiveData<List<Card>> getCardsByDeckId(long deckId);
 
     @Insert
-    void insert(Card card);
+    Completable insert(Card card);
 
     @Update
     void update(Card card);

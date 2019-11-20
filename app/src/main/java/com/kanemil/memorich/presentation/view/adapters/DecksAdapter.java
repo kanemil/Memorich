@@ -44,18 +44,19 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull DeckHolder holder, final int position) {
-        holder.bind(mDecks.get(position));
+        final Deck deck = mDecks.get(position);
+        holder.bind(deck);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mOnDeckClickedListener.onDeckLongClicked(position);
+                mOnDeckClickedListener.onDeckLongClicked(deck.getId());
                 return true;
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnDeckClickedListener.onDeckClicked(position);
+                mOnDeckClickedListener.onDeckClicked(deck.getId());
             }
         });
     }

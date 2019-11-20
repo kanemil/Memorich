@@ -40,9 +40,9 @@ public class TrainingFragment extends Fragment {
     private Button mButtonRemember;
     private Button mButtonRepeat;
 
-    public static TrainingFragment newInstance(int deckId) {
+    public static TrainingFragment newInstance(long deckId) {
         Bundle args = new Bundle();
-        args.putInt(DECK_ID, deckId);
+        args.putLong(DECK_ID, deckId);
         TrainingFragment fragment = new TrainingFragment();
         fragment.setArguments(args);
         return fragment;
@@ -125,7 +125,7 @@ public class TrainingFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mViewModel = ViewModelProviders
-                    .of(this, new CustomViewModelFactory(getArguments().getInt(DECK_ID)))
+                    .of(this, new CustomViewModelFactory(getArguments().getLong(DECK_ID)))
                     .get(TrainingViewModel.class);
         }
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
@@ -136,7 +136,6 @@ public class TrainingFragment extends Fragment {
                 mSeekBar.setMax(cards.size() - 1);
             }
         });
-        mViewModel.loadCards();
         mViewModel.getCorrectAnswers().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {

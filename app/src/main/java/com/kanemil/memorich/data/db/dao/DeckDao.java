@@ -11,6 +11,8 @@ import com.kanemil.memorich.data.db.entity.Deck;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+
 @Dao
 public interface DeckDao {
 
@@ -18,7 +20,7 @@ public interface DeckDao {
     LiveData<List<Deck>> getDecks();
 
     @Insert
-    void insert(Deck deck);
+    Completable insert(Deck deck);
 
     @Update
     void update(Deck deck);

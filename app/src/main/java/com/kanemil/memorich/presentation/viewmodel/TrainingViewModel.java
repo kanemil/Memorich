@@ -5,26 +5,29 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kanemil.memorich.data.db.entity.Card;
-import com.kanemil.memorich.data.repository.DecksRepository;
+import com.kanemil.memorich.data.repository.Repository;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
+// TODO баг с неверным результатом (при двух картах видно хорошо)
+
 public class TrainingViewModel extends ViewModel {
-    private DecksRepository mDecksRepository;
-    private MutableLiveData<List<Card>> mCardsList = new MutableLiveData<>();
+    private Repository mRepository;
+    private LiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
     private MutableLiveData<TreeSet<Integer>> mAnsweredCardsPositions = new MutableLiveData<>(new TreeSet<Integer>());
     private MutableLiveData<Boolean> mIsCardAlreadyAnswered = new MutableLiveData<>(false);
     private MutableLiveData<String> mTrainingScore = new MutableLiveData<>();
     private MutableLiveData<Integer> mFirstUnansweredCard = new MutableLiveData<>();
 
-    private int mDeckId;
+    private long mDeckId;
 
-    TrainingViewModel(int deckId, DecksRepository decksRepository) {
+    TrainingViewModel(long deckId, Repository repository) {
         mDeckId = deckId;
-        mDecksRepository = decksRepository;
+        mRepository = repository;
+        loadCards();
     }
 
     public LiveData<List<Card>> getCardsList() {
@@ -51,8 +54,8 @@ public class TrainingViewModel extends ViewModel {
         return mFirstUnansweredCard;
     }
 
-    public void loadCards() {
-//        mCardsList.setValue((mDecksRepository.getDecks().get(mDeckId).getCardList()));
+    private void loadCards() {
+        mCardsList = mRepository.getCards(mDeckId);
     }
 
     public void incrementCorrectAnswersNumber(boolean incrementOrNot) {

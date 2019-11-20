@@ -8,18 +8,20 @@ import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.fragments.AddCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
-import com.kanemil.memorich.presentation.view.fragments.OnDeckAddedListener;
+import com.kanemil.memorich.presentation.view.fragments.OnDeckNameFilledListener;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
 
 public class MainActivity extends AppCompatActivity implements OnShowAddDeckDialogClickListener,
-        OnDeckClickedListener, OnDeckAddedDialogClick {
+        OnDeckClickedListener, OnDeckAddedDialogClick, OnAddCardButtonClickListener {
 
     private static final String DECKS_FRAGMENT = "decksFragment";
     private static final String CARDS_FRAGMENT = "cardsFragment";
     private static final String TRAINING_FRAGMENT = "trainingFragment";
     private static final String ADD_DECK_DIALOG_FRAGMENT = "addDeckDialogFragment";
+    private static final String ADD_CARD_FRAGMENT = "addCardFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +42,17 @@ public class MainActivity extends AppCompatActivity implements OnShowAddDeckDial
     }
 
     @Override
-    public void onDeckLongClicked(int position) {
+    public void onDeckLongClicked(long deckId) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, CardsFragment.newInstance(position), CARDS_FRAGMENT)
+                .replace(R.id.root_view, CardsFragment.newInstance(deckId), CARDS_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public void onDeckClicked(int position) {
+    public void onDeckClicked(long deckId) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, TrainingFragment.newInstance(position), TRAINING_FRAGMENT)
+                .replace(R.id.root_view, TrainingFragment.newInstance(deckId), TRAINING_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
@@ -58,8 +60,16 @@ public class MainActivity extends AppCompatActivity implements OnShowAddDeckDial
     @Override
     public void onDeckAddedDialogClick(String deckName) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(DECKS_FRAGMENT);
-        if (fragment instanceof OnDeckAddedListener) {
-            ((OnDeckAddedListener) fragment).onDeckAdded(deckName);
+        if (fragment instanceof OnDeckNameFilledListener) {
+            ((OnDeckNameFilledListener) fragment).onDeckNameFilledListener(deckName);
         }
+    }
+
+    @Override
+    public void showAddCardScreen(long deckId) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_view, AddCardFragment.newInstance(deckId), ADD_CARD_FRAGMENT)
+                .addToBackStack(null)
+                .commit();
     }
 }

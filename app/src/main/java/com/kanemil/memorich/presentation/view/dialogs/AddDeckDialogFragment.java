@@ -32,18 +32,16 @@ public class AddDeckDialogFragment extends DialogFragment {
         mEditTextDeckName = root.findViewById(R.id.et_deck_name);
         builder.setView(root);
 
-        builder
-                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final FragmentActivity activity = requireActivity();
-                        if (activity instanceof OnDeckAddedDialogClick) {
-                            ((OnDeckAddedDialogClick) activity)
-                                    .onDeckAddedDialogClick(mEditTextDeckName.getText().toString());
-                        }
-                    }
-                })
-                .setTitle(R.string.set_name_for_deck);
+        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                final FragmentActivity activity = requireActivity();
+                if (activity instanceof OnDeckAddedDialogClick) {
+                    ((OnDeckAddedDialogClick) activity)
+                            .onDeckAddedDialogClick(mEditTextDeckName.getText().toString());
+                }
+            }
+        }).setTitle(R.string.set_name_for_deck);
 
         return builder.create();
     }

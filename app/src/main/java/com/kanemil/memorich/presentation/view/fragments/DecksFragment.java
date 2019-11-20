@@ -23,7 +23,7 @@ import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 
 import java.util.List;
 
-public class DecksFragment extends Fragment implements OnDeckAddedListener {
+public class DecksFragment extends Fragment implements OnDeckNameFilledListener {
 
     private static final String TAG = "DecksFragment";
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class DecksFragment extends Fragment implements OnDeckAddedListener {
     }
 
     @Override
-    public void onDeckAdded(String deckName) {
+    public void onDeckNameFilledListener(String deckName) {
         mViewModel.addDeck(deckName);
     }
 }
