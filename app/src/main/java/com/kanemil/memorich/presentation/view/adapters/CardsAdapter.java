@@ -23,9 +23,19 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
      * both in height and width
      */
     private DisplayMode mDisplayMode;
+    private CardsAdapterActionsListener mCardsAdapterActionsListener;
 
     public CardsAdapter(DisplayMode displayMode) {
         mDisplayMode = displayMode;
+    }
+
+    /**
+     * Fragment implements it, then tells activity to call edit card screen
+     *
+     * @param cardsAdapterActionsListener
+     */
+    public void setCardsAdapterActionsListener(CardsAdapterActionsListener cardsAdapterActionsListener) {
+        mCardsAdapterActionsListener = cardsAdapterActionsListener;
     }
 
     public void setCards(List<Card> cards) {
@@ -53,7 +63,16 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CardHolder holder, int position) {
-        holder.bind(mCards.get(position));
+        final Card card = mCards.get(position);
+        holder.bind(card);
+        if (mDisplayMode == DisplayMode.EDIT) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mCardsAdapterActionsListener.editCard(card);
+                }
+            });
+        }
     }
 
     @Override

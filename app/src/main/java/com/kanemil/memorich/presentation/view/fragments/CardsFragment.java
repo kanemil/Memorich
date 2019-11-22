@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,12 +18,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
+import com.kanemil.memorich.presentation.view.adapters.CardsAdapterActionsListener;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
 import java.util.List;
 
-public class CardsFragment extends Fragment {
+public class CardsFragment extends Fragment implements CardsAdapterActionsListener {
 
     private static final int SPAN_COUNT = 3;
     private static final String DECK_ID = "deckId";
@@ -55,6 +57,7 @@ public class CardsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.EDIT);
+        mAdapter.setCardsAdapterActionsListener(this);
     }
 
     @Nullable
@@ -88,5 +91,17 @@ public class CardsFragment extends Fragment {
                 mAdapter.setCards(cards);
             }
         });
+    }
+
+    @Override
+    public void editCard(Card card) {
+        final FragmentActivity activity = requireActivity();
+        if (activity instanceof ShowEditCardScreenListener) {
+            ((ShowEditCardScreenListener) activity).showEditCardScreen(
+                    card.getDeckId(),
+                    card.getId(),
+                    card.getFront(),
+                    card.getBack());
+        }
     }
 }

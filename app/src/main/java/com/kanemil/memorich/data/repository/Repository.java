@@ -59,4 +59,10 @@ public class Repository {
         completable.subscribeOn(Schedulers.io())
                 .subscribe();
     }
+
+    public void updateCard(Card card) {
+        final Completable completable = db.mCardDao().update(card);
+        completable.subscribeOn(Schedulers.io())
+                .subscribe();
+    }
 }

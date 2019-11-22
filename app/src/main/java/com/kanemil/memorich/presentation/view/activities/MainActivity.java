@@ -12,13 +12,14 @@ import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
 import com.kanemil.memorich.presentation.view.dialogs.OnDeckAddedDialogClickListener;
 import com.kanemil.memorich.presentation.view.dialogs.OnDeckRenameDialogClickListener;
 import com.kanemil.memorich.presentation.view.dialogs.RenameDeckDialogFragment;
-import com.kanemil.memorich.presentation.view.fragments.AddCardFragment;
+import com.kanemil.memorich.presentation.view.fragments.AddOrEditCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
 import com.kanemil.memorich.presentation.view.fragments.EditDeckListener;
 import com.kanemil.memorich.presentation.view.fragments.RenameDeckListener;
 import com.kanemil.memorich.presentation.view.fragments.ShowAddCardScreenListener;
 import com.kanemil.memorich.presentation.view.fragments.ShowAddDeckDialogListener;
+import com.kanemil.memorich.presentation.view.fragments.ShowEditCardScreenListener;
 import com.kanemil.memorich.presentation.view.fragments.StartTrainingListener;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
 
@@ -29,13 +30,14 @@ public class MainActivity extends AppCompatActivity
         StartTrainingListener,
         EditDeckListener,
         RenameDeckListener,
-        OnDeckRenameDialogClickListener {
+        OnDeckRenameDialogClickListener,
+        ShowEditCardScreenListener {
 
     private static final String DECKS_FRAGMENT = "decksFragment";
     private static final String CARDS_FRAGMENT = "cardsFragment";
     private static final String TRAINING_FRAGMENT = "trainingFragment";
     private static final String ADD_DECK_DIALOG_FRAGMENT = "addDeckDialogFragment";
-    private static final String ADD_CARD_FRAGMENT = "addCardFragment";
+    private static final String ADD_OR_EDIT_CARD_FRAGMENT = "addOrEditCardFragment";
     private static final String RENAME_DECK_DIALOG_FRAGMENT = "renameDeckDialogFragment";
 
     @Override
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showAddCardScreen(long deckId) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, AddCardFragment.newInstance(deckId), ADD_CARD_FRAGMENT)
+                .replace(R.id.root_view, AddOrEditCardFragment.newInstance(deckId), ADD_OR_EDIT_CARD_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
@@ -100,5 +102,13 @@ public class MainActivity extends AppCompatActivity
     public void renameDeck(Deck deck) {
         DialogFragment dialogFragment = RenameDeckDialogFragment.newInstance(deck);
         dialogFragment.show(getSupportFragmentManager(), RENAME_DECK_DIALOG_FRAGMENT);
+    }
+
+    @Override
+    public void showEditCardScreen(long deckId, long cardId, String front, String back) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_view, AddOrEditCardFragment.newInstance(deckId, cardId, front, back), ADD_OR_EDIT_CARD_FRAGMENT)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -31,4 +31,8 @@ public class CardsViewModel extends ViewModel {
     public LiveData<List<Card>> getCardsList() {
         return mCardsList;
     }
+
+    public void updateCard(Card card) {
+        mRepository.updateCard(card);
+    }
 }

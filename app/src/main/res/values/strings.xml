@@ -18,5 +18,6 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit cards</string>
     <string name="deck_deleted">Deck deleted</string>
+    <string name="save">Save</string>
 
 </resources>
