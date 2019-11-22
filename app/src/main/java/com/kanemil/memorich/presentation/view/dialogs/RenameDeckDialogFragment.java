@@ -52,7 +52,7 @@ public class RenameDeckDialogFragment extends DialogFragment {
                             .onDeckRenameDialogClick(getArguments().getLong(DECK_ID_TO_RENAME), mEditTextDeckName.getText().toString());
                 }
             }
-        }).setTitle(R.string.set_name_for_deck);
+        }).setTitle(R.string.set_new_name_for_deck);
 
         return builder.create();
     }

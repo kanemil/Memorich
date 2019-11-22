@@ -114,6 +114,9 @@ public class AddOrEditCardFragment extends Fragment {
                                 mEditTextBack.getText().toString(),
                                 deckId));
                         Toast.makeText(requireContext(), "Added!", Toast.LENGTH_SHORT).show();
+                        if (getFragmentManager() != null) {
+                            getFragmentManager().popBackStack();
+                        }
                     }
                 });
             } else {
