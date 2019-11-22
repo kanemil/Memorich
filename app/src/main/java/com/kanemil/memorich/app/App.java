@@ -11,6 +11,7 @@ import com.kanemil.memorich.data.db.AppDatabase;
 
 public class App extends Application {
 
+
     private static final String TAG = "MyTag";
     public static App sInstance;
     private AppDatabase mDatabase;
@@ -27,9 +28,7 @@ public class App extends Application {
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        db.execSQL("INSERT INTO decks (id, name) VALUES (0, 'My First Deck')");
-                        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (0, 'first front', 'first back', 0)");
-                        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (1, 'second front', 'second back', 0)");
+                        populateDatabase(db);
                     }
                 })
                 .build();
@@ -37,5 +36,14 @@ public class App extends Application {
 
     public AppDatabase getDatabase() {
         return mDatabase;
+    }
+
+    private void populateDatabase(@NonNull SupportSQLiteDatabase db) {
+        db.execSQL("INSERT INTO decks (id, name) VALUES (1, 'My First Deck')");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (1, 'first front', 'first back', 1)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (2, 'second front', 'second back', 1)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (3, 'third front', 'third back', 1)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (4, 'fourth front', 'fourth back', 1)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id) VALUES (5, 'fifth front', 'fifth back', 1)");
     }
 }

@@ -84,13 +84,13 @@ public class TrainingFragment extends Fragment {
         mButtonRemember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finishOrContinueTraining(true);
+                mViewModel.finishOrContinueTraining(true, mViewPager2.getCurrentItem());
             }
         });
         mButtonRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finishOrContinueTraining(false);
+                mViewModel.finishOrContinueTraining(false, mViewPager2.getCurrentItem());
             }
         });
     }
@@ -172,15 +172,6 @@ public class TrainingFragment extends Fragment {
                 mViewPager2.setCurrentItem(position);
             }
         });
-    }
-
-    /**
-     * Shows result if it is the last card or swipes to the next card.
-     */
-    private void finishOrContinueTraining(boolean incrementOrNot) {
-        mViewModel.markCardAsAnswered(mViewPager2.getCurrentItem());
-        mViewModel.checkIfAllCardsAreAnswered();
-        mViewModel.incrementCorrectAnswersNumber(incrementOrNot);
     }
 
     private void toggleButtons(boolean b) {
