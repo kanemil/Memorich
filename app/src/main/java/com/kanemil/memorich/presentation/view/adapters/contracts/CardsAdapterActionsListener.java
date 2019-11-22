@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.adapters;
+package com.kanemil.memorich.presentation.view.adapters.contracts;
 
 import com.kanemil.memorich.data.db.entity.Card;
 

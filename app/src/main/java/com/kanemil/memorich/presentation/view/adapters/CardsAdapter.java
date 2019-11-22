@@ -10,11 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.presentation.view.adapters.contracts.CardsAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.adapters.drag.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> {
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
+        implements ItemTouchHelperAdapter {
 
     private List<Card> mCards = new ArrayList<>();
 
@@ -78,6 +82,21 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder> 
     @Override
     public int getItemCount() {
         return mCards.size();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mCards, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mCards, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
     }
 
     public enum DisplayMode {

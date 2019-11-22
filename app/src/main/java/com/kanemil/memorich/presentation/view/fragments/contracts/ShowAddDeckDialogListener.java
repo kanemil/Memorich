@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.fragments;
+package com.kanemil.memorich.presentation.view.fragments.contracts;
 
 /**
  * Implement to show add deck dialog fragment.

@@ -17,10 +17,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.activities.OnDeckRenamedListener;
-import com.kanemil.memorich.presentation.view.activities.OnNewDeckCreatedListener;
+import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
+import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
-import com.kanemil.memorich.presentation.view.adapters.DecksAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.adapters.contracts.DecksAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.EditDeckListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.RenameDeckListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddDeckDialogListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 

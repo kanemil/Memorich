@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.activities;
+package com.kanemil.memorich.presentation.view.activities.contracts;
 
 public interface OnDeckRenamedListener {
     /**

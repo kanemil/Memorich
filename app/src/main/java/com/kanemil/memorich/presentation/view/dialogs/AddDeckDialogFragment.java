@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
 
 /**
  * Adds new deck to list.

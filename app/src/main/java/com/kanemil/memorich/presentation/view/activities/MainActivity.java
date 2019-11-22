@@ -8,20 +8,22 @@ import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
+import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
-import com.kanemil.memorich.presentation.view.dialogs.OnDeckAddedDialogClickListener;
-import com.kanemil.memorich.presentation.view.dialogs.OnDeckRenameDialogClickListener;
 import com.kanemil.memorich.presentation.view.dialogs.RenameDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
+import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckRenameDialogClickListener;
 import com.kanemil.memorich.presentation.view.fragments.AddOrEditCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
-import com.kanemil.memorich.presentation.view.fragments.EditDeckListener;
-import com.kanemil.memorich.presentation.view.fragments.RenameDeckListener;
-import com.kanemil.memorich.presentation.view.fragments.ShowAddCardScreenListener;
-import com.kanemil.memorich.presentation.view.fragments.ShowAddDeckDialogListener;
-import com.kanemil.memorich.presentation.view.fragments.ShowEditCardScreenListener;
-import com.kanemil.memorich.presentation.view.fragments.StartTrainingListener;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
+import com.kanemil.memorich.presentation.view.fragments.contracts.EditDeckListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.RenameDeckListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddCardScreenListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddDeckDialogListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowEditCardScreenListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 
 public class MainActivity extends AppCompatActivity
         implements ShowAddDeckDialogListener,

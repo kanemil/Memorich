@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.dialogs;
+package com.kanemil.memorich.presentation.view.dialogs.contracts;
 
 public interface OnDeckRenameDialogClickListener {
     /**

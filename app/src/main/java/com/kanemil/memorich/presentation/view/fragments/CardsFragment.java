@@ -12,13 +12,17 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
-import com.kanemil.memorich.presentation.view.adapters.CardsAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.adapters.contracts.CardsAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.adapters.drag.SimpleItemTouchHelperCallback;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddCardScreenListener;
+import com.kanemil.memorich.presentation.view.fragments.contracts.ShowEditCardScreenListener;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
@@ -64,13 +68,24 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cards, container, false);
+        initRecyclerView(root);
+        initFab(root);
+        return root;
+    }
+
+    private void initFab(View root) {
+        fab = root.findViewById(R.id.fab_add_card);
+        fab.setOnClickListener(mFabOnClickListener);
+    }
+
+    private void initRecyclerView(View root) {
         mRecyclerView = root.findViewById(R.id.rv_cards);
         mRecyclerView.setAdapter(mAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), SPAN_COUNT);
         mRecyclerView.setLayoutManager(layoutManager);
-        fab = root.findViewById(R.id.fab_add_card);
-        fab.setOnClickListener(mFabOnClickListener);
-        return root;
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override
