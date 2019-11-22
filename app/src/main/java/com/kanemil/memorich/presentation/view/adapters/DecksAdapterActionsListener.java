@@ -9,4 +9,6 @@ public interface DecksAdapterActionsListener {
     void onDeckClicked(long deckId);
 
     void onDeckMenuEditClicked(long deckId);
+
+    void onDeckMenuRenameClicked(long deckId);
 }

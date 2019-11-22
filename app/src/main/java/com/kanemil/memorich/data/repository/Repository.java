@@ -38,6 +38,12 @@ public class Repository {
                 .subscribe();
     }
 
+    public void renameDeck(Deck deck) {
+        final Completable completable = db.mDeckDao().update(deck);
+        completable.subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     public LiveData<List<Card>> getCards(long deckId) {
         return db.mCardDao().getCardsByDeckId(deckId);
     }

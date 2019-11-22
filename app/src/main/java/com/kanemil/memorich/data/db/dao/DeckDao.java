@@ -23,8 +23,8 @@ public interface DeckDao {
     Completable insert(Deck deck);
 
     @Update
-    void update(Deck deck);
+    Completable update(Deck deck);
 
     @Delete
-    void delete(Deck deck);
+    Completable delete(Deck deck);
 }

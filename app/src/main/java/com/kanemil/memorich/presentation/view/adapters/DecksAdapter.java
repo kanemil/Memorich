@@ -78,7 +78,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menu_deck_rename:
-
+                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mSelectedDeck.getId());
                 return true;
             case R.id.menu_deck_edit:
                 mDecksAdapterActionsListener.onDeckMenuEditClicked(mSelectedDeck.getId());

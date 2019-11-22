@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
@@ -86,5 +88,22 @@ public class Card {
 
     public void setRevealedInTraining(boolean revealedInTraining) {
         mRevealedInTraining = revealedInTraining;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return mId == card.mId &&
+                mDeckId == card.mDeckId &&
+                mRevealedInTraining == card.mRevealedInTraining &&
+                Objects.equals(mFront, card.mFront) &&
+                Objects.equals(mBack, card.mBack);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mId, mFront, mBack, mDeckId, mRevealedInTraining);
     }
 }

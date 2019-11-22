@@ -23,8 +23,8 @@ public interface CardDao {
     Completable insert(Card card);
 
     @Update
-    void update(Card card);
+    Completable update(Card card);
 
     @Delete
-    void delete(Card card);
+    Completable delete(Card card);
 }

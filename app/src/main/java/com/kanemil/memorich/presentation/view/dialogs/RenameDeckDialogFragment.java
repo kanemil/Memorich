@@ -18,9 +18,19 @@ import com.kanemil.memorich.R;
 /**
  * Adds new deck to list.
  */
-public class AddDeckDialogFragment extends DialogFragment {
+public class RenameDeckDialogFragment extends DialogFragment {
+
+    private static final String DECK_ID_TO_RENAME = "deck_id";
 
     private EditText mEditTextDeckName;
+
+    public static RenameDeckDialogFragment newInstance(long deckId) {
+        Bundle args = new Bundle();
+        args.putLong(DECK_ID_TO_RENAME, deckId);
+        RenameDeckDialogFragment fragment = new RenameDeckDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @NonNull
     @Override
@@ -31,13 +41,14 @@ public class AddDeckDialogFragment extends DialogFragment {
         mEditTextDeckName = root.findViewById(R.id.et_deck_name);
         builder.setView(root);
 
-        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+
+        builder.setPositiveButton(getString(R.string.rename), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final FragmentActivity activity = requireActivity();
-                if (activity instanceof OnDeckAddedDialogClickListener) {
-                    ((OnDeckAddedDialogClickListener) activity)
-                            .onDeckAddedDialogClick(mEditTextDeckName.getText().toString());
+                if (activity instanceof OnDeckAddedDialogClickListener && getArguments() != null) {
+                    ((OnDeckRenameDialogClickListener) activity)
+                            .onDeckRenameDialogClick(getArguments().getLong(DECK_ID_TO_RENAME), mEditTextDeckName.getText().toString());
                 }
             }
         }).setTitle(R.string.set_name_for_deck);

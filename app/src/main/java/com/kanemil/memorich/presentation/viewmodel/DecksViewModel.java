@@ -25,6 +25,12 @@ public class DecksViewModel extends ViewModel {
         mRepository.insertDeck(deck);
     }
 
+    public void renameDeck(long deckId, String newDeckName) {
+        Deck deck = new Deck(newDeckName);
+        deck.setId(deckId);
+        mRepository.renameDeck(deck);
+    }
+
     public LiveData<List<Deck>> getDecksList() {
         return mDecksList;
     }

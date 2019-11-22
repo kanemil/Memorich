@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 /**
  * Simple deck of cards containing List<Card> field.
  */
@@ -36,5 +38,19 @@ public class Deck {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deck deck = (Deck) o;
+        return mId == deck.mId &&
+                Objects.equals(mName, deck.mName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mId, mName);
     }
 }

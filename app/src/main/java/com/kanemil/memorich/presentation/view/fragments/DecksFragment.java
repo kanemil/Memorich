@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.presentation.view.activities.OnDeckRenamedListener;
 import com.kanemil.memorich.presentation.view.activities.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapterActionsListener;
@@ -25,7 +26,7 @@ import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 import java.util.List;
 
 public class DecksFragment extends Fragment
-        implements OnNewDeckCreatedListener, DecksAdapterActionsListener {
+        implements OnNewDeckCreatedListener, DecksAdapterActionsListener, OnDeckRenamedListener {
 
     private static final String TAG = "DecksFragment";
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
@@ -100,6 +101,19 @@ public class DecksFragment extends Fragment
         final FragmentActivity activity = requireActivity();
         if (activity instanceof EditDeckListener) {
             ((EditDeckListener) activity).editDeck(deckId);
+        }
+    }
+
+    @Override
+    public void onDeckRenamed(long deckId, String newDeckName) {
+        mViewModel.renameDeck(deckId, newDeckName);
+    }
+
+    @Override
+    public void onDeckMenuRenameClicked(long deckId) {
+        final FragmentActivity activity = requireActivity();
+        if (activity instanceof RenameDeckListener) {
+            ((RenameDeckListener) activity).renameDeck(deckId);
         }
     }
 }
