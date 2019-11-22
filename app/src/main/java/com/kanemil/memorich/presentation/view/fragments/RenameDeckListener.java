@@ -1,10 +1,12 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
+import com.kanemil.memorich.data.db.entity.Deck;
+
 public interface RenameDeckListener {
     /**
      * Shows rename deck dialog. Implemented by an activity.
      *
-     * @param deckId
+     * @param deck
      */
-    void renameDeck(long deckId);
+    void renameDeck(Deck deck);
 }

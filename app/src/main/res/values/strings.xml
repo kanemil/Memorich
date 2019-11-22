@@ -17,5 +17,6 @@
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit cards</string>
+    <string name="deck_deleted">Deck deleted</string>
 
 </resources>

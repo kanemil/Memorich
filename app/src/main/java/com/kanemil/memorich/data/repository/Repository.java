@@ -44,6 +44,12 @@ public class Repository {
                 .subscribe();
     }
 
+    public void deleteDeck(Deck deck) {
+        final Completable completable = db.mDeckDao().delete(deck);
+        completable.subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     public LiveData<List<Card>> getCards(long deckId) {
         return db.mCardDao().getCardsByDeckId(deckId);
     }

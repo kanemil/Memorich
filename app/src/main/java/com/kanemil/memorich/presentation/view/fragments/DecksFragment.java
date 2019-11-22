@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.presentation.view.activities.OnDeckRenamedListener;
@@ -24,6 +25,7 @@ import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DecksFragment extends Fragment
         implements OnNewDeckCreatedListener, DecksAdapterActionsListener, OnDeckRenamedListener {
@@ -110,10 +112,19 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckMenuRenameClicked(long deckId) {
+    public void onDeckMenuRenameClicked(Deck deck) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof RenameDeckListener) {
-            ((RenameDeckListener) activity).renameDeck(deckId);
+            ((RenameDeckListener) activity).renameDeck(deck);
         }
+    }
+
+    @Override
+    public void onDeckMenuDeleteClicked(Deck deck) {
+        // TODO: 22.11.19 Сделать экшн у снэкбара для отмены операции удаления!
+        mViewModel.deleteDeck(deck);
+        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_decks),
+                getString(R.string.deck_deleted), Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }

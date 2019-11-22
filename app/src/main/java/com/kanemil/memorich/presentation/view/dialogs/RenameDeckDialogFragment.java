@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.data.db.entity.Deck;
 
 /**
  * Adds new deck to list.
@@ -24,9 +25,9 @@ public class RenameDeckDialogFragment extends DialogFragment {
 
     private EditText mEditTextDeckName;
 
-    public static RenameDeckDialogFragment newInstance(long deckId) {
+    public static RenameDeckDialogFragment newInstance(Deck deck) {
         Bundle args = new Bundle();
-        args.putLong(DECK_ID_TO_RENAME, deckId);
+        args.putLong(DECK_ID_TO_RENAME, deck.getId());
         RenameDeckDialogFragment fragment = new RenameDeckDialogFragment();
         fragment.setArguments(args);
         return fragment;

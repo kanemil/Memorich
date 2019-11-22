@@ -31,6 +31,10 @@ public class DecksViewModel extends ViewModel {
         mRepository.renameDeck(deck);
     }
 
+    public void deleteDeck(Deck deck) {
+        mRepository.deleteDeck(deck);
+    }
+
     public LiveData<List<Deck>> getDecksList() {
         return mDecksList;
     }
