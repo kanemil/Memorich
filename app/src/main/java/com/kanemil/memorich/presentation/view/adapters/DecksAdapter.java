@@ -1,6 +1,7 @@
 package com.kanemil.memorich.presentation.view.adapters;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +26,10 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     private List<Deck> mDecks = new ArrayList<>();
     private Deck mSelectedDeck;
 
-    private OnDeckClickedListener mOnDeckClickedListener;
+    private DecksAdapterActionsListener mDecksAdapterActionsListener;
 
-    public DecksAdapter(OnDeckClickedListener onDeckClickedListener) {
-        mOnDeckClickedListener = onDeckClickedListener;
+    public DecksAdapter(DecksAdapterActionsListener decksAdapterActionsListener) {
+        mDecksAdapterActionsListener = decksAdapterActionsListener;
     }
 
     public void setDecks(List<Deck> decks) {
@@ -47,14 +47,14 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeckHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final DeckHolder holder, final int position) {
         final Deck deck = mDecks.get(position);
         holder.bind(deck);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 mSelectedDeck = deck;
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.mSpace, Gravity.RIGHT);
                 popupMenu.inflate(R.menu.menu_decks);
                 popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
                 popupMenu.show();
@@ -64,7 +64,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnDeckClickedListener.onDeckClicked(deck.getId());
+                mDecksAdapterActionsListener.onDeckClicked(deck.getId());
             }
         });
     }
@@ -81,9 +81,8 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
                 return true;
             case R.id.menu_deck_edit:
-                mOnDeckClickedListener.onDeckMenuEditClicked(mSelectedDeck.getId());
+                mDecksAdapterActionsListener.onDeckMenuEditClicked(mSelectedDeck.getId());
                 return true;
-
             case R.id.menu_deck_delete:
 
                 return true;
@@ -94,11 +93,13 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     static class DeckHolder extends RecyclerView.ViewHolder {
         private TextView mTextViewDeckName;
+        private View mSpace;
         private TextView mTextViewDeckSize;
 
         DeckHolder(@NonNull View itemView) {
             super(itemView);
             mTextViewDeckName = itemView.findViewById(R.id.tv_deck_name);
+            mSpace = itemView.findViewById(R.id.space_deck_item_view);
             mTextViewDeckSize = itemView.findViewById(R.id.tv_deck_size);
         }
 

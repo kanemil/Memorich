@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
-import com.kanemil.memorich.presentation.view.activities.OnAddCardButtonClickListener;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
@@ -31,9 +30,9 @@ public class CardsFragment extends Fragment {
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (requireActivity() instanceof OnAddCardButtonClickListener) {
+            if (requireActivity() instanceof ShowAddCardScreenListener) {
                 if (getArguments() != null) {
-                    OnAddCardButtonClickListener listener = (OnAddCardButtonClickListener) requireActivity();
+                    ShowAddCardScreenListener listener = (ShowAddCardScreenListener) requireActivity();
                     listener.showAddCardScreen(getArguments().getLong(DECK_ID));
                 }
             }

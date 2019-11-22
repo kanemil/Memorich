@@ -16,25 +16,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
-import com.kanemil.memorich.presentation.view.activities.OnEditDeckClickListener;
-import com.kanemil.memorich.presentation.view.activities.OnShowAddDeckDialogClickListener;
-import com.kanemil.memorich.presentation.view.activities.StartTrainingListener;
+import com.kanemil.memorich.presentation.view.activities.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.adapters.DecksAdapter;
+import com.kanemil.memorich.presentation.view.adapters.DecksAdapterActionsListener;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 
 import java.util.List;
 
 public class DecksFragment extends Fragment
-        implements OnDeckNameFilledListener, OnDeckClickedListener {
+        implements OnNewDeckCreatedListener, DecksAdapterActionsListener {
 
     private static final String TAG = "DecksFragment";
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (requireActivity() instanceof OnShowAddDeckDialogClickListener) {
-                OnShowAddDeckDialogClickListener listener = (OnShowAddDeckDialogClickListener) requireActivity();
+            if (requireActivity() instanceof ShowAddDeckDialogListener) {
+                ShowAddDeckDialogListener listener = (ShowAddDeckDialogListener) requireActivity();
                 listener.showAddDeckDialog();
             }
         }
@@ -84,7 +82,7 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckNameFilledListener(String deckName) {
+    public void onNewDeckCreated(String deckName) {
         mViewModel.addDeck(deckName);
     }
 
@@ -100,8 +98,8 @@ public class DecksFragment extends Fragment
     @Override
     public void onDeckMenuEditClicked(long deckId) {
         final FragmentActivity activity = requireActivity();
-        if (activity instanceof OnEditDeckClickListener) {
-            ((OnEditDeckClickListener) activity).editDeck(deckId);
+        if (activity instanceof EditDeckListener) {
+            ((EditDeckListener) activity).editDeck(deckId);
         }
     }
 }

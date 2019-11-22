@@ -8,18 +8,22 @@ import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.dialogs.OnDeckAddedDialogClick;
 import com.kanemil.memorich.presentation.view.fragments.AddCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
-import com.kanemil.memorich.presentation.view.fragments.OnDeckNameFilledListener;
+import com.kanemil.memorich.presentation.view.fragments.EditDeckListener;
+import com.kanemil.memorich.presentation.view.fragments.ShowAddCardScreenListener;
+import com.kanemil.memorich.presentation.view.fragments.ShowAddDeckDialogListener;
+import com.kanemil.memorich.presentation.view.fragments.StartTrainingListener;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements OnShowAddDeckDialogClickListener,
+        implements ShowAddDeckDialogListener,
         OnDeckAddedDialogClick,
-        OnAddCardButtonClickListener,
+        ShowAddCardScreenListener,
         StartTrainingListener,
-        OnEditDeckClickListener {
+        EditDeckListener {
 
     private static final String DECKS_FRAGMENT = "decksFragment";
     private static final String CARDS_FRAGMENT = "cardsFragment";
@@ -48,8 +52,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDeckAddedDialogClick(String deckName) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(DECKS_FRAGMENT);
-        if (fragment instanceof OnDeckNameFilledListener) {
-            ((OnDeckNameFilledListener) fragment).onDeckNameFilledListener(deckName);
+        if (fragment instanceof OnNewDeckCreatedListener) {
+            ((OnNewDeckCreatedListener) fragment).onNewDeckCreated(deckName);
         }
     }
 

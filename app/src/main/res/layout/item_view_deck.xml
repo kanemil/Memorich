@@ -22,6 +22,7 @@
             tools:text="Deck number 42" />
 
         <Space
+            android:id="@+id/space_deck_item_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
