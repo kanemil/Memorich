@@ -2,8 +2,10 @@ package com.kanemil.memorich.presentation.view.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,13 @@ import com.kanemil.memorich.presentation.view.activities.OnDeckClickedListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> {
+public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> implements
+        PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = "DecksAdapter";
 
     private List<Deck> mDecks = new ArrayList<>();
+    private Deck mSelectedDeck;
 
     private OnDeckClickedListener mOnDeckClickedListener;
 
@@ -49,7 +53,11 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mOnDeckClickedListener.onDeckLongClicked(deck.getId());
+                mSelectedDeck = deck;
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                popupMenu.inflate(R.menu.menu_decks);
+                popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
+                popupMenu.show();
                 return true;
             }
         });
@@ -64,6 +72,24 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     @Override
     public int getItemCount() {
         return mDecks.size();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_deck_rename:
+
+                return true;
+            case R.id.menu_deck_edit:
+                mOnDeckClickedListener.onDeckMenuEditClicked(mSelectedDeck.getId());
+                return true;
+
+            case R.id.menu_deck_delete:
+
+                return true;
+            default:
+        }
+        return false;
     }
 
     static class DeckHolder extends RecyclerView.ViewHolder {

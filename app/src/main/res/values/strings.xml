@@ -14,5 +14,8 @@
     <string name="enter_front_side_of_a_card">Enter front side of a card</string>
     <string name="enter_back_side_of_a_card">Enter back side of a card</string>
     <string name="add_card">Add card</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit cards</string>
 
 </resources>

@@ -14,8 +14,12 @@ import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
 import com.kanemil.memorich.presentation.view.fragments.OnDeckNameFilledListener;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
 
-public class MainActivity extends AppCompatActivity implements OnShowAddDeckDialogClickListener,
-        OnDeckClickedListener, OnDeckAddedDialogClick, OnAddCardButtonClickListener {
+public class MainActivity extends AppCompatActivity
+        implements OnShowAddDeckDialogClickListener,
+        OnDeckAddedDialogClick,
+        OnAddCardButtonClickListener,
+        StartTrainingListener,
+        OnEditDeckClickListener {
 
     private static final String DECKS_FRAGMENT = "decksFragment";
     private static final String CARDS_FRAGMENT = "cardsFragment";
@@ -42,22 +46,6 @@ public class MainActivity extends AppCompatActivity implements OnShowAddDeckDial
     }
 
     @Override
-    public void onDeckLongClicked(long deckId) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, CardsFragment.newInstance(deckId), CARDS_FRAGMENT)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onDeckClicked(long deckId) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, TrainingFragment.newInstance(deckId), TRAINING_FRAGMENT)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
     public void onDeckAddedDialogClick(String deckName) {
         final Fragment fragment = getSupportFragmentManager().findFragmentByTag(DECKS_FRAGMENT);
         if (fragment instanceof OnDeckNameFilledListener) {
@@ -69,6 +57,22 @@ public class MainActivity extends AppCompatActivity implements OnShowAddDeckDial
     public void showAddCardScreen(long deckId) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.root_view, AddCardFragment.newInstance(deckId), ADD_CARD_FRAGMENT)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void startTraining(long deckId) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_view, TrainingFragment.newInstance(deckId), TRAINING_FRAGMENT)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void editDeck(long deckId) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_view, CardsFragment.newInstance(deckId), CARDS_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }

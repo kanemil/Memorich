@@ -11,6 +11,9 @@ import com.kanemil.memorich.data.db.AppDatabase;
 
 public class App extends Application {
 
+    /* ВОПРОС
+        Здесь где-то должен быть применен даггер, я это чувствую, но пока не понимаю.
+     */
 
     private static final String TAG = "MyTag";
     public static App sInstance;
