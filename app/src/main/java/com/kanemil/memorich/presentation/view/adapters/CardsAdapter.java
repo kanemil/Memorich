@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO записать карты в бд в новом порядке после drag-n-drop'а
+
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         implements ItemTouchHelperAdapter {
 
