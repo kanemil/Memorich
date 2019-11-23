@@ -107,7 +107,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        // TODO: 23.11.19 анимация получилась дерганная, поэтому надо сделать режим редактирования и сохранять транзакцией! 
+        // TODO: 23.11.19 анимация получилась дерганная, поэтому надо сделать режим редактирования и сохранять транзакцией!
         mCardsAdapterActionsListener.updateCardsOrder(mCards);
         return true;
     }
@@ -119,8 +119,19 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
     }
 
     public enum DisplayMode {
-        EDIT, TRAINING
+        EDIT, TRAINING;
+        private boolean mInReorderingState = false;
+
+        public boolean isInReorderingState() {
+            return mInReorderingState;
+        }
+
+        public void setInReorderingState(boolean inReorderingState) {
+            mInReorderingState = inReorderingState;
+        }
     }
+
+
 
     class CardHolder extends RecyclerView.ViewHolder {
         private TextView mCardFront;
