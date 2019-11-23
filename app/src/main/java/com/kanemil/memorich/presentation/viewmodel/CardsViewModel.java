@@ -35,4 +35,8 @@ public class CardsViewModel extends ViewModel {
     public void updateCard(Card card) {
         mRepository.updateCard(card);
     }
+
+    public void updateCardsOrder(List<Card> cardList) {
+        mRepository.updateCardList(cardList);
+    }
 }

@@ -34,20 +34,17 @@ public class Repository {
      */
     public void insertDeck(Deck deck) {
         final Completable completable = db.mDeckDao().insert(deck);
-        completable.subscribeOn(Schedulers.io())
-                .subscribe();
+        execute(completable);
     }
 
     public void renameDeck(Deck deck) {
         final Completable completable = db.mDeckDao().update(deck);
-        completable.subscribeOn(Schedulers.io())
-                .subscribe();
+        execute(completable);
     }
 
     public void deleteDeck(Deck deck) {
         final Completable completable = db.mDeckDao().delete(deck);
-        completable.subscribeOn(Schedulers.io())
-                .subscribe();
+        execute(completable);
     }
 
     public LiveData<List<Card>> getCards(long deckId) {
@@ -56,12 +53,35 @@ public class Repository {
 
     public void insertCard(Card card) {
         final Completable completable = db.mCardDao().insert(card);
-        completable.subscribeOn(Schedulers.io())
-                .subscribe();
+        execute(completable);
+    }
+
+    public void insertCardList(List<Card> cardList) {
+        final Completable completable = db.mCardDao().insertList(cardList);
+        execute(completable);
     }
 
     public void updateCard(Card card) {
         final Completable completable = db.mCardDao().update(card);
+        execute(completable);
+    }
+
+    public void updateCardList(List<Card> cardList) {
+        final Completable completable = db.mCardDao().updateList(cardList);
+        execute(completable);
+    }
+
+    public void deleteCard(Card card) {
+        final Completable completable = db.mCardDao().delete(card);
+        execute(completable);
+    }
+
+    public void deleteCardList(List<Card> cardList) {
+        final Completable completable = db.mCardDao().deleteList(cardList);
+        execute(completable);
+    }
+
+    private void execute(Completable completable) {
         completable.subscribeOn(Schedulers.io())
                 .subscribe();
     }

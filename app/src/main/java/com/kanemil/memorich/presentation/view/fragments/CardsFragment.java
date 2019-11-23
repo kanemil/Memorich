@@ -119,4 +119,9 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
                     card.getBack());
         }
     }
+
+    @Override
+    public void updateCardsOrder(List<Card> cardList) {
+        mViewModel.updateCardsOrder(cardList);
+    }
 }

@@ -86,19 +86,36 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         return mCards.size();
     }
 
+    /**
+     * Drag-n-drop mechanics
+     *
+     * @param fromPosition
+     * @param toPosition
+     * @return
+     */
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(mCards, i, i + 1);
+                swapOrderId(i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(mCards, i, i - 1);
+                swapOrderId(i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+        // TODO: 23.11.19 анимация получилась дерганная, поэтому надо сделать режим редактирования и сохранять транзакцией! 
+        mCardsAdapterActionsListener.updateCardsOrder(mCards);
         return true;
+    }
+
+    private void swapOrderId(int i, int j) {
+        long temp = mCards.get(i).getOrderId();
+        mCards.get(i).setOrderId(mCards.get(j).getOrderId());
+        mCards.get(j).setOrderId(temp);
     }
 
     public enum DisplayMode {

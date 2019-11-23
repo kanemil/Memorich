@@ -35,6 +35,9 @@ public class Card {
     @ColumnInfo(name = "deck_id", index = true)
     private long mDeckId;
 
+    @ColumnInfo(name = "order_id")
+    private long mOrderId;
+
     @Ignore
     private boolean mRevealedInTraining = false;
 
@@ -56,6 +59,7 @@ public class Card {
 
     public void setId(long id) {
         mId = id;
+        mOrderId = mId;
     }
 
     public String getFront() {
@@ -88,6 +92,14 @@ public class Card {
 
     public void setRevealedInTraining(boolean revealedInTraining) {
         mRevealedInTraining = revealedInTraining;
+    }
+
+    public long getOrderId() {
+        return mOrderId;
+    }
+
+    public void setOrderId(long orderId) {
+        mOrderId = orderId;
     }
 
     @Override
