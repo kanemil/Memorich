@@ -24,12 +24,14 @@ import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckRenameDial
 public class RenameDeckDialogFragment extends DialogFragment {
 
     private static final String DECK_ID_TO_RENAME = "deck_id";
+    private static final String DECK_NAME = "deck_name";
 
     private EditText mEditTextDeckName;
 
     public static RenameDeckDialogFragment newInstance(Deck deck) {
         Bundle args = new Bundle();
         args.putLong(DECK_ID_TO_RENAME, deck.getId());
+        args.putString(DECK_NAME, deck.getName());
         RenameDeckDialogFragment fragment = new RenameDeckDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -42,8 +44,12 @@ public class RenameDeckDialogFragment extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View root = inflater.inflate(R.layout.dialog_add_deck, null);
         mEditTextDeckName = root.findViewById(R.id.et_deck_name);
+        if (getArguments() != null) {
+            final String deckName = getArguments().getString(DECK_NAME);
+            mEditTextDeckName.setText(deckName);
+            mEditTextDeckName.setSelection(deckName != null ? deckName.length() : 0);
+        }
         builder.setView(root);
-
 
         builder.setPositiveButton(getString(R.string.rename), new DialogInterface.OnClickListener() {
             @Override
