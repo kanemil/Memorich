@@ -39,4 +39,8 @@ public class CardsViewModel extends ViewModel {
     public void updateCardsOrder(List<Card> cardList) {
         mRepository.updateCardList(cardList);
     }
+
+    public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
+        mRepository.deleteCard(card, cardListAfterDeletion);
+    }
 }

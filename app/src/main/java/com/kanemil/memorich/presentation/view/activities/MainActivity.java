@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                     .replace(R.id.root_view, DecksFragment.newInstance(), DECKS_FRAGMENT)
                     .commit();
         }
@@ -69,9 +70,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void showAddCardScreen(long deckId) {
+    public void showAddCardScreen(long deckId, long cardOrderId) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_view, AddOrEditCardFragment.newInstance(deckId), ADD_OR_EDIT_CARD_FRAGMENT)
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .replace(R.id.root_view, AddOrEditCardFragment.newInstance(deckId, cardOrderId), ADD_OR_EDIT_CARD_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void startTraining(long deckId) {
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.root_view, TrainingFragment.newInstance(deckId), TRAINING_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void editDeck(long deckId) {
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.root_view, CardsFragment.newInstance(deckId), CARDS_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void showEditCardScreen(long deckId, long cardId, String front, String back) {
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.root_view, AddOrEditCardFragment.newInstance(deckId, cardId, front, back), ADD_OR_EDIT_CARD_FRAGMENT)
                 .addToBackStack(null)
                 .commit();

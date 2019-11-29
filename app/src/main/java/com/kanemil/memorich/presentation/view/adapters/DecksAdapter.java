@@ -25,7 +25,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     private static final String TAG = "DecksAdapter";
 
     private List<Deck> mDecks = new ArrayList<>();
-    private Deck mSelectedDeck;
+    private Deck mCurrentDeck;
 
     private DecksAdapterActionsListener mDecksAdapterActionsListener;
 
@@ -54,7 +54,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mSelectedDeck = deck;
+                mCurrentDeck = deck;
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.mSpace, Gravity.RIGHT);
                 popupMenu.inflate(R.menu.menu_decks);
                 popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
@@ -79,13 +79,13 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menu_deck_rename:
-                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mSelectedDeck);
+                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mCurrentDeck);
                 return true;
             case R.id.menu_deck_edit:
-                mDecksAdapterActionsListener.onDeckMenuEditClicked(mSelectedDeck.getId());
+                mDecksAdapterActionsListener.onDeckMenuEditClicked(mCurrentDeck.getId());
                 return true;
             case R.id.menu_deck_delete:
-                mDecksAdapterActionsListener.onDeckMenuDeleteClicked(mSelectedDeck);
+                mDecksAdapterActionsListener.onDeckMenuDeleteClicked(mCurrentDeck);
                 return true;
             default:
         }

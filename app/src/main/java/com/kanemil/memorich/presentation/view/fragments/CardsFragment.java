@@ -1,6 +1,7 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public class CardsFragment extends Fragment implements CardsAdapterActionsListener {
 
+    private static final String TAG = "CardsFragment";
     private static final int SPAN_COUNT = 3;
     private static final String DECK_ID = "deckId";
 
@@ -39,7 +41,7 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
             if (requireActivity() instanceof ShowAddCardScreenListener) {
                 if (getArguments() != null) {
                     ShowAddCardScreenListener listener = (ShowAddCardScreenListener) requireActivity();
-                    listener.showAddCardScreen(getArguments().getLong(DECK_ID));
+                    listener.showAddCardScreen(getArguments().getLong(DECK_ID), mAdapter.getItemCount());
                 }
             }
         }
@@ -109,6 +111,13 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mViewModel.updateCardsOrder(mAdapter.getCards());
+        Log.d(TAG, "cards: " + mAdapter.getCards().toString());
+    }
+
+    @Override
     public void editCard(Card card) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof ShowEditCardScreenListener) {
@@ -121,7 +130,8 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     }
 
     @Override
-    public void updateCardsOrder(List<Card> cardList) {
-        mViewModel.updateCardsOrder(cardList);
+    public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
+        mViewModel.deleteCard(card, cardListAfterDeletion);
+
     }
 }

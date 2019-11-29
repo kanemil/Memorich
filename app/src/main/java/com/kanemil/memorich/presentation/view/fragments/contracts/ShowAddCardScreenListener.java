@@ -7,5 +7,5 @@ public interface ShowAddCardScreenListener {
      *
      * @param deckId
      */
-    void showAddCardScreen(long deckId);
+    void showAddCardScreen(long deckId, long cardOrderId);
 }

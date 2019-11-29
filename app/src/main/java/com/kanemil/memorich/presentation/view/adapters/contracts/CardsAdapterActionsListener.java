@@ -10,5 +10,5 @@ import java.util.List;
 public interface CardsAdapterActionsListener {
     void editCard(Card card);
 
-    void updateCardsOrder(List<Card> cardList);
+    void deleteCard(Card card, List<Card> cardListAfterDeletion);
 }

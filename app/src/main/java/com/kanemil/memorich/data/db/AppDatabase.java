@@ -10,8 +10,8 @@ import com.kanemil.memorich.data.db.entity.Deck;
 
 @Database(entities = {Deck.class, Card.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract DeckDao mDeckDao();
+    public abstract DeckDao getDeckDao();
 
-    public abstract CardDao mCardDao();
+    public abstract CardDao getCardDao();
 }
 

@@ -59,7 +59,7 @@ public class Card {
 
     public void setId(long id) {
         mId = id;
-        mOrderId = mId;
+        mOrderId = id;
     }
 
     public String getFront() {
@@ -117,5 +117,16 @@ public class Card {
     @Override
     public int hashCode() {
         return Objects.hash(mId, mFront, mBack, mDeckId, mRevealedInTraining);
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "mId=" + mId +
+                ", f='" + mFront + '\'' +
+                ", b='" + mBack + '\'' +
+                ", deckId=" + mDeckId +
+                ", orderId=" + mOrderId +
+                '}';
     }
 }

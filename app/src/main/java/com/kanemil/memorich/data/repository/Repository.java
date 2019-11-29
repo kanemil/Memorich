@@ -10,6 +10,8 @@ import com.kanemil.memorich.data.db.entity.Deck;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class Repository {
@@ -21,7 +23,7 @@ public class Repository {
     private AppDatabase db = App.getInstance().getDatabase();
 
     public LiveData<List<Deck>> getDecks() {
-        return db.mDeckDao().getDecks();
+        return db.getDeckDao().getDecks();
     }
 
 
@@ -33,51 +35,68 @@ public class Repository {
         лайвДату, которая будет обзервиться во фрагменте, в результате чего и будет показываться тост?
      */
     public void insertDeck(Deck deck) {
-        final Completable completable = db.mDeckDao().insert(deck);
+        final Completable completable = db.getDeckDao().insert(deck);
         execute(completable);
     }
 
     public void renameDeck(Deck deck) {
-        final Completable completable = db.mDeckDao().update(deck);
+        final Completable completable = db.getDeckDao().update(deck);
         execute(completable);
     }
 
     public void deleteDeck(Deck deck) {
-        final Completable completable = db.mDeckDao().delete(deck);
+        final Completable completable = db.getDeckDao().delete(deck);
         execute(completable);
     }
 
     public LiveData<List<Card>> getCards(long deckId) {
-        return db.mCardDao().getCardsByDeckId(deckId);
+        return db.getCardDao().getCardsByDeckId(deckId);
     }
 
     public void insertCard(Card card) {
-        final Completable completable = db.mCardDao().insert(card);
+        final Completable completable = db.getCardDao().insert(card);
         execute(completable);
     }
 
     public void insertCardList(List<Card> cardList) {
-        final Completable completable = db.mCardDao().insertList(cardList);
+        final Completable completable = db.getCardDao().insertList(cardList);
         execute(completable);
     }
 
     public void updateCard(Card card) {
-        final Completable completable = db.mCardDao().update(card);
+        final Completable completable = db.getCardDao().update(card);
         execute(completable);
     }
 
     public void updateCardList(List<Card> cardList) {
-        final Completable completable = db.mCardDao().updateList(cardList);
+        final Completable completable = db.getCardDao().updateList(cardList);
         execute(completable);
     }
 
-    public void deleteCard(Card card) {
-        final Completable completable = db.mCardDao().delete(card);
-        execute(completable);
+    public void deleteCard(Card card, final List<Card> cardListAfterDeletion) {
+        final Completable completable = db.getCardDao().delete(card);
+        completable
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        updateCardList(cardListAfterDeletion);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     public void deleteCardList(List<Card> cardList) {
-        final Completable completable = db.mCardDao().deleteList(cardList);
+        final Completable completable = db.getCardDao().deleteList(cardList);
         execute(completable);
     }
 

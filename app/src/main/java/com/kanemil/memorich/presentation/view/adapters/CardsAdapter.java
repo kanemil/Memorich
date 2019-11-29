@@ -1,8 +1,12 @@
 package com.kanemil.memorich.presentation.view.adapters;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +24,12 @@ import java.util.List;
 // TODO записать карты в бд в новом порядке после drag-n-drop'а
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
-        implements ItemTouchHelperAdapter {
+        implements ItemTouchHelperAdapter, PopupMenu.OnMenuItemClickListener {
+
+    private static final String TAG = "CardsAdapter";
 
     private List<Card> mCards = new ArrayList<>();
+    private Card mCurrentCard;
 
     /**
      * DisplayMode is needed because ViewPager2 requires root view of page to be match_parent
@@ -42,6 +49,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
      */
     public void setCardsAdapterActionsListener(CardsAdapterActionsListener cardsAdapterActionsListener) {
         mCardsAdapterActionsListener = cardsAdapterActionsListener;
+    }
+
+    public List<Card> getCards() {
+        return mCards;
     }
 
     public void setCards(List<Card> cards) {
@@ -71,14 +82,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
     public void onBindViewHolder(@NonNull CardHolder holder, int position) {
         final Card card = mCards.get(position);
         holder.bind(card);
-        if (mDisplayMode == DisplayMode.EDIT) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mCardsAdapterActionsListener.editCard(card);
-                }
-            });
-        }
     }
 
     @Override
@@ -97,18 +100,16 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mCards, i, i + 1);
                 swapOrderId(i, i + 1);
+                Collections.swap(mCards, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mCards, i, i - 1);
                 swapOrderId(i, i - 1);
+                Collections.swap(mCards, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        // TODO: 23.11.19 анимация получилась дерганная, поэтому надо сделать режим редактирования и сохранять транзакцией!
-        mCardsAdapterActionsListener.updateCardsOrder(mCards);
         return true;
     }
 
@@ -118,20 +119,27 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         mCards.get(j).setOrderId(temp);
     }
 
-    public enum DisplayMode {
-        EDIT, TRAINING;
-        private boolean mInReorderingState = false;
-
-        public boolean isInReorderingState() {
-            return mInReorderingState;
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_edit:
+                mCardsAdapterActionsListener.editCard(mCurrentCard);
+                return true;
+            case R.id.menu_delete:
+                mCards.remove(mCurrentCard);
+                for (int i = 0; i < mCards.size(); i++) {
+                    mCards.get(i).setOrderId(i);
+                }
+                mCardsAdapterActionsListener.deleteCard(mCurrentCard, mCards);
+                return true;
+            default:
         }
-
-        public void setInReorderingState(boolean inReorderingState) {
-            mInReorderingState = inReorderingState;
-        }
+        return false;
     }
 
-
+    public enum DisplayMode {
+        EDIT, TRAINING;
+    }
 
     class CardHolder extends RecyclerView.ViewHolder {
         private TextView mCardFront;
@@ -149,8 +157,24 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
 
             if (mDisplayMode == DisplayMode.TRAINING) {
                 setUpRevealMechanicsForTrainingMode(card);
+            } else if (mDisplayMode == DisplayMode.EDIT) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mCurrentCard = card;
+                        Log.d(TAG, "cards: " + mCards);
+                        Log.d(TAG, "current " + mCurrentCard);
+                        Log.d(TAG, "clicked" + mCurrentCard.toString());
+                        PopupMenu popupMenu = new PopupMenu(view.getContext(), itemView, Gravity.RIGHT);
+                        popupMenu.inflate(R.menu.menu_cards);
+                        popupMenu.setOnMenuItemClickListener(CardsAdapter.this);
+                        popupMenu.show();
+                    }
+                });
             }
         }
+
+
 
         /**
          * Reveals back side of card after click on bottom part of card

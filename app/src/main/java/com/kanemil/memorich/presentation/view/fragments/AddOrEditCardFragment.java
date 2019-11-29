@@ -22,6 +22,7 @@ import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 public class AddOrEditCardFragment extends Fragment {
 
     private static final String DECK_ID = "deckId";
+    private static final String CARD_ORDER_ID = "cardOrderId";
     private static final String CARD_ID = "cardId";
     private static final String CARD_FRONT = "cardFront";
     private static final String CARD_BACK = "cardBack";
@@ -39,9 +40,10 @@ public class AddOrEditCardFragment extends Fragment {
      * @param deckId
      * @return
      */
-    public static AddOrEditCardFragment newInstance(long deckId) {
+    public static AddOrEditCardFragment newInstance(long deckId, long cardOrderId) {
         Bundle args = new Bundle();
         args.putLong(DECK_ID, deckId);
+        args.putLong(CARD_ORDER_ID, cardOrderId);
         AddOrEditCardFragment fragment = new AddOrEditCardFragment();
         fragment.setArguments(args);
         return fragment;
@@ -109,10 +111,12 @@ public class AddOrEditCardFragment extends Fragment {
                 mButtonAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mViewModel.addCard(new Card(
+                        final Card card = new Card(
                                 mEditTextFront.getText().toString(),
                                 mEditTextBack.getText().toString(),
-                                deckId));
+                                deckId);
+                        card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
+                        mViewModel.addCard(card);
                         Toast.makeText(requireContext(), "Added!", Toast.LENGTH_SHORT).show();
                         if (getFragmentManager() != null) {
                             getFragmentManager().popBackStack();
