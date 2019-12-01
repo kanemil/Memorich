@@ -25,6 +25,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     private static final String TAG = "DecksAdapter";
 
     private List<Deck> mDecks = new ArrayList<>();
+    private int mSelectedDeck = 0;
     private Deck mCurrentDeck;
 
     private DecksAdapterActionsListener mDecksAdapterActionsListener;
@@ -54,20 +55,27 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                mCurrentDeck = deck;
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.mSpace, Gravity.RIGHT);
-                popupMenu.inflate(R.menu.menu_decks);
-                popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
-                popupMenu.show();
+                setupPopupMenu(view, deck, holder);
                 return true;
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDecksAdapterActionsListener.onDeckClicked(deck.getId());
+//                mDecksAdapterActionsListener.onDeckClicked(deck.getId());
+                mSelectedDeck = position;
+                notifyDataSetChanged();
             }
         });
+        holder.itemView.setSelected(position == mSelectedDeck);
+    }
+
+    private void setupPopupMenu(View view, Deck deck, @NonNull DeckHolder holder) {
+        mCurrentDeck = deck;
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.mSpace, Gravity.RIGHT);
+        popupMenu.inflate(R.menu.menu_decks);
+        popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
+        popupMenu.show();
     }
 
     @Override
@@ -106,6 +114,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
         private void bind(Deck deck) {
             mTextViewDeckName.setText(deck.getName());
+            itemView.setBackground(itemView.getContext().getDrawable(R.drawable.item_deck_background));
             // TODO разобраться с отображением размера колоды
 //            Context ctx = mTextViewDeckSize.getContext();
 //            mTextViewDeckSize.setText(String.format(ctx.getString(R.string.size_formatter),
