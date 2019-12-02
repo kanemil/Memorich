@@ -72,10 +72,9 @@ public class DecksFragment extends Fragment
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    // TODO: 1.12.19 перенести ренейм в экран редактирования колоды
-//            case R.id.menu_deck_rename:
-//                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mCurrentDeck);
-//                return true;
+                    case R.id.menu_deck_rename:
+                        onDeckMenuRenameClicked(mAdapter.getCurrentDeck());
+                        return true;
                     case R.id.menu_deck_train:
                         onDeckClicked(mAdapter.getCurrentDeck().getId());
                         return true;
