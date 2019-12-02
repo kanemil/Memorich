@@ -64,7 +64,7 @@ public class AddDeckDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(charSequence));
+                mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(TextUtils.isGraphic(charSequence));
             }
 
             @Override

@@ -114,7 +114,7 @@ public class AddOrEditCardFragment extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    mButtonAdd.setEnabled(!TextUtils.isEmpty(charSequence));
+                    mButtonAdd.setEnabled(TextUtils.isGraphic(charSequence));
                 }
 
                 @Override
