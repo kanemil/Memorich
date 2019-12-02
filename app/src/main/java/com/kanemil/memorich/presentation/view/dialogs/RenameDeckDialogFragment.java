@@ -3,6 +3,9 @@ package com.kanemil.memorich.presentation.view.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +28,7 @@ public class RenameDeckDialogFragment extends DialogFragment {
 
     private static final String DECK_ID_TO_RENAME = "deck_id";
     private static final String DECK_NAME = "deck_name";
+    private AlertDialog mAlertDialog;
 
     private EditText mEditTextDeckName;
 
@@ -62,6 +66,26 @@ public class RenameDeckDialogFragment extends DialogFragment {
             }
         }).setTitle(R.string.set_new_name_for_deck);
 
-        return builder.create();
+        mAlertDialog = builder.create();
+        return mAlertDialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mEditTextDeckName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(charSequence));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 }

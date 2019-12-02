@@ -162,12 +162,26 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckMenuDeleteClicked(Deck deck) {
-        // TODO: 22.11.19 Сделать экшн у снэкбара для отмены операции удаления!
-        mViewModel.deleteDeck(deck);
-        mBottomNavigationView.setVisibility(View.GONE);
+    public void onDeckMenuDeleteClicked(final Deck deck) {
         Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_decks),
-                getString(R.string.deck_deleted), Snackbar.LENGTH_LONG);
+                getString(R.string.press_undo_to_cancel), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.undo), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // do nothing
+                    }
+                })
+                .setActionTextColor(getResources().getColor(R.color.colorAccent))
+                .addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        if (event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_SWIPE
+                                || event == DISMISS_EVENT_CONSECUTIVE || event == DISMISS_EVENT_MANUAL) {
+                            mViewModel.deleteDeck(deck);
+                            mBottomNavigationView.setVisibility(View.GONE);
+                        }
+                    }
+                });
         snackbar.show();
     }
 }

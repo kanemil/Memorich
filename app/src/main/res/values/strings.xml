@@ -22,5 +22,7 @@
     <string name="set_new_name_for_deck">Set a new name</string>
     <string name="train">Train</string>
     <string name="card_deleted">Card deleted</string>
+    <string name="undo">UNDO</string>
+    <string name="press_undo_to_cancel">Press UNDO to cancel deletion</string>
 
 </resources>

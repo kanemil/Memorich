@@ -1,6 +1,9 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,6 @@ import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
-// TODO: 22.11.19 ТУТ КОСТЫЛЬ НА КОСТЫЛЕ, НАДО НОРМАЛЬНО ПЕРЕДЕЛАТЬ ЧЕРЕЗ ВЬЮМОДЕЛЬ!!!
 public class AddOrEditCardFragment extends Fragment {
 
     private static final String DECK_ID = "deckId";
@@ -99,6 +101,27 @@ public class AddOrEditCardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
+        if (getArguments() != null) {
+            final long deckId = getArguments().getLong(DECK_ID);
+            initButton(deckId);
+            if (mMode == DISPLAY_MODE.ADD_CARD) {
+                mButtonAdd.setEnabled(false);
+            }
+            mEditTextFront.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    mButtonAdd.setEnabled(!TextUtils.isEmpty(charSequence));
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                }
+            });
+        }
     }
 
     private void setupViewModel() {
@@ -107,46 +130,47 @@ public class AddOrEditCardFragment extends Fragment {
             mViewModel = ViewModelProviders
                     .of(this, new CustomViewModelFactory(deckId))
                     .get(CardsViewModel.class);
-            if (mMode == DISPLAY_MODE.ADD_CARD) {
-                mButtonAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final Card card = new Card(
-                                mEditTextFront.getText().toString(),
+        }
+    }
+
+    private void initButton(final long deckId) {
+        if (mMode == DISPLAY_MODE.ADD_CARD) {
+            mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Card card = new Card(
+                            mEditTextFront.getText().toString(),
+                            mEditTextBack.getText().toString(),
+                            deckId);
+                    card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
+                    mViewModel.addCard(card);
+                    Toast.makeText(requireContext(), "Added!", Toast.LENGTH_SHORT).show();
+                    if (getFragmentManager() != null) {
+                        getFragmentManager().popBackStack();
+                    }
+                }
+            });
+        } else {
+            mButtonAdd.setText(R.string.save);
+            mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (getArguments() != null) {
+                        Card card = new Card(mEditTextFront.getText().toString(),
                                 mEditTextBack.getText().toString(),
                                 deckId);
-                        card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
-                        mViewModel.addCard(card);
-                        Toast.makeText(requireContext(), "Added!", Toast.LENGTH_SHORT).show();
+                        card.setId(getArguments().getLong(CARD_ID));
+                        mViewModel.updateCard(card);
                         if (getFragmentManager() != null) {
                             getFragmentManager().popBackStack();
                         }
                     }
-                });
-            } else {
-                mButtonAdd.setText(R.string.save);
-                mButtonAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (getArguments() != null) {
-                            Card card = new Card(mEditTextFront.getText().toString(),
-                                    mEditTextBack.getText().toString(),
-                                    deckId);
-                            card.setId(getArguments().getLong(CARD_ID));
-                            mViewModel.updateCard(card);
-                            if (getFragmentManager() != null) {
-                                getFragmentManager().popBackStack();
-                            }
-                        }
-                    }
-                });
-            }
-
+                }
+            });
         }
     }
 
     public enum DISPLAY_MODE {
         ADD_CARD, EDIT_CARD
     }
-
 }

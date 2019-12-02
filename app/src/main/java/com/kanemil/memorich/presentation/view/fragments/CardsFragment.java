@@ -135,7 +135,7 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
         mViewModel.deleteCard(card, cardListAfterDeletion);
         Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_cards),
-                getString(R.string.card_deleted), Snackbar.LENGTH_LONG);
+                getString(R.string.card_deleted), Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 }

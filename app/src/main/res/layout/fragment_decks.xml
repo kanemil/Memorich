@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSepia"
     android:orientation="vertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_16"
             android:src="@drawable/ic_add_white_24dp"
             app:layout_anchor="@id/rv_decks"
             app:layout_anchorGravity="bottom|end"
