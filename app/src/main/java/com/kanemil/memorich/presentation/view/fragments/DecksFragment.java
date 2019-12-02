@@ -2,6 +2,7 @@ package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
@@ -46,6 +48,7 @@ public class DecksFragment extends Fragment
     };
     private DecksViewModel mViewModel;
     private RecyclerView mRecyclerView;
+    private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton fab;
     private DecksAdapter mAdapter;
 
@@ -64,6 +67,29 @@ public class DecksFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_decks, container, false);
         mRecyclerView = root.findViewById(R.id.rv_decks);
+        mBottomNavigationView = root.findViewById(R.id.bot_nav);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    // TODO: 1.12.19 перенести ренейм в экран редактирования колоды
+//            case R.id.menu_deck_rename:
+//                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mCurrentDeck);
+//                return true;
+                    case R.id.menu_deck_train:
+                        onDeckClicked(mAdapter.getCurrentDeck().getId());
+                        return true;
+                    case R.id.menu_deck_edit:
+                        onDeckMenuEditClicked(mAdapter.getCurrentDeck().getId());
+                        return true;
+                    case R.id.menu_deck_delete:
+                        onDeckMenuDeleteClicked(mAdapter.getCurrentDeck());
+                        return true;
+                    default:
+                }
+                return false;
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
         fab = root.findViewById(R.id.fab_add_deck);
         fab.setOnClickListener(mFabOnClickListener);
@@ -74,6 +100,12 @@ public class DecksFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.clearDeckSelection();
     }
 
     private void setupViewModel() {
@@ -93,13 +125,20 @@ public class DecksFragment extends Fragment
         mViewModel.addDeck(deckName);
     }
 
-
     @Override
     public void onDeckClicked(long deckId) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof StartTrainingListener) {
             ((StartTrainingListener) activity).startTraining(deckId);
         }
+    }
+
+    @Override
+    public void onDeckLongClicked(boolean showNavBar) {
+        if (showNavBar)
+            mBottomNavigationView.setVisibility(View.VISIBLE);
+        else
+            mBottomNavigationView.setVisibility(View.GONE);
     }
 
     @Override
@@ -127,6 +166,7 @@ public class DecksFragment extends Fragment
     public void onDeckMenuDeleteClicked(Deck deck) {
         // TODO: 22.11.19 Сделать экшн у снэкбара для отмены операции удаления!
         mViewModel.deleteDeck(deck);
+        mBottomNavigationView.setVisibility(View.GONE);
         Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_decks),
                 getString(R.string.deck_deleted), Snackbar.LENGTH_LONG);
         snackbar.show();

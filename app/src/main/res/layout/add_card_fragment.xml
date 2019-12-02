@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_16"
                     android:hint="@string/enter_front_side_of_a_card"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black" />
             </LinearLayout>
 
@@ -59,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_16"
                     android:hint="@string/enter_back_side_of_a_card"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
@@ -28,6 +29,7 @@ import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CardsFragment extends Fragment implements CardsAdapterActionsListener {
 
@@ -132,6 +134,8 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     @Override
     public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
         mViewModel.deleteCard(card, cardListAfterDeletion);
-
+        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_cards),
+                getString(R.string.card_deleted), Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }

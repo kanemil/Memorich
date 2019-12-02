@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="?android:selectableItemBackground"
+        android:background="@drawable/item_deck_background"
+        android:foreground="?android:selectableItemBackground"
         android:padding="@dimen/padding_8">
 
         <TextView

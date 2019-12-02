@@ -1,12 +1,9 @@
 package com.kanemil.memorich.presentation.view.adapters;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,13 +16,12 @@ import com.kanemil.memorich.presentation.view.adapters.contracts.DecksAdapterAct
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> implements
-        PopupMenu.OnMenuItemClickListener {
+public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> {
 
     private static final String TAG = "DecksAdapter";
 
     private List<Deck> mDecks = new ArrayList<>();
-    private int mSelectedDeck = 0;
+    private int mSelectedDeckPosition = -1;
     private Deck mCurrentDeck;
 
     private DecksAdapterActionsListener mDecksAdapterActionsListener;
@@ -40,6 +36,14 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         Log.d(TAG, "deckSize " + getItemCount());
     }
 
+    public Deck getCurrentDeck() {
+        return mCurrentDeck;
+    }
+
+    public void clearDeckSelection() {
+        mSelectedDeckPosition = -1;
+    }
+
     @NonNull
     @Override
     public DeckHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,52 +56,28 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     public void onBindViewHolder(@NonNull final DeckHolder holder, final int position) {
         final Deck deck = mDecks.get(position);
         holder.bind(deck);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                setupPopupMenu(view, deck, holder);
-                return true;
-            }
-        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mDecksAdapterActionsListener.onDeckClicked(deck.getId());
-                mSelectedDeck = position;
+                boolean showNavBar = true;
+                if (position == mSelectedDeckPosition) {
+                    mSelectedDeckPosition = -1;
+                    showNavBar = false;
+                    holder.itemView.setSelected(false);
+                } else {
+                    mSelectedDeckPosition = position;
+                    mCurrentDeck = mDecks.get(mSelectedDeckPosition);
+                }
                 notifyDataSetChanged();
+                mDecksAdapterActionsListener.onDeckLongClicked(showNavBar);
             }
         });
-        holder.itemView.setSelected(position == mSelectedDeck);
-    }
-
-    private void setupPopupMenu(View view, Deck deck, @NonNull DeckHolder holder) {
-        mCurrentDeck = deck;
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.mSpace, Gravity.RIGHT);
-        popupMenu.inflate(R.menu.menu_decks);
-        popupMenu.setOnMenuItemClickListener(DecksAdapter.this);
-        popupMenu.show();
+        holder.itemView.setSelected(position == mSelectedDeckPosition);
     }
 
     @Override
     public int getItemCount() {
         return mDecks.size();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.menu_deck_rename:
-                mDecksAdapterActionsListener.onDeckMenuRenameClicked(mCurrentDeck);
-                return true;
-            case R.id.menu_deck_edit:
-                mDecksAdapterActionsListener.onDeckMenuEditClicked(mCurrentDeck.getId());
-                return true;
-            case R.id.menu_deck_delete:
-                mDecksAdapterActionsListener.onDeckMenuDeleteClicked(mCurrentDeck);
-                return true;
-            default:
-        }
-        return false;
     }
 
     static class DeckHolder extends RecyclerView.ViewHolder {
@@ -114,7 +94,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
         private void bind(Deck deck) {
             mTextViewDeckName.setText(deck.getName());
-            itemView.setBackground(itemView.getContext().getDrawable(R.drawable.item_deck_background));
+//            itemView.setBackground(itemView.getContext().getDrawable(R.drawable.item_deck_background));
             // TODO разобраться с отображением размера колоды
 //            Context ctx = mTextViewDeckSize.getContext();
 //            mTextViewDeckSize.setText(String.format(ctx.getString(R.string.size_formatter),

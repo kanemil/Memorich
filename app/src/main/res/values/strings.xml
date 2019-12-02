@@ -16,9 +16,11 @@
     <string name="add_card">Add card</string>
     <string name="rename">Rename</string>
     <string name="delete">Delete</string>
-    <string name="edit">Edit cards</string>
+    <string name="edit">Edit</string>
     <string name="deck_deleted">Deck deleted</string>
     <string name="save">Save</string>
     <string name="set_new_name_for_deck">Set a new name</string>
+    <string name="train">Train</string>
+    <string name="card_deleted">Card deleted</string>
 
 </resources>

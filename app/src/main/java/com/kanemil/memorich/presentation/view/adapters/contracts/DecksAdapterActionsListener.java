@@ -10,6 +10,8 @@ public interface DecksAdapterActionsListener {
 
     void onDeckClicked(long deckId);
 
+    void onDeckLongClicked(boolean showNavBar);
+
     void onDeckMenuEditClicked(long deckId);
 
     void onDeckMenuRenameClicked(Deck deck);
