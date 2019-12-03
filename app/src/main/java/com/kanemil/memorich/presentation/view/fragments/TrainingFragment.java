@@ -101,15 +101,11 @@ public class TrainingFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 mViewPager2.setCurrentItem(i, true);
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
     }
@@ -125,7 +121,7 @@ public class TrainingFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mViewModel = ViewModelProviders
-                    .of(this, new CustomViewModelFactory(getArguments().getLong(DECK_ID)))
+                    .of(this, new CustomViewModelFactory(requireContext(), getArguments().getLong(DECK_ID)))
                     .get(TrainingViewModel.class);
         }
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {

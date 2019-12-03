@@ -1,13 +1,23 @@
 package com.kanemil.memorich.presentation.viewmodel;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kanemil.memorich.data.repository.Repository;
+import com.kanemil.memorich.presentation.viewmodel.utils.ResourceWrapper;
 
 public class CustomViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+
+    private Context mApplicationContext;
     private long mDeckId;
+
+    public CustomViewModelFactory(@NonNull Context context, long deckId) {
+        mApplicationContext = context.getApplicationContext();
+        mDeckId = deckId;
+    }
 
     public CustomViewModelFactory(long deckId) {
         mDeckId = deckId;
@@ -25,7 +35,8 @@ public class CustomViewModelFactory extends ViewModelProvider.NewInstanceFactory
         } else if (modelClass.isAssignableFrom(DecksViewModel.class)) {
             return (T) new DecksViewModel(repository);
         } else if (modelClass.isAssignableFrom(TrainingViewModel.class)) {
-            return (T) new TrainingViewModel(mDeckId, repository);
+            ResourceWrapper resourceWrapper = new ResourceWrapper(mApplicationContext.getResources());
+            return (T) new TrainingViewModel(mDeckId, repository, resourceWrapper);
         } else {
             throw new IllegalArgumentException("Requested ViewModel not found");
         }
