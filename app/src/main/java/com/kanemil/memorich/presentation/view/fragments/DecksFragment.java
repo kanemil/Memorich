@@ -76,7 +76,7 @@ public class DecksFragment extends Fragment
                         onDeckMenuRenameClicked(mAdapter.getCurrentDeck());
                         return true;
                     case R.id.menu_deck_train:
-                        onDeckClicked(mAdapter.getCurrentDeck().getId());
+                        onDeckTrainClicked(mAdapter.getCurrentDeck().getId());
                         return true;
                     case R.id.menu_deck_edit:
                         onDeckMenuEditClicked(mAdapter.getCurrentDeck().getId());
@@ -125,7 +125,7 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckClicked(long deckId) {
+    public void onDeckTrainClicked(long deckId) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof StartTrainingListener) {
             ((StartTrainingListener) activity).startTraining(deckId);
@@ -133,7 +133,7 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckLongClicked(boolean showNavBar) {
+    public void onShowNavBar(boolean showNavBar) {
         if (showNavBar)
             mBottomNavigationView.setVisibility(View.VISIBLE);
         else

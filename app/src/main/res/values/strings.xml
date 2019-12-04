@@ -30,5 +30,6 @@
     <string name="restart">Restart</string>
     <string name="finish_training_or_repeat_forgotten_cards">Observe cards in the deck, finish or restart training:</string>
     <string name="observe">Observe</string>
+    <string name="add_card_pls">Please, add at least one card!</string>
 
 </resources>

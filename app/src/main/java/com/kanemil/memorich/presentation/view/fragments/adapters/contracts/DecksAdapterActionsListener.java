@@ -8,9 +8,9 @@ import com.kanemil.memorich.data.db.entity.Deck;
 
 public interface DecksAdapterActionsListener {
 
-    void onDeckClicked(long deckId);
+    void onDeckTrainClicked(long deckId);
 
-    void onDeckLongClicked(boolean showNavBar);
+    void onShowNavBar(boolean showNavBar);
 
     void onDeckMenuEditClicked(long deckId);
 

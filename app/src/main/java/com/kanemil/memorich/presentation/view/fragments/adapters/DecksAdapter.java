@@ -69,7 +69,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
                     mCurrentDeck = mDecks.get(mSelectedDeckPosition);
                 }
                 notifyDataSetChanged();
-                mDecksAdapterActionsListener.onDeckLongClicked(showNavBar);
+                mDecksAdapterActionsListener.onShowNavBar(showNavBar);
             }
         });
         holder.itemView.setSelected(position == mSelectedDeckPosition);

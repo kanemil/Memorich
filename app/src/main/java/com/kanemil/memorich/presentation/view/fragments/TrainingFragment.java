@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ public class TrainingFragment extends Fragment {
     private TrainingViewModel mViewModel;
     private CardsAdapter mAdapter;
 
+    private View mRoot;
     private SeekBar mSeekBar;
     private ViewPager2 mViewPager2;
     private TextView mTextViewProgress;
@@ -58,15 +60,15 @@ public class TrainingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_training, container, false);
-        mSeekBar = root.findViewById(R.id.sb_progress);
-        mViewPager2 = root.findViewById(R.id.vp);
+        mRoot = inflater.inflate(R.layout.fragment_training, container, false);
+        mSeekBar = mRoot.findViewById(R.id.sb_progress);
+        mViewPager2 = mRoot.findViewById(R.id.vp);
         mViewPager2.setAdapter(mAdapter);
-        mTextViewProgress = root.findViewById(R.id.tv_progress);
-        mTextViewCardsSize = root.findViewById(R.id.tv_cards_size);
-        mButtonRemember = root.findViewById(R.id.btn_remember);
-        mButtonRepeat = root.findViewById(R.id.btn_restart);
-        mResultScreen = root.findViewById(R.id.result_screen);
+        mTextViewProgress = mRoot.findViewById(R.id.tv_progress);
+        mTextViewCardsSize = mRoot.findViewById(R.id.tv_cards_size);
+        mButtonRemember = mRoot.findViewById(R.id.btn_remember);
+        mButtonRepeat = mRoot.findViewById(R.id.btn_restart);
+        mResultScreen = mRoot.findViewById(R.id.result_screen);
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -79,7 +81,7 @@ public class TrainingFragment extends Fragment {
                 }
             }
         });
-        return root;
+        return mRoot;
     }
 
     private void initButtonListeners() {
@@ -103,9 +105,11 @@ public class TrainingFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 mViewPager2.setCurrentItem(i, true);
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -129,9 +133,16 @@ public class TrainingFragment extends Fragment {
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
-                mAdapter.setCards(cards);
-                mTextViewCardsSize.setText(String.format(getResources().getString(R.string.cards_size), cards.size()));
-                mSeekBar.setMax(cards.size() - 1);
+                if (cards.size() == 0) {
+                    // todo make screen requiring to add cards into the deck
+                    Toast.makeText(requireContext(), "ADD CARDS AT FIRST", Toast.LENGTH_SHORT).show();
+                    mSeekBar.setMax(0);
+                    mSeekBar.setEnabled(false);
+                } else {
+                    mAdapter.setCards(cards);
+                    mTextViewCardsSize.setText(String.format(getResources().getString(R.string.cards_size), cards.size()));
+                    mSeekBar.setMax(cards.size() - 1);
+                }
             }
         });
         mViewModel.getCorrectAnswers().observe(this, new Observer<Integer>() {
