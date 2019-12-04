@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ObserveButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorSepia</item>
+    </style>
 
     <style name="RememberButton" parent="Theme.AppCompat">
         <item name="colorButtonNormal">@color/colorPrimary</item>
