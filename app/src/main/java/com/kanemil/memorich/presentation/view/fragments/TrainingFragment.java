@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.adapters.CardsAdapter;
+import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;
 
@@ -39,6 +39,7 @@ public class TrainingFragment extends Fragment {
     private TextView mTextViewCardsSize;
     private Button mButtonRemember;
     private Button mButtonRepeat;
+    private View mResultScreen;
 
     public static TrainingFragment newInstance(long deckId) {
         Bundle args = new Bundle();
@@ -64,7 +65,8 @@ public class TrainingFragment extends Fragment {
         mTextViewProgress = root.findViewById(R.id.tv_progress);
         mTextViewCardsSize = root.findViewById(R.id.tv_cards_size);
         mButtonRemember = root.findViewById(R.id.btn_remember);
-        mButtonRepeat = root.findViewById(R.id.btn_repeat);
+        mButtonRepeat = root.findViewById(R.id.btn_restart);
+        mResultScreen = root.findViewById(R.id.result_screen);
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -158,8 +160,8 @@ public class TrainingFragment extends Fragment {
         mViewModel.getTrainingScore().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // Finish training with a result toast
-                Toast.makeText(requireContext(), s, Toast.LENGTH_LONG).show();
+                // Finish training with a result screen
+                showResultScreen(s);
             }
         });
         mViewModel.getFirstUnansweredCard().observe(this, new Observer<Integer>() {
@@ -168,6 +170,45 @@ public class TrainingFragment extends Fragment {
                 mViewPager2.setCurrentItem(position);
             }
         });
+    }
+
+    private void showResultScreen(String s) {
+        final TextView v = mResultScreen.findViewById(R.id.tv_result);
+        v.setText(s);
+        mResultScreen.setVisibility(View.VISIBLE);
+        mResultScreen.findViewById(R.id.btn_finish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishTraining();
+            }
+        });
+        mResultScreen.findViewById(R.id.btn_restart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restartTraining();
+            }
+        });
+        mResultScreen.findViewById(R.id.btn_observe).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mResultScreen.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void finishTraining() {
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStack();
+        }
+    }
+
+    private void restartTraining() {
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStack();
+            if (requireActivity() instanceof StartTrainingListener) {
+                ((StartTrainingListener) requireActivity()).startTraining(getArguments().getLong(DECK_ID));
+            }
+        }
     }
 
     private void toggleButtons(boolean b) {

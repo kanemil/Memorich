@@ -1,66 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorSepia"
-    tools:context=".presentation.view.fragments.TrainingFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_16"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/colorSepia"
+        android:orientation="vertical"
+        tools:context=".presentation.view.fragments.TrainingFragment">
 
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/zero_number"
-            android:textColor="@color/colorPrimary"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:layout_margin="@dimen/margin_16"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_cards_size"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zero_number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tv_cards_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:text="/10" />
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/sb_progress"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:text="/10" />
+            android:layout_margin="@dimen/margin_16" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_16"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_remember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:text="@string/i_remember"
+            android:theme="@style/RememberButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:text="@string/repeat_later" />
 
     </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/sb_progress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_16" />
+    <include
+        android:id="@+id/result_screen"
+        layout="@layout/result_screen"
+        android:visibility="gone" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_16"
-        android:layout_weight="1" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_remember"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_16"
-        android:text="@string/i_remember"
-        android:theme="@style/RememberButton" />
+</FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_repeat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginLeft="@dimen/margin_16"
-        android:layout_marginEnd="@dimen/margin_16"
-        android:layout_marginRight="@dimen/margin_16"
-        android:layout_marginBottom="@dimen/margin_16"
-        android:text="@string/repeat_later" />
 
-</LinearLayout>
