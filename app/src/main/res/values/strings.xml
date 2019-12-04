@@ -23,12 +23,12 @@
     <string name="train">Train</string>
     <string name="card_deleted">Card deleted</string>
     <string name="undo">UNDO</string>
-    <string name="press_undo_to_cancel">Press UNDO to cancel deletion</string>
+    <string name="press_undo_to_cancel">Press UNDO to abort deletion</string>
     <string name="training_result">Your result is %.1f%%</string>
     <string name="repeat_forgotten">Repeat forgotten</string>
     <string name="finish">Finish</string>
     <string name="restart">Restart</string>
-    <string name="finish_training_or_repeat_forgotten_cards">Finish training or repeat forgotten cards:</string>
+    <string name="finish_training_or_repeat_forgotten_cards">Observe cards in the deck, finish or restart training:</string>
     <string name="observe">Observe</string>
 
 </resources>

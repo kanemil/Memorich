@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.adapters;
+package com.kanemil.memorich.presentation.view.fragments.adapters;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
-import com.kanemil.memorich.presentation.view.adapters.contracts.CardsAdapterActionsListener;
-import com.kanemil.memorich.presentation.view.adapters.drag.ItemTouchHelperAdapter;
+import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.CardsAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.fragments.adapters.drag.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

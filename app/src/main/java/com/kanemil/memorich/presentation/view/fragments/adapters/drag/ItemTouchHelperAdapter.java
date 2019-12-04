@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.adapters.drag;
+package com.kanemil.memorich.presentation.view.fragments.adapters.drag;
 
 public interface ItemTouchHelperAdapter {
 

@@ -1,4 +1,4 @@
-package com.kanemil.memorich.presentation.view.adapters.contracts;
+package com.kanemil.memorich.presentation.view.fragments.adapters.contracts;
 
 import com.kanemil.memorich.data.db.entity.Deck;
 

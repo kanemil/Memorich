@@ -34,14 +34,14 @@
             android:id="@+id/tv_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_margin="@dimen/margin_16"
             android:text="@string/finish_training_or_repeat_forgotten_cards"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_48"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
