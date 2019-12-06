@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -144,7 +143,6 @@ public class AddOrEditCardFragment extends Fragment {
                             deckId);
                     card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
                     mViewModel.addCard(card);
-                    Toast.makeText(requireContext(), "Added!", Toast.LENGTH_SHORT).show();
                     if (getFragmentManager() != null) {
                         getFragmentManager().popBackStack();
                     }
