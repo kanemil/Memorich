@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
@@ -130,9 +130,9 @@ public class TrainingFragment extends Fragment {
                     .of(this, new CustomViewModelFactory(requireContext(), getArguments().getLong(DECK_ID)))
                     .get(TrainingViewModel.class);
         }
-        mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
+        mViewModel.getCardsList().observe(this, new Observer<List<CardEntity>>() {
             @Override
-            public void onChanged(List<Card> cards) {
+            public void onChanged(List<CardEntity> cards) {
                 if (cards.size() == 0) {
                     // todo make screen requiring to add cards into the deck
                     Toast.makeText(requireContext(), "ADD CARDS AT FIRST", Toast.LENGTH_SHORT).show();

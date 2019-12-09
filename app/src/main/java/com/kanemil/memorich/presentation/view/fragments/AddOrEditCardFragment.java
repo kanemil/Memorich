@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 
@@ -137,7 +137,7 @@ public class AddOrEditCardFragment extends Fragment {
             mButtonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final Card card = new Card(
+                    final CardEntity card = new CardEntity(
                             mEditTextFront.getText().toString(),
                             mEditTextBack.getText().toString(),
                             deckId);
@@ -154,7 +154,7 @@ public class AddOrEditCardFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if (getArguments() != null) {
-                        Card card = new Card(mEditTextFront.getText().toString(),
+                        CardEntity card = new CardEntity(mEditTextFront.getText().toString(),
                                 mEditTextBack.getText().toString(),
                                 deckId);
                         card.setId(getArguments().getLong(CARD_ID));

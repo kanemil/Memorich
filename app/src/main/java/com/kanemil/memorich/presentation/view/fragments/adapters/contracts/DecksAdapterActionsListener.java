@@ -1,6 +1,6 @@
 package com.kanemil.memorich.presentation.view.fragments.adapters.contracts;
 
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 
 /**
  * Implemented by fragment. Then fragment may or may not tell its activity to do something.
@@ -14,7 +14,7 @@ public interface DecksAdapterActionsListener {
 
     void onDeckMenuEditClicked(long deckId);
 
-    void onDeckMenuRenameClicked(Deck deck);
+    void onDeckMenuRenameClicked(DeckEntity deck);
 
-    void onDeckMenuDeleteClicked(Deck deck);
+    void onDeckMenuDeleteClicked(DeckEntity deck);
 }

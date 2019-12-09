@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 
 import java.util.List;
 
@@ -16,24 +16,24 @@ import io.reactivex.Completable;
 @Dao
 public interface CardDao {
 
-    @Query("SELECT * FROM cards WHERE deck_id = :deckId ORDER BY order_id ASC")
-    LiveData<List<Card>> getCardsByDeckId(long deckId);
+    @Query("SELECT * FROM CardEntity WHERE deck_id = :deckId ORDER BY order_id ASC")
+    LiveData<List<CardEntity>> loadCardsByDeckId(long deckId);
 
     @Insert
-    Completable insert(Card card);
+    Completable insert(CardEntity card);
 
     @Insert
-    Completable insertList(List<Card> cardList);
+    Completable insertList(List<CardEntity> cardList);
 
     @Update
-    Completable update(Card card);
+    Completable update(CardEntity card);
 
     @Update
-    Completable updateList(List<Card> cardList);
+    Completable updateList(List<CardEntity> cardList);
 
     @Delete
-    Completable delete(Card card);
+    Completable delete(CardEntity card);
 
     @Delete
-    Completable deleteList(List<Card> cardList);
+    Completable deleteList(List<CardEntity> cardList);
 }

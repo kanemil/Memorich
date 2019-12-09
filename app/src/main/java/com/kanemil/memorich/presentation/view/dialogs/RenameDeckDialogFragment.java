@@ -17,7 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
 import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckRenameDialogClickListener;
 
@@ -32,7 +32,7 @@ public class RenameDeckDialogFragment extends DialogFragment {
 
     private EditText mEditTextDeckName;
 
-    public static RenameDeckDialogFragment newInstance(Deck deck) {
+    public static RenameDeckDialogFragment newInstance(DeckEntity deck) {
         Bundle args = new Bundle();
         args.putLong(DECK_ID_TO_RENAME, deck.getId());
         args.putString(DECK_NAME, deck.getName());

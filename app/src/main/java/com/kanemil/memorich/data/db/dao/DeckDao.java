@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 
 import java.util.List;
 
@@ -16,15 +16,15 @@ import io.reactivex.Completable;
 @Dao
 public interface DeckDao {
 
-    @Query("SELECT * FROM decks")
-    LiveData<List<Deck>> getDecks();
+    @Query("SELECT * FROM DeckEntity")
+    LiveData<List<DeckEntity>> loadDecks();
 
     @Insert
-    Completable insert(Deck deck);
+    Completable insert(DeckEntity deck);
 
     @Update
-    Completable update(Deck deck);
+    Completable update(DeckEntity deck);
 
     @Delete
-    Completable delete(Deck deck);
+    Completable delete(DeckEntity deck);
 }

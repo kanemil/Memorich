@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.fragments.adapters.DecksAdapter;
@@ -111,9 +111,9 @@ public class DecksFragment extends Fragment
         mViewModel = ViewModelProviders
                 .of(this, new CustomViewModelFactory())
                 .get(DecksViewModel.class);
-        mViewModel.getDecksList().observe(this, new Observer<List<Deck>>() {
+        mViewModel.getDecksList().observe(this, new Observer<List<DeckEntity>>() {
             @Override
-            public void onChanged(List<Deck> decks) {
+            public void onChanged(List<DeckEntity> decks) {
                 mAdapter.setDecks(decks);
             }
         });
@@ -154,7 +154,7 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckMenuRenameClicked(Deck deck) {
+    public void onDeckMenuRenameClicked(DeckEntity deck) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof RenameDeckListener) {
             ((RenameDeckListener) activity).renameDeck(deck);
@@ -162,7 +162,7 @@ public class DecksFragment extends Fragment
     }
 
     @Override
-    public void onDeckMenuDeleteClicked(final Deck deck) {
+    public void onDeckMenuDeleteClicked(final DeckEntity deck) {
         Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_decks),
                 getString(R.string.press_undo_to_cancel), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), new View.OnClickListener() {

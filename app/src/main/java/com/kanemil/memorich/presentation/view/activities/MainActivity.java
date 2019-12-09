@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void renameDeck(Deck deck) {
+    public void renameDeck(DeckEntity deck) {
         DialogFragment dialogFragment = RenameDeckDialogFragment.newInstance(deck);
         dialogFragment.show(getSupportFragmentManager(), RENAME_DECK_DIALOG_FRAGMENT);
     }

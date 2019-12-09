@@ -16,11 +16,11 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "cards",
         foreignKeys = @ForeignKey(
-                entity = Deck.class,
+                entity = DeckEntity.class,
                 parentColumns = "id",
                 childColumns = "deck_id",
                 onDelete = CASCADE))
-public class Card {
+public class CardEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -47,7 +47,7 @@ public class Card {
      * @param front front side of a card.
      * @param back  back side of a card.
      */
-    public Card(String front, String back, long deckId) {
+    public CardEntity(String front, String back, long deckId) {
         mFront = front;
         mBack = back;
         mDeckId = deckId;
@@ -106,7 +106,7 @@ public class Card {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
+        CardEntity card = (CardEntity) o;
         return mId == card.mId &&
                 mDeckId == card.mDeckId &&
                 mRevealedInTraining == card.mRevealedInTraining &&
@@ -121,7 +121,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
+        return "CardEntity{" +
                 "mId=" + mId +
                 ", f='" + mFront + '\'' +
                 ", b='" + mBack + '\'' +

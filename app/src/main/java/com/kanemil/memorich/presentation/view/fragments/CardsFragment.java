@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.CardsAdapterActionsListener;
 import com.kanemil.memorich.presentation.view.fragments.adapters.drag.SimpleItemTouchHelperCallback;
@@ -104,9 +104,9 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
                     .of(this, new CustomViewModelFactory(getArguments().getLong(DECK_ID)))
                     .get(CardsViewModel.class);
         }
-        mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
+        mViewModel.getCardsList().observe(this, new Observer<List<CardEntity>>() {
             @Override
-            public void onChanged(List<Card> cards) {
+            public void onChanged(List<CardEntity> cards) {
                 mAdapter.setCards(cards);
             }
         });
@@ -120,7 +120,7 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     }
 
     @Override
-    public void editCard(Card card) {
+    public void editCard(CardEntity card) {
         final FragmentActivity activity = requireActivity();
         if (activity instanceof ShowEditCardScreenListener) {
             ((ShowEditCardScreenListener) activity).showEditCardScreen(
@@ -132,7 +132,7 @@ public class CardsFragment extends Fragment implements CardsAdapterActionsListen
     }
 
     @Override
-    public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
+    public void deleteCard(CardEntity card, List<CardEntity> cardListAfterDeletion) {
         mViewModel.deleteCard(card, cardListAfterDeletion);
         Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_cards),
                 getString(R.string.card_deleted), Snackbar.LENGTH_SHORT);

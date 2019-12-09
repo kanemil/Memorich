@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 import com.kanemil.memorich.data.repository.Repository;
 import com.kanemil.memorich.presentation.viewmodel.utils.IResourceWrapper;
 
@@ -16,7 +16,7 @@ import java.util.TreeSet;
 
 public class TrainingViewModel extends ViewModel {
     private Repository mRepository;
-    private LiveData<List<Card>> mCardsList = new MutableLiveData<>();
+    private LiveData<List<CardEntity>> mCardsList = new MutableLiveData<>();
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
     private MutableLiveData<TreeSet<Integer>> mAnsweredCardsPositions = new MutableLiveData<>(new TreeSet<Integer>());
     private MutableLiveData<Boolean> mIsCardAlreadyAnswered = new MutableLiveData<>(false);
@@ -33,7 +33,7 @@ public class TrainingViewModel extends ViewModel {
         loadCards();
     }
 
-    public LiveData<List<Card>> getCardsList() {
+    public LiveData<List<CardEntity>> getCardsList() {
         return mCardsList;
     }
 

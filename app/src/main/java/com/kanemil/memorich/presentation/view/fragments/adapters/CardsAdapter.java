@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Card;
+import com.kanemil.memorich.data.db.entity.CardEntity;
 import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.CardsAdapterActionsListener;
 import com.kanemil.memorich.presentation.view.fragments.adapters.drag.ItemTouchHelperAdapter;
 
@@ -21,15 +21,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO записать карты в бд в новом порядке после drag-n-drop'а
-
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         implements ItemTouchHelperAdapter, PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = "CardsAdapter";
 
-    private List<Card> mCards = new ArrayList<>();
-    private Card mCurrentCard;
+    private List<CardEntity> mCards = new ArrayList<>();
+    private CardEntity mCurrentCard;
 
     /**
      * DisplayMode is needed because ViewPager2 requires root view of page to be match_parent
@@ -51,11 +49,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         mCardsAdapterActionsListener = cardsAdapterActionsListener;
     }
 
-    public List<Card> getCards() {
+    public List<CardEntity> getCards() {
         return mCards;
     }
 
-    public void setCards(List<Card> cards) {
+    public void setCards(List<CardEntity> cards) {
         mCards = cards;
         notifyDataSetChanged();
     }
@@ -80,7 +78,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
 
     @Override
     public void onBindViewHolder(@NonNull CardHolder holder, int position) {
-        final Card card = mCards.get(position);
+        final CardEntity card = mCards.get(position);
         holder.bind(card);
     }
 
@@ -151,7 +149,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
             mCardBack = itemView.findViewById(R.id.tv_card_back);
         }
 
-        void bind(final Card card) {
+        void bind(final CardEntity card) {
             mCardFront.setText(card.getFront());
             mCardBack.setText(card.getBack());
 
@@ -179,7 +177,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         /**
          * Reveals back side of card after click on bottom part of card
          */
-        private void setUpRevealMechanicsForTrainingMode(final Card card) {
+        private void setUpRevealMechanicsForTrainingMode(final CardEntity card) {
             itemView.findViewById(R.id.layout_back).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

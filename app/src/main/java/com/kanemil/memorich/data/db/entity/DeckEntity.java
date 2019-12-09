@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 
 /**
- * Simple deck of cards containing List<Card> field.
+ * Simple deck of cards containing List<CardEntity> field.
  */
 
 @Entity(tableName = "decks")
-public class Deck {
+public class DeckEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -20,7 +20,7 @@ public class Deck {
     @ColumnInfo(name = "name")
     private String mName;
 
-    public Deck(String name) {
+    public DeckEntity(String name) {
         mName = name;
     }
 
@@ -44,7 +44,7 @@ public class Deck {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Deck deck = (Deck) o;
+        DeckEntity deck = (DeckEntity) o;
         return mId == deck.mId &&
                 Objects.equals(mName, deck.mName);
     }

@@ -1,6 +1,6 @@
 package com.kanemil.memorich.presentation.view.fragments.contracts;
 
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 
 public interface RenameDeckListener {
     /**
@@ -8,5 +8,5 @@ public interface RenameDeckListener {
      *
      * @param deck
      */
-    void renameDeck(Deck deck);
+    void renameDeck(DeckEntity deck);
 }

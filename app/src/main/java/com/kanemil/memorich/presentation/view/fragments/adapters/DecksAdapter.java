@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.data.db.entity.Deck;
+import com.kanemil.memorich.data.db.entity.DeckEntity;
 import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.DecksAdapterActionsListener;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     private static final String TAG = "DecksAdapter";
 
-    private List<Deck> mDecks = new ArrayList<>();
+    private List<DeckEntity> mDecks = new ArrayList<>();
     private int mSelectedDeckPosition = -1;
-    private Deck mCurrentDeck;
+    private DeckEntity mCurrentDeck;
 
     private DecksAdapterActionsListener mDecksAdapterActionsListener;
 
@@ -30,13 +30,13 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         mDecksAdapterActionsListener = decksAdapterActionsListener;
     }
 
-    public void setDecks(List<Deck> decks) {
+    public void setDecks(List<DeckEntity> decks) {
         mDecks = decks;
         notifyDataSetChanged();
         Log.d(TAG, "deckSize " + getItemCount());
     }
 
-    public Deck getCurrentDeck() {
+    public DeckEntity getCurrentDeck() {
         return mCurrentDeck;
     }
 
@@ -54,7 +54,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final DeckHolder holder, final int position) {
-        final Deck deck = mDecks.get(position);
+        final DeckEntity deck = mDecks.get(position);
         holder.bind(deck);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
             mTextViewDeckSize = itemView.findViewById(R.id.tv_deck_size);
         }
 
-        private void bind(Deck deck) {
+        private void bind(DeckEntity deck) {
             mTextViewDeckName.setText(deck.getName());
 //            itemView.setBackground(itemView.getContext().getDrawable(R.drawable.item_deck_background));
             // TODO разобраться с отображением размера колоды
