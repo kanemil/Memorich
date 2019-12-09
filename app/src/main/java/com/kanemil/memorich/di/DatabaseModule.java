@@ -1,4 +1,4 @@
-package com.kanemil.memorich.app;
+package com.kanemil.memorich.di;
 
 import android.app.Application;
 
@@ -9,25 +9,19 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kanemil.memorich.data.db.AppDatabase;
 
-public class App extends Application {
+import javax.inject.Singleton;
 
-    /* ВОПРОС
-        Здесь где-то должен быть применен даггер, я это чувствую, но пока не понимаю.
-     */
+import dagger.Module;
+import dagger.Provides;
 
-    private static final String TAG = "MyTag";
-    public static App sInstance;
-    private AppDatabase mDatabase;
+@Module
+public class DatabaseModule {
 
-    public static App getInstance() {
-        return sInstance;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        sInstance = this;
-        mDatabase = Room.databaseBuilder(this.getApplicationContext(), AppDatabase.class, "database")
+    @Singleton
+    @Provides
+    AppDatabase provideDatabase(Application application) {
+        return Room
+                .databaseBuilder(application, AppDatabase.class, "database")
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -35,10 +29,6 @@ public class App extends Application {
                     }
                 })
                 .build();
-    }
-
-    public AppDatabase getDatabase() {
-        return mDatabase;
     }
 
     private void populateDatabase(@NonNull SupportSQLiteDatabase db) {

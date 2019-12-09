@@ -12,22 +12,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapter;
 import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
-import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;
+import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import java.util.List;
 import java.util.TreeSet;
 
-public class TrainingFragment extends Fragment {
+import javax.inject.Inject;
+
+public class TrainingFragment extends BaseFragment {
 
     private static final String DECK_ID = "deckId";
 
@@ -42,6 +44,9 @@ public class TrainingFragment extends Fragment {
     private Button mButtonRemember;
     private Button mButtonRepeat;
     private View mResultScreen;
+
+    @Inject
+    ViewModelProviderFactory mViewModelProviderFactory;
 
     public static TrainingFragment newInstance(long deckId) {
         Bundle args = new Bundle();
@@ -127,7 +132,7 @@ public class TrainingFragment extends Fragment {
     private void setupViewModel() {
         if (getArguments() != null) {
             mViewModel = ViewModelProviders
-                    .of(this, new CustomViewModelFactory(requireContext(), getArguments().getLong(DECK_ID)))
+                    .of(this, mViewModelProviderFactory)
                     .get(TrainingViewModel.class);
         }
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {

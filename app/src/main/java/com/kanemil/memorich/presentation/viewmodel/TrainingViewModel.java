@@ -1,18 +1,17 @@
 package com.kanemil.memorich.presentation.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.data.repository.Repository;
-import com.kanemil.memorich.presentation.viewmodel.utils.IResourceWrapper;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
+
+import javax.inject.Inject;
 
 public class TrainingViewModel extends ViewModel {
     private Repository mRepository;
@@ -24,12 +23,10 @@ public class TrainingViewModel extends ViewModel {
     private MutableLiveData<Integer> mFirstUnansweredCard = new MutableLiveData<>();
 
     private long mDeckId;
-    private final IResourceWrapper mResourceWrapper;
 
-    TrainingViewModel(long deckId, Repository repository, @NonNull IResourceWrapper resourceWrapper) {
-        mDeckId = deckId;
+    @Inject
+    TrainingViewModel(Repository repository) {
         mRepository = repository;
-        mResourceWrapper = resourceWrapper;
         loadCards();
     }
 
@@ -96,7 +93,7 @@ public class TrainingViewModel extends ViewModel {
         if (mCardsList.getValue() != null && mAnsweredCardsPositions.getValue() != null) {
             if (mCardsList.getValue().size() == mAnsweredCardsPositions.getValue().size() && mCorrectAnswers.getValue() != null) {
                 final float result = mCorrectAnswers.getValue() * 1f / mCardsList.getValue().size() * 100;
-                mTrainingScore.setValue(mResourceWrapper.getString(R.string.training_result, result));
+//                mTrainingScore.setValue(mResourceWrapper.getString(R.string.training_result, result));
             }
         }
     }

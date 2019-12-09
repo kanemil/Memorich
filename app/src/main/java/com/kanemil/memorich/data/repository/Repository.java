@@ -2,28 +2,32 @@ package com.kanemil.memorich.data.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.kanemil.memorich.app.App;
 import com.kanemil.memorich.data.db.AppDatabase;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.data.db.entity.Deck;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+@Singleton
 public class Repository {
 
-    /* ВОПРОС
-     Вот здесь плохо инициализировать наверное, ведь тогда репозиторий (слой данных) знает о контексте.
-     То есть, тут неплохо было бы применить DI, но пока что я не умею, поэтому исправлю потом.
-     */
-    private AppDatabase db = App.getInstance().getDatabase();
+    private AppDatabase mDb;
+
+    @Inject
+    public Repository(AppDatabase db) {
+        mDb = db;
+    }
 
     public LiveData<List<Deck>> getDecks() {
-        return db.getDeckDao().getDecks();
+        return mDb.getDeckDao().getDecks();
     }
 
 
@@ -35,46 +39,46 @@ public class Repository {
         лайвДату, которая будет обзервиться во фрагменте, в результате чего и будет показываться тост?
      */
     public void insertDeck(Deck deck) {
-        final Completable completable = db.getDeckDao().insert(deck);
+        final Completable completable = mDb.getDeckDao().insert(deck);
         execute(completable);
     }
 
     public void renameDeck(Deck deck) {
-        final Completable completable = db.getDeckDao().update(deck);
+        final Completable completable = mDb.getDeckDao().update(deck);
         execute(completable);
     }
 
     public void deleteDeck(Deck deck) {
-        final Completable completable = db.getDeckDao().delete(deck);
+        final Completable completable = mDb.getDeckDao().delete(deck);
         execute(completable);
     }
 
     public LiveData<List<Card>> getCards(long deckId) {
-        return db.getCardDao().getCardsByDeckId(deckId);
+        return mDb.getCardDao().getCardsByDeckId(deckId);
     }
 
     public void insertCard(Card card) {
-        final Completable completable = db.getCardDao().insert(card);
+        final Completable completable = mDb.getCardDao().insert(card);
         execute(completable);
     }
 
     public void insertCardList(List<Card> cardList) {
-        final Completable completable = db.getCardDao().insertList(cardList);
+        final Completable completable = mDb.getCardDao().insertList(cardList);
         execute(completable);
     }
 
     public void updateCard(Card card) {
-        final Completable completable = db.getCardDao().update(card);
+        final Completable completable = mDb.getCardDao().update(card);
         execute(completable);
     }
 
     public void updateCardList(List<Card> cardList) {
-        final Completable completable = db.getCardDao().updateList(cardList);
+        final Completable completable = mDb.getCardDao().updateList(cardList);
         execute(completable);
     }
 
     public void deleteCard(Card card, final List<Card> cardListAfterDeletion) {
-        final Completable completable = db.getCardDao().delete(card);
+        final Completable completable = mDb.getCardDao().delete(card);
         completable
                 .subscribeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {
@@ -96,7 +100,7 @@ public class Repository {
     }
 
     public void deleteCardList(List<Card> cardList) {
-        final Completable completable = db.getCardDao().deleteList(cardList);
+        final Completable completable = mDb.getCardDao().deleteList(cardList);
         execute(completable);
     }
 

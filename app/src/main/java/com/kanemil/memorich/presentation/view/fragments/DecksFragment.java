@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -18,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
@@ -27,13 +27,15 @@ import com.kanemil.memorich.presentation.view.fragments.contracts.EditDeckListen
 import com.kanemil.memorich.presentation.view.fragments.contracts.RenameDeckListener;
 import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddDeckDialogListener;
 import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
-import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
 import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
+import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import java.util.List;
 import java.util.Objects;
 
-public class DecksFragment extends Fragment
+import javax.inject.Inject;
+
+public class DecksFragment extends BaseFragment
         implements OnNewDeckCreatedListener, DecksAdapterActionsListener, OnDeckRenamedListener {
 
     private static final String TAG = "DecksFragment";
@@ -51,6 +53,9 @@ public class DecksFragment extends Fragment
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton fab;
     private DecksAdapter mAdapter;
+
+    @Inject
+    ViewModelProviderFactory mViewModelProviderFactory;
 
     public static DecksFragment newInstance() {
         return new DecksFragment();
@@ -109,7 +114,7 @@ public class DecksFragment extends Fragment
 
     private void setupViewModel() {
         mViewModel = ViewModelProviders
-                .of(this, new CustomViewModelFactory())
+                .of(this, mViewModelProviderFactory)
                 .get(DecksViewModel.class);
         mViewModel.getDecksList().observe(this, new Observer<List<Deck>>() {
             @Override

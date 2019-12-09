@@ -2,11 +2,11 @@ package com.kanemil.memorich.presentation.view.activities;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.base.BaseActivity;
 import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
 import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
@@ -25,7 +25,7 @@ import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddDeckDia
 import com.kanemil.memorich.presentation.view.fragments.contracts.ShowEditCardScreenListener;
 import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements ShowAddDeckDialogListener,
         OnDeckAddedDialogClickListener,
         ShowAddCardScreenListener,

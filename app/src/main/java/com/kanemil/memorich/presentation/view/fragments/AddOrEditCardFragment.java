@@ -18,7 +18,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
-import com.kanemil.memorich.presentation.viewmodel.CustomViewModelFactory;
+import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
+
+import javax.inject.Inject;
 
 public class AddOrEditCardFragment extends Fragment {
 
@@ -34,6 +36,9 @@ public class AddOrEditCardFragment extends Fragment {
     private EditText mEditTextFront;
     private EditText mEditTextBack;
     private Button mButtonAdd;
+
+    @Inject
+    ViewModelProviderFactory mViewModelProviderFactory;
 
     /**
      * Constructor for adding a new card
@@ -127,7 +132,7 @@ public class AddOrEditCardFragment extends Fragment {
         if (getArguments() != null) {
             final long deckId = getArguments().getLong(DECK_ID);
             mViewModel = ViewModelProviders
-                    .of(this, new CustomViewModelFactory(deckId))
+                    .of(this, mViewModelProviderFactory)
                     .get(CardsViewModel.class);
         }
     }

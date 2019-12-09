@@ -9,15 +9,19 @@ import com.kanemil.memorich.data.repository.Repository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
-    private Repository mRepository;
     private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
 
-    DecksViewModel(Repository repository) {
+    private Repository mRepository;
+
+    @Inject
+    public DecksViewModel(Repository repository) {
         mRepository = repository;
-        loadDecks();
+//        loadDecks();
     }
 
     public void addDeck(String deckName) {
