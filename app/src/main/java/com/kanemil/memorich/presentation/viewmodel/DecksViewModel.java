@@ -21,7 +21,7 @@ public class DecksViewModel extends ViewModel {
     @Inject
     public DecksViewModel(Repository repository) {
         mRepository = repository;
-//        loadDecks();
+        loadDecks();
     }
 
     public void addDeck(String deckName) {
