@@ -55,6 +55,8 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     private FloatingActionButton fab;
     private CardsAdapter mAdapter;
 
+    private long mDeckId;
+
     @Inject
     ViewModelProviderFactory mViewModelProviderFactory;
 
@@ -71,6 +73,9 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
         super.onCreate(savedInstanceState);
         mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.EDIT);
         mAdapter.setCardsAdapterActionsListener(this);
+        if (getArguments() != null) {
+            mDeckId = getArguments().getLong(DECK_ID);
+        }
     }
 
     @Nullable
@@ -104,11 +109,10 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     }
 
     private void setupViewModel() {
-        if (getArguments() != null) {
-            mViewModel = ViewModelProviders
-                    .of(this, mViewModelProviderFactory)
-                    .get(CardsViewModel.class);
-        }
+        mViewModel = ViewModelProviders
+                .of(this, mViewModelProviderFactory)
+                .get(CardsViewModel.class);
+        mViewModel.setDeckId(mDeckId);
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {

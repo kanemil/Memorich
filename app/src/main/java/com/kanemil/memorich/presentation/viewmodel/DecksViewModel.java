@@ -16,6 +16,7 @@ public class DecksViewModel extends ViewModel {
     private static final String TAG = "DecksViewModel";
     private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
 
+    // inject
     private Repository mRepository;
 
     @Inject

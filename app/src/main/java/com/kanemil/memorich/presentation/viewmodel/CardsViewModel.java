@@ -12,18 +12,22 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class CardsViewModel extends ViewModel {
+
+    // inject
     private Repository mRepository;
+
+
     private LiveData<List<Card>> mCardsList = new MutableLiveData<>();
     private long mDeckId;
 
     @Inject
     CardsViewModel(Repository repository) {
         mRepository = repository;
-        loadCards();
     }
 
-    private void loadCards() {
-        mCardsList = mRepository.getCards(mDeckId);
+    public void setDeckId(long deckId) {
+        mDeckId = deckId;
+        loadCards();
     }
 
     public void addCard(Card card) {
@@ -44,5 +48,9 @@ public class CardsViewModel extends ViewModel {
 
     public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
         mRepository.deleteCard(card, cardListAfterDeletion);
+    }
+
+    private void loadCards() {
+        mCardsList = mRepository.getCards(mDeckId);
     }
 }

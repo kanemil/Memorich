@@ -12,17 +12,17 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
-public class AddOrEditCardFragment extends Fragment {
+public class AddOrEditCardFragment extends BaseFragment {
 
     private static final String DECK_ID = "deckId";
     private static final String CARD_ORDER_ID = "cardOrderId";
@@ -39,6 +39,8 @@ public class AddOrEditCardFragment extends Fragment {
 
     @Inject
     ViewModelProviderFactory mViewModelProviderFactory;
+
+    private long mDeckId;
 
     /**
      * Constructor for adding a new card
@@ -84,6 +86,8 @@ public class AddOrEditCardFragment extends Fragment {
             } else {
                 mMode = DISPLAY_MODE.EDIT_CARD;
             }
+
+            mDeckId = getArguments().getLong(DECK_ID);
         }
     }
 
@@ -105,36 +109,30 @@ public class AddOrEditCardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
-        if (getArguments() != null) {
-            final long deckId = getArguments().getLong(DECK_ID);
-            initButton(deckId);
-            if (mMode == DISPLAY_MODE.ADD_CARD) {
-                mButtonAdd.setEnabled(false);
-            }
-            mEditTextFront.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    mButtonAdd.setEnabled(TextUtils.isGraphic(charSequence));
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                }
-            });
+        initButton(mDeckId);
+        if (mMode == DISPLAY_MODE.ADD_CARD) {
+            mButtonAdd.setEnabled(false);
         }
+        mEditTextFront.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mButtonAdd.setEnabled(TextUtils.isGraphic(charSequence));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     private void setupViewModel() {
-        if (getArguments() != null) {
-            final long deckId = getArguments().getLong(DECK_ID);
-            mViewModel = ViewModelProviders
-                    .of(this, mViewModelProviderFactory)
-                    .get(CardsViewModel.class);
-        }
+        mViewModel = ViewModelProviders
+                .of(this, mViewModelProviderFactory)
+                .get(CardsViewModel.class);
     }
 
     private void initButton(final long deckId) {

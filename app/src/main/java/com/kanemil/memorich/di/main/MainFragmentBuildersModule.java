@@ -1,5 +1,6 @@
 package com.kanemil.memorich.di.main;
 
+import com.kanemil.memorich.presentation.view.fragments.AddOrEditCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
 import com.kanemil.memorich.presentation.view.fragments.TrainingFragment;
@@ -18,4 +19,7 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract TrainingFragment contributeTrainingFragment();
+
+    @ContributesAndroidInjector
+    abstract AddOrEditCardFragment contributeAddOrEditCardFragment();
 }

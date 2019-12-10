@@ -45,6 +45,8 @@ public class TrainingFragment extends BaseFragment {
     private Button mButtonRepeat;
     private View mResultScreen;
 
+    private long mDeckId;
+
     @Inject
     ViewModelProviderFactory mViewModelProviderFactory;
 
@@ -60,6 +62,9 @@ public class TrainingFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.TRAINING);
+        if (getArguments() != null) {
+            mDeckId = getArguments().getLong(DECK_ID);
+        }
     }
 
     @Override
@@ -130,11 +135,13 @@ public class TrainingFragment extends BaseFragment {
     }
 
     private void setupViewModel() {
-        if (getArguments() != null) {
-            mViewModel = ViewModelProviders
-                    .of(this, mViewModelProviderFactory)
-                    .get(TrainingViewModel.class);
-        }
+
+        mViewModel = ViewModelProviders
+                .of(this, mViewModelProviderFactory)
+                .get(TrainingViewModel.class);
+
+        mViewModel.setDeckId(mDeckId);
+
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
@@ -150,6 +157,7 @@ public class TrainingFragment extends BaseFragment {
                 }
             }
         });
+
         mViewModel.getCorrectAnswers().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -157,6 +165,7 @@ public class TrainingFragment extends BaseFragment {
                 mTextViewProgress.setText(String.valueOf(integer));
             }
         });
+
         mViewModel.getAnsweredCardsPositions().observe(this, new Observer<TreeSet<Integer>>() {
             @Override
             public void onChanged(TreeSet<Integer> answeredCards) {
@@ -166,6 +175,7 @@ public class TrainingFragment extends BaseFragment {
                 }
             }
         });
+
         mViewModel.getIsCardAlreadyAnswered().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean b) {
@@ -173,6 +183,7 @@ public class TrainingFragment extends BaseFragment {
                 toggleButtons(!b);
             }
         });
+
         mViewModel.getTrainingScore().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -180,6 +191,7 @@ public class TrainingFragment extends BaseFragment {
                 showResultScreen(s);
             }
         });
+
         mViewModel.getFirstUnansweredCard().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer position) {

@@ -156,6 +156,7 @@ public class DecksFragment extends BaseFragment
     @Override
     public void onDeckRenamed(long deckId, String newDeckName) {
         mViewModel.renameDeck(deckId, newDeckName);
+        mAdapter.getCurrentDeck().setName(newDeckName);
     }
 
     @Override
