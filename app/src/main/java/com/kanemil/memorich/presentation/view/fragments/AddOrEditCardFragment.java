@@ -146,9 +146,8 @@ public class AddOrEditCardFragment extends BaseFragment {
                             deckId);
                     card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
                     mViewModel.addCard(card);
-                    if (getFragmentManager() != null) {
-                        getFragmentManager().popBackStack();
-                    }
+                    requireFragmentManager().popBackStack();
+
                 }
             });
         } else {
@@ -162,9 +161,8 @@ public class AddOrEditCardFragment extends BaseFragment {
                                 deckId);
                         card.setId(getArguments().getLong(CARD_ID));
                         mViewModel.updateCard(card);
-                        if (getFragmentManager() != null) {
-                            getFragmentManager().popBackStack();
-                        }
+                        requireFragmentManager().popBackStack();
+
                     }
                 }
             });

@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Card;
-import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.CardsAdapterActionsListener;
-import com.kanemil.memorich.presentation.view.fragments.adapters.drag.ItemTouchHelperAdapter;
+import com.kanemil.memorich.presentation.view.fragments.adapters.utils.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

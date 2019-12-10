@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,10 +20,8 @@ import com.kanemil.memorich.R;
 import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapter;
-import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.CardsAdapterActionsListener;
-import com.kanemil.memorich.presentation.view.fragments.adapters.drag.SimpleItemTouchHelperCallback;
-import com.kanemil.memorich.presentation.view.fragments.contracts.ShowAddCardScreenListener;
-import com.kanemil.memorich.presentation.view.fragments.contracts.ShowEditCardScreenListener;
+import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapterActionsListener;
+import com.kanemil.memorich.presentation.view.fragments.adapters.utils.SimpleItemTouchHelperCallback;
 import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
@@ -42,12 +39,11 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     private View.OnClickListener mFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (requireActivity() instanceof ShowAddCardScreenListener) {
-                if (getArguments() != null) {
-                    ShowAddCardScreenListener listener = (ShowAddCardScreenListener) requireActivity();
-                    listener.showAddCardScreen(getArguments().getLong(DECK_ID), mAdapter.getItemCount());
-                }
-            }
+            requireFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.root_view, AddOrEditCardFragment.newInstance(mDeckId, mAdapter.getItemCount()), null)
+                    .addToBackStack(null)
+                    .commit();
         }
     };
     private CardsViewModel mViewModel;
@@ -130,14 +126,12 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
 
     @Override
     public void editCard(Card card) {
-        final FragmentActivity activity = requireActivity();
-        if (activity instanceof ShowEditCardScreenListener) {
-            ((ShowEditCardScreenListener) activity).showEditCardScreen(
-                    card.getDeckId(),
-                    card.getId(),
-                    card.getFront(),
-                    card.getBack());
-        }
+        requireFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.root_view, AddOrEditCardFragment.newInstance(
+                        card.getDeckId(), card.getId(), card.getFront(), card.getBack()), null)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

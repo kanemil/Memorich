@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.fragments.adapters.contracts.DecksAdapterActionsListener;
 
 import java.util.ArrayList;
 import java.util.List;

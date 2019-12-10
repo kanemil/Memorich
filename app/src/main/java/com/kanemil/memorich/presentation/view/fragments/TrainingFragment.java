@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,7 +21,6 @@ import com.kanemil.memorich.R;
 import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.presentation.view.fragments.adapters.CardsAdapter;
-import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingListener;
 import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
@@ -225,18 +225,17 @@ public class TrainingFragment extends BaseFragment {
     }
 
     private void finishTraining() {
-        if (getFragmentManager() != null) {
-            getFragmentManager().popBackStack();
-        }
+        requireFragmentManager().popBackStack();
     }
 
     private void restartTraining() {
-        if (getFragmentManager() != null) {
-            getFragmentManager().popBackStack();
-            if (requireActivity() instanceof StartTrainingListener) {
-                ((StartTrainingListener) requireActivity()).startTraining(getArguments().getLong(DECK_ID));
-            }
-        }
+        final FragmentManager fragmentManager = requireFragmentManager();
+        fragmentManager.popBackStack();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.animator.fade_in, android.R.animator.fade_out)
+                .replace(R.id.root_view, TrainingFragment.newInstance(mDeckId), null)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void toggleButtons(boolean b) {
