@@ -3,17 +3,12 @@ package com.kanemil.memorich.presentation.view.activities;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.base.BaseActivity;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.activities.contracts.OnDeckRenamedListener;
-import com.kanemil.memorich.presentation.view.activities.contracts.OnNewDeckCreatedListener;
 import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
 import com.kanemil.memorich.presentation.view.dialogs.RenameDeckDialogFragment;
-import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
-import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckRenameDialogClickListener;
 import com.kanemil.memorich.presentation.view.fragments.AddOrEditCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
@@ -27,12 +22,10 @@ import com.kanemil.memorich.presentation.view.fragments.contracts.StartTrainingL
 
 public class MainActivity extends BaseActivity
         implements ShowAddDeckDialogListener,
-        OnDeckAddedDialogClickListener,
         ShowAddCardScreenListener,
         StartTrainingListener,
         EditDeckListener,
         RenameDeckListener,
-        OnDeckRenameDialogClickListener,
         ShowEditCardScreenListener {
 
     private static final String DECKS_FRAGMENT = "decksFragment";
@@ -62,14 +55,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onDeckAddedDialogClick(String deckName) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(DECKS_FRAGMENT);
-        if (fragment instanceof OnNewDeckCreatedListener) {
-            ((OnNewDeckCreatedListener) fragment).onNewDeckCreated(deckName);
-        }
-    }
-
-    @Override
     public void showAddCardScreen(long deckId, long cardOrderId) {
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
@@ -94,14 +79,6 @@ public class MainActivity extends BaseActivity
                 .replace(R.id.root_view, CardsFragment.newInstance(deckId), CARDS_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onDeckRenameDialogClick(long deckId, String newDeckName) {
-        final Fragment fragment = getSupportFragmentManager().findFragmentByTag(DECKS_FRAGMENT);
-        if (fragment instanceof OnDeckRenamedListener) {
-            ((OnDeckRenamedListener) fragment).onDeckRenamed(deckId, newDeckName);
-        }
     }
 
     @Override

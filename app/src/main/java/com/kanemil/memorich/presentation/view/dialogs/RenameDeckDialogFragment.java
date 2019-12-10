@@ -13,24 +13,30 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.kanemil.memorich.R;
+import com.kanemil.memorich.base.BaseDialogFragment;
 import com.kanemil.memorich.data.db.entity.Deck;
-import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
-import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckRenameDialogClickListener;
+import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
+import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
+
+import javax.inject.Inject;
 
 /**
  * Adds new deck to list.
  */
-public class RenameDeckDialogFragment extends DialogFragment {
+public class RenameDeckDialogFragment extends BaseDialogFragment {
 
     private static final String DECK_ID_TO_RENAME = "deck_id";
     private static final String DECK_NAME = "deck_name";
     private AlertDialog mAlertDialog;
 
     private EditText mEditTextDeckName;
+
+    @Inject
+    ViewModelProviderFactory mViewModelProviderFactory;
+    private DecksViewModel mViewModel;
 
     public static RenameDeckDialogFragment newInstance(Deck deck) {
         Bundle args = new Bundle();
@@ -41,9 +47,15 @@ public class RenameDeckDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    private void setupViewModel() {
+        mViewModel = ViewModelProviders.of(this, mViewModelProviderFactory).get(DecksViewModel.class);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        setupViewModel();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View root = inflater.inflate(R.layout.dialog_add_deck, null);
@@ -58,10 +70,9 @@ public class RenameDeckDialogFragment extends DialogFragment {
         builder.setPositiveButton(getString(R.string.rename), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                final FragmentActivity activity = requireActivity();
-                if (activity instanceof OnDeckAddedDialogClickListener && getArguments() != null) {
-                    ((OnDeckRenameDialogClickListener) activity)
-                            .onDeckRenameDialogClick(getArguments().getLong(DECK_ID_TO_RENAME), mEditTextDeckName.getText().toString());
+                if (getArguments() != null) {
+                    mViewModel.renameDeck(getArguments().getLong(DECK_ID_TO_RENAME),
+                            mEditTextDeckName.getText().toString());
                 }
             }
         }).setTitle(R.string.set_new_name_for_deck);

@@ -1,5 +1,7 @@
 package com.kanemil.memorich.di.main;
 
+import com.kanemil.memorich.presentation.view.dialogs.AddDeckDialogFragment;
+import com.kanemil.memorich.presentation.view.dialogs.RenameDeckDialogFragment;
 import com.kanemil.memorich.presentation.view.fragments.AddOrEditCardFragment;
 import com.kanemil.memorich.presentation.view.fragments.CardsFragment;
 import com.kanemil.memorich.presentation.view.fragments.DecksFragment;
@@ -22,4 +24,10 @@ public abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract AddOrEditCardFragment contributeAddOrEditCardFragment();
+
+    @ContributesAndroidInjector
+    abstract AddDeckDialogFragment contributeAddDeckDialogFragment();
+
+    @ContributesAndroidInjector
+    abstract RenameDeckDialogFragment contributeRenameDeckDialogFragment();
 }

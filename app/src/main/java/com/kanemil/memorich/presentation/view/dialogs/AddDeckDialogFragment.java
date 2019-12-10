@@ -13,24 +13,33 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.kanemil.memorich.R;
-import com.kanemil.memorich.presentation.view.dialogs.contracts.OnDeckAddedDialogClickListener;
+import com.kanemil.memorich.base.BaseDialogFragment;
+import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
+import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
+
+import javax.inject.Inject;
 
 /**
  * Adds new deck to list.
  */
-public class AddDeckDialogFragment extends DialogFragment {
+public class AddDeckDialogFragment extends BaseDialogFragment {
 
     private AlertDialog mAlertDialog;
 
     private EditText mEditTextDeckName;
 
+    @Inject
+    ViewModelProviderFactory mViewModelProviderFactory;
+    private DecksViewModel mViewModel;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        setupViewModel();
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View root = inflater.inflate(R.layout.dialog_add_deck, null);
@@ -41,16 +50,16 @@ public class AddDeckDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                final FragmentActivity activity = requireActivity();
-                if (activity instanceof OnDeckAddedDialogClickListener) {
-                    ((OnDeckAddedDialogClickListener) activity)
-                            .onDeckAddedDialogClick(mEditTextDeckName.getText().toString());
-                }
+                mViewModel.addDeck(mEditTextDeckName.getText().toString());
             }
         }).setTitle(R.string.set_name_for_deck);
 
         mAlertDialog = builder.create();
         return mAlertDialog;
+    }
+
+    private void setupViewModel() {
+        mViewModel = ViewModelProviders.of(this, mViewModelProviderFactory).get(DecksViewModel.class);
     }
 
     @Override
