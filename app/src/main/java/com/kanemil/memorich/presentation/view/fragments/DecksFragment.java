@@ -120,6 +120,7 @@ public class DecksFragment extends BaseFragment
         mViewModel.getDecksList().observe(getViewLifecycleOwner(), new Observer<List<Deck>>() {
             @Override
             public void onChanged(List<Deck> decks) {
+                Log.d(TAG, "onChanged() called with: decks = [" + decks + "]");
                 mAdapter.setDecks(decks);
             }
         });

@@ -45,8 +45,9 @@ public class DecksViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
+                        mDeckOperationMessage.setValue(mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
                         Log.d(TAG, "onComplete: " + mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
+                        Log.d(TAG, "onComplete: " + mDeckOperationMessage.getValue());
                     }
 
                     @Override
