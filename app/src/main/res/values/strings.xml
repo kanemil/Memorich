@@ -32,5 +32,7 @@
     <string name="overview">Overview</string>
     <string name="add_card_pls">Please, add at least one card!</string>
     <string name="added_deck_formatter">Deck \'%s\' was added!</string>
+    <string name="renamed_deck_formatter">Deck \'%s\' was renamed!</string>
+    <string name="deleted_deck_formatter">Deck \'%s\' was deleted!</string>
 
 </resources>

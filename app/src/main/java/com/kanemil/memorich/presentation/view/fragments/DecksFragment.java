@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -124,12 +123,12 @@ public class DecksFragment extends BaseFragment
                 mAdapter.setDecks(decks);
             }
         });
-        mViewModel.getOnDeckAddedMessage().observe(this, new Observer<String>() {
+        mViewModel.getDeckOperationMessage().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                // TODO понять, почему не работает
                 Log.d(TAG, "onChanged: snkacbar");
-//                Snackbar.make(getView(), s, Snackbar.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "SOMETHING", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), s, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -144,7 +143,7 @@ public class DecksFragment extends BaseFragment
     }
 
     @Override
-    public void onShowNavBar(boolean showNavBar) {
+    public void showBottomBar(boolean showNavBar) {
         if (!showNavBar) {
             mBottomNavigationView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
         } else {

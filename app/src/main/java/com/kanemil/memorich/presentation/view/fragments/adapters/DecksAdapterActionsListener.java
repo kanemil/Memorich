@@ -10,7 +10,7 @@ public interface DecksAdapterActionsListener {
 
     void onDeckTrainClicked(long deckId);
 
-    void onShowNavBar(boolean showNavBar);
+    void showBottomBar(boolean showNavBar);
 
     void onDeckMenuEditClicked(long deckId);
 

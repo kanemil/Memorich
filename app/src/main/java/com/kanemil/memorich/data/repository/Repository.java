@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -31,31 +30,19 @@ public class Repository {
         return mDb.getDeckDao().getDecks();
     }
 
-
-    /* ВОПРОС
-        Допустим, я хочу сделать тост, который уведомит юзера, что колода/карта была добавлена.
-        Как это правильно сделать?
-        Может быть, insertDeck должен возвращать какой-нибудь объект RxJava, и вьюмодель уже будет
-        как-то что-то с ним делать, например, обзервить его и по результату засовывать что-то в
-        лайвДату, которая будет обзервиться во фрагменте, в результате чего и будет показываться тост?
-     */
     public Completable insertDeck(Deck deck) {
-//        final Completable completable = mDb.getDeckDao().insert(deck);
-//        execute(completable);
-
         return mDb.getDeckDao().insert(deck)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }
 
-    public void renameDeck(Deck deck) {
-        final Completable completable = mDb.getDeckDao().update(deck);
-        execute(completable);
+    public Completable renameDeck(Deck deck) {
+        return mDb.getDeckDao().update(deck)
+                .subscribeOn(Schedulers.io());
     }
 
-    public void deleteDeck(Deck deck) {
-        final Completable completable = mDb.getDeckDao().delete(deck);
-        execute(completable);
+    public Completable deleteDeck(Deck deck) {
+        return mDb.getDeckDao().delete(deck)
+                .subscribeOn(Schedulers.io());
     }
 
     public LiveData<List<Card>> getCards(long deckId) {
@@ -64,11 +51,6 @@ public class Repository {
 
     public void insertCard(Card card) {
         final Completable completable = mDb.getCardDao().insert(card);
-        execute(completable);
-    }
-
-    public void insertCardList(List<Card> cardList) {
-        final Completable completable = mDb.getCardDao().insertList(cardList);
         execute(completable);
     }
 
@@ -102,11 +84,6 @@ public class Repository {
 
                     }
                 });
-    }
-
-    public void deleteCardList(List<Card> cardList) {
-        final Completable completable = mDb.getCardDao().deleteList(cardList);
-        execute(completable);
     }
 
     private void execute(Completable completable) {

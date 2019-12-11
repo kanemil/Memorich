@@ -40,7 +40,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     public void clearDeckSelection() {
         mSelectedDeckPosition = -1;
-        mDecksAdapterActionsListener.onShowNavBar(false);
+        mDecksAdapterActionsListener.showBottomBar(false);
     }
 
     @NonNull
@@ -67,7 +67,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
                 } else { // select deck and highlight row
                     mSelectedDeckPosition = position;
                     mCurrentDeck = mDecks.get(mSelectedDeckPosition);
-                    mDecksAdapterActionsListener.onShowNavBar(true);
+                    mDecksAdapterActionsListener.showBottomBar(true);
                 }
 
                 notifyDataSetChanged();

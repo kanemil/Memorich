@@ -22,7 +22,7 @@ public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
     private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
-    private MutableLiveData<String> mOnDeckAddedMessage = new MutableLiveData<>();
+    private MutableLiveData<String> mDeckOperationMessage = new MutableLiveData<>();
 
     // inject
     private Repository mRepository;
@@ -41,12 +41,11 @@ public class DecksViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
                     public void onComplete() {
-                        mOnDeckAddedMessage.setValue(mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
+                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
                         Log.d(TAG, "onComplete: " + mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
                     }
 
@@ -57,22 +56,54 @@ public class DecksViewModel extends ViewModel {
                 });
     }
 
-    public void renameDeck(long deckId, String newDeckName) {
+    public void renameDeck(long deckId, final String newDeckName) {
         Deck deck = new Deck(newDeckName);
         deck.setId(deckId);
-        mRepository.renameDeck(deck);
+        mRepository.renameDeck(deck)
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.renamed_deck_formatter, newDeckName));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
-    public void deleteDeck(Deck deck) {
-        mRepository.deleteDeck(deck);
+    public void deleteDeck(final Deck deck) {
+        mRepository.deleteDeck(deck)
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.deleted_deck_formatter, deck.getName()));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     public LiveData<List<Deck>> getDecksList() {
         return mDecksList;
     }
 
-    public LiveData<String> getOnDeckAddedMessage() {
-        return mOnDeckAddedMessage;
+    public LiveData<String> getDeckOperationMessage() {
+        return mDeckOperationMessage;
     }
 
     private void loadDecks() {
