@@ -1,6 +1,5 @@
 package com.kanemil.memorich.presentation.view.fragments.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +30,10 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     public void setDecks(List<Deck> decks) {
         mDecks = decks;
+        if (mSelectedDeckPosition != -1) {
+            mCurrentDeck = mDecks.get(mSelectedDeckPosition);
+        }
         notifyDataSetChanged();
-        Log.d(TAG, "deckSize " + getItemCount());
     }
 
     public Deck getCurrentDeck() {
@@ -58,15 +59,20 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean showNavBar = true;
+                boolean showNavBar;
+
+                // remove selection if already selected and clicked one more time
                 if (position == mSelectedDeckPosition) {
                     mSelectedDeckPosition = -1;
                     showNavBar = false;
                     holder.itemView.setSelected(false);
-                } else {
+
+                } else { // select deck and highlight row
                     mSelectedDeckPosition = position;
                     mCurrentDeck = mDecks.get(mSelectedDeckPosition);
+                    showNavBar = true;
                 }
+
                 notifyDataSetChanged();
                 mDecksAdapterActionsListener.onShowNavBar(showNavBar);
             }
