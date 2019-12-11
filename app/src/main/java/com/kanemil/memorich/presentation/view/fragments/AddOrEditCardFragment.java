@@ -24,6 +24,8 @@ import javax.inject.Inject;
 
 public class AddOrEditCardFragment extends BaseFragment {
 
+    private static final String TAG = "AddOrEditCardFragment";
+
     private static final String DECK_ID = "deckId";
     private static final String CARD_ORDER_ID = "cardOrderId";
     private static final String CARD_ID = "cardId";
@@ -41,6 +43,7 @@ public class AddOrEditCardFragment extends BaseFragment {
     ViewModelProviderFactory mViewModelProviderFactory;
 
     private long mDeckId;
+    private long mCardOrderId;
 
     /**
      * Constructor for adding a new card
@@ -64,10 +67,11 @@ public class AddOrEditCardFragment extends BaseFragment {
      * @param cardId card's id
      * @return
      */
-    public static AddOrEditCardFragment newInstance(long deckId, long cardId, String front, String back) {
+    public static AddOrEditCardFragment newInstance(long deckId, long cardId, String front, String back, long cardOrderId) {
         Bundle args = new Bundle();
         args.putLong(DECK_ID, deckId);
         args.putLong(CARD_ID, cardId);
+        args.putLong(CARD_ORDER_ID, cardOrderId);
         args.putString(CARD_FRONT, front);
         args.putString(CARD_BACK, back);
         AddOrEditCardFragment fragment = new AddOrEditCardFragment();
@@ -88,6 +92,7 @@ public class AddOrEditCardFragment extends BaseFragment {
             }
 
             mDeckId = getArguments().getLong(DECK_ID);
+            mCardOrderId = getArguments().getLong(CARD_ORDER_ID);
         }
     }
 
@@ -109,7 +114,7 @@ public class AddOrEditCardFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
-        initButton(mDeckId);
+        initButton();
         if (mMode == DISPLAY_MODE.ADD_CARD) {
             mButtonAdd.setEnabled(false);
         }
@@ -135,38 +140,43 @@ public class AddOrEditCardFragment extends BaseFragment {
                 .get(CardsViewModel.class);
     }
 
-    private void initButton(final long deckId) {
-        if (mMode == DISPLAY_MODE.ADD_CARD) {
-            mButtonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Card card = new Card(
-                            mEditTextFront.getText().toString(),
-                            mEditTextBack.getText().toString(),
-                            deckId);
-                    card.setOrderId(getArguments() != null ? getArguments().getLong(CARD_ORDER_ID) : 0);
-                    mViewModel.addCard(card);
-                    requireFragmentManager().popBackStack();
-
-                }
-            });
-        } else {
-            mButtonAdd.setText(R.string.save);
-            mButtonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (getArguments() != null) {
-                        Card card = new Card(mEditTextFront.getText().toString(),
-                                mEditTextBack.getText().toString(),
-                                deckId);
-                        card.setId(getArguments().getLong(CARD_ID));
-                        mViewModel.updateCard(card);
+    private void initButton() {
+        switch (mMode) {
+            case ADD_CARD:
+                mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Card card = createCardObject();
+                        card.setOrderId(mCardOrderId);
+                        mViewModel.addCard(card);
                         requireFragmentManager().popBackStack();
-
                     }
-                }
-            });
+                });
+                break;
+
+            case EDIT_CARD:
+                mButtonAdd.setText(R.string.save);
+                mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (getArguments() != null) {
+                            final Card card = createCardObject();
+                            card.setId(getArguments().getLong(CARD_ID));
+                            card.setOrderId(mCardOrderId);
+                            mViewModel.updateCard(card);
+                            requireFragmentManager().popBackStack();
+                        }
+                    }
+                });
+                break;
         }
+    }
+
+    private Card createCardObject() {
+        return new Card(
+                mEditTextFront.getText().toString(),
+                mEditTextBack.getText().toString(),
+                mDeckId);
     }
 
     public enum DISPLAY_MODE {

@@ -59,7 +59,6 @@ public class Card {
 
     public void setId(long id) {
         mId = id;
-        mOrderId = id;
     }
 
     public String getFront() {

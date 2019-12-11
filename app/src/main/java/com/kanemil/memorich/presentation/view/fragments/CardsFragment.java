@@ -129,7 +129,7 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
         requireFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.animator.fade_in, android.R.animator.fade_out)
                 .replace(R.id.root_view, AddOrEditCardFragment.newInstance(
-                        card.getDeckId(), card.getId(), card.getFront(), card.getBack()), null)
+                        card.getDeckId(), card.getId(), card.getFront(), card.getBack(), card.getOrderId()), null)
                 .addToBackStack(null)
                 .commit();
     }
