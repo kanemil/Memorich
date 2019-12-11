@@ -1,12 +1,14 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +48,7 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
         }
     };
     private CardsViewModel mViewModel;
+    private CoordinatorLayout mCoordinatorLayout;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fab;
     private CardsAdapter mAdapter;
@@ -95,6 +98,7 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     }
 
     private void setupViews(View root) {
+        mCoordinatorLayout = root.findViewById(R.id.coordinator_cards);
         setupRecyclerView(root);
         setupFab(root);
     }
@@ -122,17 +126,25 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
 
     private void setupViewModel() {
         mViewModel = ViewModelProviders
-                .of(this, mViewModelProviderFactory)
+                .of(requireActivity(), mViewModelProviderFactory)
                 .get(CardsViewModel.class);
         mViewModel.setDeckId(mDeckId);
         subscribeObservers();
     }
 
     private void subscribeObservers() {
-        mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
+        mViewModel.getCardsList().observe(getViewLifecycleOwner(), new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
                 mAdapter.setCards(cards);
+            }
+        });
+
+        mViewModel.getSnackbarMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d(TAG, "onChanged: " + s);
+                Snackbar.make(mCoordinatorLayout, s, Snackbar.LENGTH_SHORT).show();
             }
         });
     }

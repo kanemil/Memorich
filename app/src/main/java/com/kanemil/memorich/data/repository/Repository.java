@@ -26,7 +26,7 @@ public class Repository {
         mDb = db;
     }
 
-    // ----------------------------Decks----------------------------------
+    // ----------------------------Decks----------------------------
 
     public LiveData<List<Deck>> getDecks() {
         return mDb.getDeckDao().getDecks();
@@ -48,20 +48,20 @@ public class Repository {
     }
 
 
-    // ----------------------------Cards----------------------------------
+    // ----------------------------Cards----------------------------
 
     public LiveData<List<Card>> getCards(long deckId) {
         return mDb.getCardDao().getCardsByDeckId(deckId);
     }
 
-    public void insertCard(Card card) {
-        final Completable completable = mDb.getCardDao().insert(card);
-        execute(completable);
+    public Completable insertCard(Card card) {
+        return mDb.getCardDao().insert(card)
+                .subscribeOn(Schedulers.io());
     }
 
-    public void updateCard(Card card) {
-        final Completable completable = mDb.getCardDao().update(card);
-        execute(completable);
+    public Completable updateCard(Card card) {
+        return mDb.getCardDao().update(card)
+                .subscribeOn(Schedulers.io());
     }
 
     public void updateCardList(List<Card> cardList) {

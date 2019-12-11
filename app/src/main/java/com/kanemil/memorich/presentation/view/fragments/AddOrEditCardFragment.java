@@ -37,7 +37,7 @@ public class AddOrEditCardFragment extends BaseFragment {
 
     private EditText mEditTextFront;
     private EditText mEditTextBack;
-    private Button mButtonAdd;
+    private Button mButton;
 
     @Inject
     ViewModelProviderFactory mViewModelProviderFactory;
@@ -99,24 +99,31 @@ public class AddOrEditCardFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.add_card_fragment, container, false);
+        return inflater.inflate(R.layout.add_card_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setupViews(view);
+    }
+
+    private void setupViews(View root) {
         mEditTextFront = root.findViewById(R.id.et_card_front);
         mEditTextBack = root.findViewById(R.id.et_card_back);
         if (mMode == DISPLAY_MODE.EDIT_CARD) {
             mEditTextFront.setText(getArguments() != null ? getArguments().getString(CARD_FRONT) : null);
             mEditTextBack.setText(getArguments() != null ? getArguments().getString(CARD_BACK) : null);
         }
-        mButtonAdd = root.findViewById(R.id.btn_add);
-        return root;
+        mButton = root.findViewById(R.id.btn_add);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
-        initButton();
+        setupButton();
         if (mMode == DISPLAY_MODE.ADD_CARD) {
-            mButtonAdd.setEnabled(false);
+            mButton.setEnabled(false);
         }
         mEditTextFront.addTextChangedListener(new TextWatcher() {
             @Override
@@ -125,7 +132,7 @@ public class AddOrEditCardFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mButtonAdd.setEnabled(TextUtils.isGraphic(charSequence));
+                mButton.setEnabled(TextUtils.isGraphic(charSequence));
             }
 
             @Override
@@ -136,17 +143,17 @@ public class AddOrEditCardFragment extends BaseFragment {
 
     private void setupViewModel() {
         mViewModel = ViewModelProviders
-                .of(this, mViewModelProviderFactory)
+                .of(requireActivity(), mViewModelProviderFactory)
                 .get(CardsViewModel.class);
     }
 
-    private void initButton() {
+    private void setupButton() {
         switch (mMode) {
             case ADD_CARD:
-                mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                mButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final Card card = createCardObject();
+                        final Card card = createCardWithEnteredData();
                         card.setOrderId(mCardOrderId);
                         mViewModel.addCard(card);
                         requireFragmentManager().popBackStack();
@@ -155,12 +162,12 @@ public class AddOrEditCardFragment extends BaseFragment {
                 break;
 
             case EDIT_CARD:
-                mButtonAdd.setText(R.string.save);
-                mButtonAdd.setOnClickListener(new View.OnClickListener() {
+                mButton.setText(R.string.save);
+                mButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (getArguments() != null) {
-                            final Card card = createCardObject();
+                            final Card card = createCardWithEnteredData();
                             card.setId(getArguments().getLong(CARD_ID));
                             card.setOrderId(mCardOrderId);
                             mViewModel.updateCard(card);
@@ -172,7 +179,7 @@ public class AddOrEditCardFragment extends BaseFragment {
         }
     }
 
-    private Card createCardObject() {
+    private Card createCardWithEnteredData() {
         return new Card(
                 mEditTextFront.getText().toString(),
                 mEditTextBack.getText().toString(),

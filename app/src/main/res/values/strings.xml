@@ -34,5 +34,7 @@
     <string name="added_deck_formatter">Deck \'%s\' was added!</string>
     <string name="renamed_deck_formatter">Deck \'%s\' was renamed!</string>
     <string name="deleted_deck_formatter">Deck \'%s\' was deleted!</string>
+    <string name="card_added">Card was added!</string>
+    <string name="card_updated">Card was updated!</string>
 
 </resources>
