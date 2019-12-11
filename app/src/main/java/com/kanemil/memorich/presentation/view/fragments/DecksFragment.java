@@ -1,7 +1,6 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,7 +28,6 @@ import com.kanemil.memorich.presentation.viewmodel.DecksViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -46,6 +45,7 @@ public class DecksFragment extends BaseFragment
 
     private DecksViewModel mViewModel;
 
+    private CoordinatorLayout mCoordinatorLayout;
     private RecyclerView mRecyclerView;
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton fab;
@@ -73,6 +73,7 @@ public class DecksFragment extends BaseFragment
         mRecyclerView.setAdapter(mAdapter);
         fab = root.findViewById(R.id.fab_add_deck);
         fab.setOnClickListener(mFabOnClickListener);
+        mCoordinatorLayout = root.findViewById(R.id.coordinator_decks);
         return root;
     }
 
@@ -115,21 +116,23 @@ public class DecksFragment extends BaseFragment
 
     private void setupViewModel() {
         mViewModel = ViewModelProviders
-                .of(this, mViewModelProviderFactory)
+                .of(requireActivity(), mViewModelProviderFactory)
                 .get(DecksViewModel.class);
+        subscribeObservers();
+    }
+
+    private void subscribeObservers() {
         mViewModel.getDecksList().observe(getViewLifecycleOwner(), new Observer<List<Deck>>() {
             @Override
             public void onChanged(List<Deck> decks) {
-                Log.d(TAG, "onChanged() called with: decks = [" + decks + "]");
                 mAdapter.setDecks(decks);
             }
         });
-        mViewModel.getDeckOperationMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        mViewModel.getSnackbarMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // TODO понять, почему не работает
-                Log.d(TAG, "onChanged: snkacbar");
-                Snackbar.make(getView(), s, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mCoordinatorLayout, s, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -170,7 +173,7 @@ public class DecksFragment extends BaseFragment
 
     @Override
     public void onDeckMenuDeleteClicked(final Deck deck) {
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_decks),
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
                 getString(R.string.press_undo_to_cancel), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo), new View.OnClickListener() {
                     @Override

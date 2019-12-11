@@ -59,7 +59,7 @@ public class AddDeckDialogFragment extends BaseDialogFragment {
     }
 
     private void setupViewModel() {
-        mViewModel = ViewModelProviders.of(this, mViewModelProviderFactory).get(DecksViewModel.class);
+        mViewModel = ViewModelProviders.of(requireActivity(), mViewModelProviderFactory).get(DecksViewModel.class);
     }
 
     @Override

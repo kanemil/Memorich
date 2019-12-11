@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.data.db.entity.Deck;
 import com.kanemil.memorich.data.repository.Repository;
+import com.kanemil.memorich.presentation.SingleLiveEvent;
 import com.kanemil.memorich.presentation.viewmodel.utils.ResourceWrapper;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class DecksViewModel extends ViewModel {
 
     private static final String TAG = "DecksViewModel";
     private LiveData<List<Deck>> mDecksList = new MutableLiveData<>();
-    private MutableLiveData<String> mDeckOperationMessage = new MutableLiveData<>();
+    private SingleLiveEvent<String> mSnackbarMessage = new SingleLiveEvent<>();
 
     // inject
     private Repository mRepository;
@@ -36,7 +37,7 @@ public class DecksViewModel extends ViewModel {
     }
 
     public void addDeck(final String deckName) {
-        Deck deck = new Deck(deckName);
+        final Deck deck = new Deck(deckName);
         mRepository.insertDeck(deck)
                 .subscribe(new CompletableObserver() {
                     @Override
@@ -45,9 +46,7 @@ public class DecksViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        mDeckOperationMessage.setValue(mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
-                        Log.d(TAG, "onComplete: " + mResourceWrapper.getString(R.string.added_deck_formatter, deckName));
-                        Log.d(TAG, "onComplete: " + mDeckOperationMessage.getValue());
+                        mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.added_deck_formatter, deck.getName()));
                     }
 
                     @Override
@@ -58,7 +57,7 @@ public class DecksViewModel extends ViewModel {
     }
 
     public void renameDeck(long deckId, final String newDeckName) {
-        Deck deck = new Deck(newDeckName);
+        final Deck deck = new Deck(newDeckName);
         deck.setId(deckId);
         mRepository.renameDeck(deck)
                 .subscribe(new CompletableObserver() {
@@ -69,7 +68,7 @@ public class DecksViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.renamed_deck_formatter, newDeckName));
+                        mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.renamed_deck_formatter, deck.getName()));
                     }
 
                     @Override
@@ -89,7 +88,7 @@ public class DecksViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        mDeckOperationMessage.postValue(mResourceWrapper.getString(R.string.deleted_deck_formatter, deck.getName()));
+                        mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.deleted_deck_formatter, deck.getName()));
                     }
 
                     @Override
@@ -103,8 +102,8 @@ public class DecksViewModel extends ViewModel {
         return mDecksList;
     }
 
-    public LiveData<String> getDeckOperationMessage() {
-        return mDeckOperationMessage;
+    public LiveData<String> getSnackbarMessage() {
+        return mSnackbarMessage;
     }
 
     private void loadDecks() {
