@@ -36,5 +36,6 @@
     <string name="deleted_deck_formatter">Deck \'%s\' was deleted!</string>
     <string name="card_added">Card was added!</string>
     <string name="card_updated">Card was updated!</string>
+    <string name="cards_order_modified">Cards order was modified!</string>
 
 </resources>

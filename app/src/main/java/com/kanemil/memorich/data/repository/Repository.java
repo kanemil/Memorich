@@ -64,9 +64,9 @@ public class Repository {
                 .subscribeOn(Schedulers.io());
     }
 
-    public void updateCardList(List<Card> cardList) {
-        final Completable completable = mDb.getCardDao().updateList(cardList);
-        execute(completable);
+    public Completable updateCardList(List<Card> cardList) {
+        return mDb.getCardDao().updateList(cardList)
+                .subscribeOn(Schedulers.io());
     }
 
     public void deleteCard(Card card, final List<Card> cardListAfterDeletion) {
@@ -89,10 +89,5 @@ public class Repository {
 
                     }
                 });
-    }
-
-    private void execute(Completable completable) {
-        completable.subscribeOn(Schedulers.io())
-                .subscribe();
     }
 }

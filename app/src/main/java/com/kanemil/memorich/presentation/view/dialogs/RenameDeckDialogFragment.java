@@ -34,6 +34,9 @@ public class RenameDeckDialogFragment extends BaseDialogFragment {
 
     private EditText mEditTextDeckName;
 
+    private long mDeckId;
+    private String mDeckName;
+
     @Inject
     ViewModelProviderFactory mViewModelProviderFactory;
     private DecksViewModel mViewModel;
@@ -54,31 +57,40 @@ public class RenameDeckDialogFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        extractArguments();
         setupViewModel();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View root = inflater.inflate(R.layout.dialog_add_deck, null);
-        mEditTextDeckName = root.findViewById(R.id.et_deck_name);
-        if (getArguments() != null) {
-            final String deckName = getArguments().getString(DECK_NAME);
-            mEditTextDeckName.setText(deckName);
-            mEditTextDeckName.setSelection(deckName != null ? deckName.length() : 0);
-        }
+        setupEditText(root);
+
         builder.setView(root);
 
         builder.setPositiveButton(getString(R.string.rename), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (getArguments() != null) {
-                    mViewModel.renameDeck(getArguments().getLong(DECK_ID_TO_RENAME),
-                            mEditTextDeckName.getText().toString());
-                }
+                mViewModel.renameDeck(mDeckId, mEditTextDeckName.getText().toString());
             }
         }).setTitle(R.string.set_new_name_for_deck);
 
         mAlertDialog = builder.create();
         return mAlertDialog;
+    }
+
+    private void setupEditText(View root) {
+        mEditTextDeckName = root.findViewById(R.id.et_deck_name);
+        mEditTextDeckName.setText(mDeckName);
+        mEditTextDeckName.setSelection(mDeckName != null ? mDeckName.length() : 0);
+    }
+
+    private void extractArguments() throws RuntimeException {
+        if (getArguments() != null) {
+            mDeckId = getArguments().getLong(DECK_ID_TO_RENAME);
+            mDeckName = getArguments().getString(DECK_NAME);
+        } else {
+            throw new RuntimeException("RenameDeckDialogFragment did not receive arguments");
+        }
     }
 
     @Override
