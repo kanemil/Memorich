@@ -1,7 +1,6 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,28 +66,45 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.EDIT);
-        mAdapter.setCardsAdapterActionsListener(this);
+        extractArguments();
+        setupAdapter();
+    }
+
+    private void extractArguments() throws RuntimeException {
         if (getArguments() != null) {
             mDeckId = getArguments().getLong(DECK_ID);
+        } else {
+            throw new RuntimeException("CardsFragment did not receive arguments");
         }
+    }
+
+    private void setupAdapter() {
+        mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.EDIT);
+        mAdapter.setCardsAdapterActionsListener(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_cards, container, false);
-        initRecyclerView(root);
-        initFab(root);
-        return root;
+        return inflater.inflate(R.layout.fragment_cards, container, false);
     }
 
-    private void initFab(View root) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setupViews(view);
+    }
+
+    private void setupViews(View root) {
+        setupRecyclerView(root);
+        setupFab(root);
+    }
+
+    private void setupFab(View root) {
         fab = root.findViewById(R.id.fab_add_card);
         fab.setOnClickListener(mFabOnClickListener);
     }
 
-    private void initRecyclerView(View root) {
+    private void setupRecyclerView(View root) {
         mRecyclerView = root.findViewById(R.id.rv_cards);
         mRecyclerView.setAdapter(mAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), SPAN_COUNT);
@@ -109,6 +125,10 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
                 .of(this, mViewModelProviderFactory)
                 .get(CardsViewModel.class);
         mViewModel.setDeckId(mDeckId);
+        subscribeObservers();
+    }
+
+    private void subscribeObservers() {
         mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
@@ -121,7 +141,6 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     public void onStop() {
         super.onStop();
         mViewModel.updateCardsOrder(mAdapter.getCards());
-        Log.d(TAG, "cards: " + mAdapter.getCards().toString());
     }
 
     @Override

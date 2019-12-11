@@ -67,17 +67,32 @@ public class DecksFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_decks, container, false);
-        mRecyclerView = root.findViewById(R.id.rv_decks);
-        initBottomNavView(root);
-        mRecyclerView.setAdapter(mAdapter);
-        fab = root.findViewById(R.id.fab_add_deck);
-        fab.setOnClickListener(mFabOnClickListener);
-        mCoordinatorLayout = root.findViewById(R.id.coordinator_decks);
-        return root;
+        return inflater.inflate(R.layout.fragment_decks, container, false);
     }
 
-    private void initBottomNavView(View root) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setupViews(view);
+    }
+
+    private void setupViews(View root) {
+        setupBottomNavigationView(root);
+        setupRecyclerView(root);
+        setupFab(root);
+        mCoordinatorLayout = root.findViewById(R.id.coordinator_decks);
+    }
+
+    private void setupRecyclerView(View root) {
+        mRecyclerView = root.findViewById(R.id.rv_decks);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void setupFab(View root) {
+        fab = root.findViewById(R.id.fab_add_deck);
+        fab.setOnClickListener(mFabOnClickListener);
+    }
+
+    private void setupBottomNavigationView(View root) {
         mBottomNavigationView = root.findViewById(R.id.bot_nav);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
