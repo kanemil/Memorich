@@ -1,10 +1,12 @@
 package com.kanemil.memorich.presentation.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +44,9 @@ public class DecksFragment extends BaseFragment
             dialogFragment.show(requireFragmentManager(), null);
         }
     };
+
     private DecksViewModel mViewModel;
+
     private RecyclerView mRecyclerView;
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton fab;
@@ -120,6 +124,14 @@ public class DecksFragment extends BaseFragment
                 mAdapter.setDecks(decks);
             }
         });
+        mViewModel.getOnDeckAddedMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d(TAG, "onChanged: snkacbar");
+//                Snackbar.make(getView(), s, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "SOMETHING", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -133,10 +145,12 @@ public class DecksFragment extends BaseFragment
 
     @Override
     public void onShowNavBar(boolean showNavBar) {
-        if (showNavBar)
-            mBottomNavigationView.setVisibility(View.VISIBLE);
-        else
-            mBottomNavigationView.setVisibility(View.GONE);
+        if (!showNavBar) {
+            mBottomNavigationView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+        } else {
+            mBottomNavigationView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+        mBottomNavigationView.getMenu().setGroupVisible(0, showNavBar);
     }
 
     @Override
@@ -171,7 +185,6 @@ public class DecksFragment extends BaseFragment
                         if (event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_SWIPE
                                 || event == DISMISS_EVENT_CONSECUTIVE || event == DISMISS_EVENT_MANUAL) {
                             mViewModel.deleteDeck(deck);
-                            mBottomNavigationView.setVisibility(View.GONE);
                         }
                     }
                 });

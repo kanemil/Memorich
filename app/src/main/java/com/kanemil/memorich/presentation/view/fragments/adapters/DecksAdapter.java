@@ -30,9 +30,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     public void setDecks(List<Deck> decks) {
         mDecks = decks;
-        if (mSelectedDeckPosition != -1) {
-            mCurrentDeck = mDecks.get(mSelectedDeckPosition);
-        }
+        clearDeckSelection();
         notifyDataSetChanged();
     }
 
@@ -42,6 +40,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     public void clearDeckSelection() {
         mSelectedDeckPosition = -1;
+        mDecksAdapterActionsListener.onShowNavBar(false);
     }
 
     @NonNull
@@ -59,22 +58,19 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean showNavBar;
 
                 // remove selection if already selected and clicked one more time
                 if (position == mSelectedDeckPosition) {
-                    mSelectedDeckPosition = -1;
-                    showNavBar = false;
+                    clearDeckSelection();
                     holder.itemView.setSelected(false);
 
                 } else { // select deck and highlight row
                     mSelectedDeckPosition = position;
                     mCurrentDeck = mDecks.get(mSelectedDeckPosition);
-                    showNavBar = true;
+                    mDecksAdapterActionsListener.onShowNavBar(true);
                 }
 
                 notifyDataSetChanged();
-                mDecksAdapterActionsListener.onShowNavBar(showNavBar);
             }
         });
         holder.itemView.setSelected(position == mSelectedDeckPosition);

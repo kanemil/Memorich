@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -38,9 +39,13 @@ public class Repository {
         как-то что-то с ним делать, например, обзервить его и по результату засовывать что-то в
         лайвДату, которая будет обзервиться во фрагменте, в результате чего и будет показываться тост?
      */
-    public void insertDeck(Deck deck) {
-        final Completable completable = mDb.getDeckDao().insert(deck);
-        execute(completable);
+    public Completable insertDeck(Deck deck) {
+//        final Completable completable = mDb.getDeckDao().insert(deck);
+//        execute(completable);
+
+        return mDb.getDeckDao().insert(deck)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 
     public void renameDeck(Deck deck) {

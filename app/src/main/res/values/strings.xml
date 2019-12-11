@@ -31,5 +31,6 @@
     <string name="finish_training_or_repeat_forgotten_cards">Overview cards in the deck, finish or restart training:</string>
     <string name="overview">Overview</string>
     <string name="add_card_pls">Please, add at least one card!</string>
+    <string name="added_deck_formatter">Deck \'%s\' was added!</string>
 
 </resources>
