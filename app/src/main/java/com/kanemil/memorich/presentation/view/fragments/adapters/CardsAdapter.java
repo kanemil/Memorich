@@ -1,6 +1,5 @@
 package com.kanemil.memorich.presentation.view.fragments.adapters;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,8 +18,6 @@ import com.kanemil.memorich.presentation.view.fragments.adapters.utils.ItemTouch
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-// TODO записать карты в бд в новом порядке после drag-n-drop'а
 
 public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
         implements ItemTouchHelperAdapter, PopupMenu.OnMenuItemClickListener {
@@ -99,17 +96,20 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                swapOrderId(i, i + 1);
-                Collections.swap(mCards, i, i + 1);
+                swapCards(i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                swapOrderId(i, i - 1);
-                Collections.swap(mCards, i, i - 1);
+                swapCards(i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
         return true;
+    }
+
+    private void swapCards(int i, int j) {
+        swapOrderId(i, j);
+        Collections.swap(mCards, i, j);
     }
 
     private void swapOrderId(int i, int j) {
@@ -161,9 +161,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
                     @Override
                     public void onClick(View view) {
                         mCurrentCard = card;
-                        Log.d(TAG, "cards: " + mCards);
-                        Log.d(TAG, "current " + mCurrentCard);
-                        Log.d(TAG, "clicked" + mCurrentCard.toString());
                         PopupMenu popupMenu = new PopupMenu(view.getContext(), itemView, Gravity.RIGHT);
                         popupMenu.inflate(R.menu.menu_cards);
                         popupMenu.setOnMenuItemClickListener(CardsAdapter.this);
@@ -172,8 +169,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
                 });
             }
         }
-
-
 
         /**
          * Reveals back side of card after click on bottom part of card
