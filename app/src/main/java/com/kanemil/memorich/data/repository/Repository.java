@@ -26,6 +26,8 @@ public class Repository {
         mDb = db;
     }
 
+    // ----------------------------Decks----------------------------------
+
     public LiveData<List<Deck>> getDecks() {
         return mDb.getDeckDao().getDecks();
     }
@@ -44,6 +46,9 @@ public class Repository {
         return mDb.getDeckDao().delete(deck)
                 .subscribeOn(Schedulers.io());
     }
+
+
+    // ----------------------------Cards----------------------------------
 
     public LiveData<List<Card>> getCards(long deckId) {
         return mDb.getCardDao().getCardsByDeckId(deckId);

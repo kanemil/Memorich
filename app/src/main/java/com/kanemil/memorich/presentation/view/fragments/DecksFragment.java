@@ -117,13 +117,13 @@ public class DecksFragment extends BaseFragment
         mViewModel = ViewModelProviders
                 .of(this, mViewModelProviderFactory)
                 .get(DecksViewModel.class);
-        mViewModel.getDecksList().observe(this, new Observer<List<Deck>>() {
+        mViewModel.getDecksList().observe(getViewLifecycleOwner(), new Observer<List<Deck>>() {
             @Override
             public void onChanged(List<Deck> decks) {
                 mAdapter.setDecks(decks);
             }
         });
-        mViewModel.getDeckOperationMessage().observe(this, new Observer<String>() {
+        mViewModel.getDeckOperationMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 // TODO понять, почему не работает
