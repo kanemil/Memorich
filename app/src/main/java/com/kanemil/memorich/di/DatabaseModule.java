@@ -24,14 +24,15 @@ public class DatabaseModule {
                 .databaseBuilder(application, AppDatabase.class, "database")
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        populateDatabase(db);
+                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
+                        prePopulateDatabase(db);
                     }
                 })
                 .build();
     }
 
-    private void populateDatabase(@NonNull SupportSQLiteDatabase db) {
+
+    private void prePopulateDatabase(@NonNull SupportSQLiteDatabase db) {
         db.execSQL("INSERT INTO decks (id, name) VALUES (1, 'Дебаг колода')");
         db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (1, 'first front', 'first back', 1, 0)");
         db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (2, 'second front', 'second back', 1, 1)");

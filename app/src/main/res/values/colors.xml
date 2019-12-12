@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#008e76</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorSepia">#fdf6e4</color>
+
+    <color name="splash_grey">#efefef</color>
 </resources>
