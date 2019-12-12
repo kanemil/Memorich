@@ -66,7 +66,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.CardHolder>
                 break;
             case TRAINING:
             default:
-                cardLayout = R.layout.item_card_page_experimental;
+                cardLayout = R.layout.item_card_page;
                 break;
         }
         View root = LayoutInflater.from(parent.getContext())
