@@ -41,6 +41,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
     public void clearDeckSelection() {
         mSelectedDeckPosition = -1;
         mDecksAdapterActionsListener.showBottomBar(false);
+        notifyDataSetChanged();
     }
 
     @NonNull

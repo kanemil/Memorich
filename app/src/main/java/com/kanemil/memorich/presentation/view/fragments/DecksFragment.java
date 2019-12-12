@@ -48,7 +48,7 @@ public class DecksFragment extends BaseFragment
     private CoordinatorLayout mCoordinatorLayout;
     private RecyclerView mRecyclerView;
     private BottomNavigationView mBottomNavigationView;
-    private FloatingActionButton fab;
+    private FloatingActionButton mFab;
     private DecksAdapter mAdapter;
 
     @Inject
@@ -88,8 +88,8 @@ public class DecksFragment extends BaseFragment
     }
 
     private void setupFab(View root) {
-        fab = root.findViewById(R.id.fab_add_deck);
-        fab.setOnClickListener(mFabOnClickListener);
+        mFab = root.findViewById(R.id.fab_add_deck);
+        mFab.setOnClickListener(mFabOnClickListener);
     }
 
     private void setupBottomNavigationView(View root) {
@@ -121,12 +121,6 @@ public class DecksFragment extends BaseFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAdapter.clearDeckSelection();
     }
 
     private void setupViewModel() {
@@ -164,7 +158,7 @@ public class DecksFragment extends BaseFragment
     @Override
     public void showBottomBar(boolean showNavBar) {
         if (!showNavBar) {
-            mBottomNavigationView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            mBottomNavigationView.setBackgroundColor(getResources().getColor(R.color.splash_grey));
         } else {
             mBottomNavigationView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }

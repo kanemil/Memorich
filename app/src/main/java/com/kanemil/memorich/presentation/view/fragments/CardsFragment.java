@@ -49,7 +49,7 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     private CardsViewModel mViewModel;
     private CoordinatorLayout mCoordinatorLayout;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton fab;
+    private FloatingActionButton mFab;
     private CardsAdapter mAdapter;
 
     private long mDeckId;
@@ -103,8 +103,8 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     }
 
     private void setupFab(View root) {
-        fab = root.findViewById(R.id.fab_add_card);
-        fab.setOnClickListener(mFabOnClickListener);
+        mFab = root.findViewById(R.id.fab_add_card);
+        mFab.setOnClickListener(mFabOnClickListener);
     }
 
     private void setupRecyclerView(View root) {
