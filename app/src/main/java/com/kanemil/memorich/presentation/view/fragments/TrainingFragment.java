@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kanemil.memorich.R;
 import com.kanemil.memorich.base.BaseFragment;
 import com.kanemil.memorich.data.db.entity.Card;
@@ -170,10 +170,7 @@ public class TrainingFragment extends BaseFragment {
             @Override
             public void onChanged(List<Card> cards) {
                 if (cards.size() == 0) {
-                    // todo make screen requiring to add cards into the deck
-                    Toast.makeText(requireContext(), "ADD CARDS AT FIRST", Toast.LENGTH_SHORT).show();
-                    mSeekBar.setMax(0);
-                    mSeekBar.setEnabled(false);
+                    showEmptyDeckScreenLayout();
                 } else {
                     mAdapter.setCards(cards);
                     mTextViewCardsSize.setText(String.format(getResources().getString(R.string.cards_size), cards.size()));
@@ -222,6 +219,14 @@ public class TrainingFragment extends BaseFragment {
                 mViewPager2.setCurrentItem(position);
             }
         });
+    }
+
+    private void showEmptyDeckScreenLayout() {
+        Snackbar.make(getView(), getString(R.string.add_card_pls), Snackbar.LENGTH_SHORT).show();
+        mTextViewProgress.setVisibility(View.INVISIBLE);
+        mSeekBar.setMax(0);
+        mSeekBar.setEnabled(false);
+        toggleButtons(false);
     }
 
     private void showResultScreen(String s) {
