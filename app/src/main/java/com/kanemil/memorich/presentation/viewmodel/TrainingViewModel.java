@@ -9,7 +9,9 @@ import com.kanemil.memorich.data.db.entity.Card;
 import com.kanemil.memorich.data.repository.Repository;
 import com.kanemil.memorich.presentation.viewmodel.utils.ResourceWrapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 
@@ -26,7 +28,7 @@ public class TrainingViewModel extends ViewModel {
     private MutableLiveData<Integer> mCorrectAnswers = new MutableLiveData<>(0);
     private MutableLiveData<TreeSet<Integer>> mAnsweredCardsPositions = new MutableLiveData<>(new TreeSet<Integer>());
     private MutableLiveData<Boolean> mIsCardAlreadyAnswered = new MutableLiveData<>(false);
-    private MutableLiveData<String> mTrainingScore = new MutableLiveData<>();
+    private MutableLiveData<Map<String, Integer>> mTrainingScore = new MutableLiveData<>();
     private MutableLiveData<Integer> mFirstUnansweredCard = new MutableLiveData<>();
 
     private long mDeckId;
@@ -58,7 +60,7 @@ public class TrainingViewModel extends ViewModel {
         return mIsCardAlreadyAnswered;
     }
 
-    public LiveData<String> getTrainingScore() {
+    public LiveData<Map<String, Integer>> getTrainingScore() {
         return mTrainingScore;
     }
 
@@ -104,10 +106,17 @@ public class TrainingViewModel extends ViewModel {
     private void checkIfAllCardsAreAnswered() {
         if (mCardsList.getValue() != null && mAnsweredCardsPositions.getValue() != null) {
             if (mCardsList.getValue().size() == mAnsweredCardsPositions.getValue().size() && mCorrectAnswers.getValue() != null) {
-                final float result = mCorrectAnswers.getValue() * 1f / mCardsList.getValue().size() * 100;
-                mTrainingScore.setValue(mResourceWrapper.getString(R.string.training_result, result));
+                postResult();
             }
         }
+    }
+
+    private void postResult() {
+        final float result = mCorrectAnswers.getValue() * 1f / mCardsList.getValue().size() * 100;
+        final Map<String, Integer> map = new HashMap<>();
+        final String text = mResourceWrapper.getString(R.string.training_result, result);
+        map.put(text, (int) result);
+        mTrainingScore.setValue(map);
     }
 
     private void updateFirstUnansweredCardPosition() {

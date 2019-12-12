@@ -17,10 +17,11 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/dimen_128"
-            android:layout_height="@dimen/dimen_128"
+            android:id="@+id/result_image"
+            android:layout_width="@dimen/dimen_192"
+            android:layout_height="@dimen/dimen_192"
             android:layout_marginTop="@dimen/margin_16"
-            android:src="@drawable/ic_tag_faces_black_24dp" />
+            android:src="@drawable/image_result" />
 
         <TextView
             android:id="@+id/tv_result"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.kanemil.memorich.presentation.viewmodel.TrainingViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
@@ -205,11 +207,12 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getTrainingScore().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mViewModel.getTrainingScore().observe(getViewLifecycleOwner(), new Observer<Map<String, Integer>>() {
             @Override
-            public void onChanged(String s) {
-                // Finish training with a result screen
-                showResultScreen(s);
+            public void onChanged(Map<String, Integer> resultMap) {
+                for (String s : resultMap.keySet()) {
+                    showResultScreen(s, resultMap.get(s));
+                }
             }
         });
 
@@ -229,9 +232,10 @@ public class TrainingFragment extends BaseFragment {
         toggleButtons(false);
     }
 
-    private void showResultScreen(String s) {
-        final TextView v = mResultScreen.findViewById(R.id.tv_result);
-        v.setText(s);
+    private void showResultScreen(String text, int result) {
+        ((ImageView) mResultScreen.findViewById(R.id.result_image)).setImageLevel(result);
+        ((TextView) mResultScreen.findViewById(R.id.tv_result)).setText(text);
+
         mResultScreen.setVisibility(View.VISIBLE);
         mResultScreen.findViewById(R.id.btn_finish).setOnClickListener(new View.OnClickListener() {
             @Override
