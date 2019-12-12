@@ -21,7 +21,6 @@
     <string name="save">Save</string>
     <string name="set_new_name_for_deck">Set a new name</string>
     <string name="train">Train</string>
-    <string name="card_deleted">Card deleted</string>
     <string name="undo">UNDO</string>
     <string name="press_undo_to_cancel">Press UNDO to abort deletion</string>
     <string name="training_result">Your result is %.1f%%</string>
@@ -37,5 +36,6 @@
     <string name="card_added">Card was added!</string>
     <string name="card_updated">Card was updated!</string>
     <string name="cards_order_modified">Cards order was modified!</string>
+    <string name="card_deleted">Card was deleted!</string>
 
 </resources>

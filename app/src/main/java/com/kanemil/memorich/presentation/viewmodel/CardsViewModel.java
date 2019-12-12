@@ -1,5 +1,7 @@
 package com.kanemil.memorich.presentation.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -94,7 +96,7 @@ public class CardsViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.cards_order_modified));
+
                     }
 
                     @Override
@@ -105,7 +107,24 @@ public class CardsViewModel extends ViewModel {
     }
 
     public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
-        mRepository.deleteCard(card, cardListAfterDeletion);
+        mRepository.deleteCard(card, cardListAfterDeletion)
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: ");
+                        mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.card_deleted));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: ", e);
+                    }
+                });
     }
 
     private void loadCards() {

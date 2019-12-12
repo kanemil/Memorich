@@ -12,8 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableObserver;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -69,25 +67,10 @@ public class Repository {
                 .subscribeOn(Schedulers.io());
     }
 
-    public void deleteCard(Card card, final List<Card> cardListAfterDeletion) {
-        final Completable completable = mDb.getCardDao().delete(card);
-        completable
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        updateCardList(cardListAfterDeletion);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
+    public Completable deleteCard(Card card, final List<Card> cardListAfterDeletion) {
+        final Completable delete = mDb.getCardDao().delete(card);
+        final Completable deleteThenHandleCardsOrderIds = delete.andThen(updateCardList(cardListAfterDeletion));
+        return deleteThenHandleCardsOrderIds
+                .subscribeOn(Schedulers.io());
     }
 }

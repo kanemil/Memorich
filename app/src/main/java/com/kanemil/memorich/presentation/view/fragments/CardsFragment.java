@@ -27,7 +27,6 @@ import com.kanemil.memorich.presentation.viewmodel.CardsViewModel;
 import com.kanemil.memorich.presentation.viewmodel.ViewModelProviderFactory;
 
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -168,8 +167,5 @@ public class CardsFragment extends BaseFragment implements CardsAdapterActionsLi
     @Override
     public void deleteCard(Card card, List<Card> cardListAfterDeletion) {
         mViewModel.deleteCard(card, cardListAfterDeletion);
-        Snackbar snackbar = Snackbar.make(Objects.requireNonNull(getView()).findViewById(R.id.coordinator_cards),
-                getString(R.string.card_deleted), Snackbar.LENGTH_SHORT);
-        snackbar.show();
     }
 }
