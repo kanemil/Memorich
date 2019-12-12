@@ -38,7 +38,7 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
         return mCurrentDeck;
     }
 
-    public void clearDeckSelection() {
+    private void clearDeckSelection() {
         mSelectedDeckPosition = -1;
         mDecksAdapterActionsListener.showBottomBar(false);
         notifyDataSetChanged();
@@ -84,23 +84,14 @@ public class DecksAdapter extends RecyclerView.Adapter<DecksAdapter.DeckHolder> 
 
     static class DeckHolder extends RecyclerView.ViewHolder {
         private TextView mTextViewDeckName;
-        private View mSpace;
-        private TextView mTextViewDeckSize;
 
         DeckHolder(@NonNull View itemView) {
             super(itemView);
             mTextViewDeckName = itemView.findViewById(R.id.tv_deck_name);
-            mSpace = itemView.findViewById(R.id.space_deck_item_view);
-            mTextViewDeckSize = itemView.findViewById(R.id.tv_deck_size);
         }
 
         private void bind(Deck deck) {
             mTextViewDeckName.setText(deck.getName());
-//            itemView.setBackground(itemView.getContext().getDrawable(R.drawable.item_deck_background));
-            // TODO разобраться с отображением размера колоды
-//            Context ctx = mTextViewDeckSize.getContext();
-//            mTextViewDeckSize.setText(String.format(ctx.getString(R.string.size_formatter),
-//                    ctx.getString(R.string.size), deck.getCardList().size()));
         }
     }
 }
