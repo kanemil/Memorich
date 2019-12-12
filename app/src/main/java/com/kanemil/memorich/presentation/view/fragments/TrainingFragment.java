@@ -36,7 +36,6 @@ public class TrainingFragment extends BaseFragment {
     private TrainingViewModel mViewModel;
     private CardsAdapter mAdapter;
 
-    private View mRoot;
     private SeekBar mSeekBar;
     private ViewPager2 mViewPager2;
     private TextView mTextViewProgress;
@@ -61,24 +60,46 @@ public class TrainingFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupAdapter();
+        extractArguments();
+    }
+
+    private void setupAdapter() {
         mAdapter = new CardsAdapter(CardsAdapter.DisplayMode.TRAINING);
+    }
+
+    private void extractArguments() throws RuntimeException {
         if (getArguments() != null) {
             mDeckId = getArguments().getLong(DECK_ID);
+        } else {
+            throw new RuntimeException("TrainingFragment did not receive arguments");
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.fragment_training, container, false);
-        mSeekBar = mRoot.findViewById(R.id.sb_progress);
-        mViewPager2 = mRoot.findViewById(R.id.vp);
+        return inflater.inflate(R.layout.fragment_training, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setupViews(view);
+    }
+
+    private void setupViews(View root) {
+        mSeekBar = root.findViewById(R.id.sb_progress);
+        mTextViewProgress = root.findViewById(R.id.tv_progress);
+        mTextViewCardsSize = root.findViewById(R.id.tv_cards_size);
+        mButtonRemember = root.findViewById(R.id.btn_remember);
+        mButtonRepeat = root.findViewById(R.id.btn_restart);
+        mResultScreen = root.findViewById(R.id.result_screen);
+        mViewPager2 = root.findViewById(R.id.vp);
+        setupViewPager();
+    }
+
+    private void setupViewPager() {
         mViewPager2.setAdapter(mAdapter);
-        mTextViewProgress = mRoot.findViewById(R.id.tv_progress);
-        mTextViewCardsSize = mRoot.findViewById(R.id.tv_cards_size);
-        mButtonRemember = mRoot.findViewById(R.id.btn_remember);
-        mButtonRepeat = mRoot.findViewById(R.id.btn_restart);
-        mResultScreen = mRoot.findViewById(R.id.result_screen);
         mViewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -91,10 +112,9 @@ public class TrainingFragment extends BaseFragment {
                 }
             }
         });
-        return mRoot;
     }
 
-    private void initButtonListeners() {
+    private void setupButtonListeners() {
         mButtonRemember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +129,7 @@ public class TrainingFragment extends BaseFragment {
         });
     }
 
-    private void initSeekBarListener() {
+    private void setupSeekBarListener() {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -130,8 +150,8 @@ public class TrainingFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupViewModel();
-        initButtonListeners();
-        initSeekBarListener();
+        setupButtonListeners();
+        setupSeekBarListener();
     }
 
     private void setupViewModel() {
@@ -142,7 +162,11 @@ public class TrainingFragment extends BaseFragment {
 
         mViewModel.setDeckId(mDeckId);
 
-        mViewModel.getCardsList().observe(this, new Observer<List<Card>>() {
+        subscribeObservers();
+    }
+
+    private void subscribeObservers() {
+        mViewModel.getCardsList().observe(getViewLifecycleOwner(), new Observer<List<Card>>() {
             @Override
             public void onChanged(List<Card> cards) {
                 if (cards.size() == 0) {
@@ -158,7 +182,7 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getCorrectAnswers().observe(this, new Observer<Integer>() {
+        mViewModel.getCorrectAnswers().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 // update number of correct answers
@@ -166,7 +190,7 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getAnsweredCardsPositions().observe(this, new Observer<TreeSet<Integer>>() {
+        mViewModel.getAnsweredCardsPositions().observe(getViewLifecycleOwner(), new Observer<TreeSet<Integer>>() {
             @Override
             public void onChanged(TreeSet<Integer> answeredCards) {
                 // Disable button if already pressed on current card
@@ -176,7 +200,7 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getIsCardAlreadyAnswered().observe(this, new Observer<Boolean>() {
+        mViewModel.getIsCardAlreadyAnswered().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean b) {
                 // Disable buttons on previously answered cards
@@ -184,7 +208,7 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getTrainingScore().observe(this, new Observer<String>() {
+        mViewModel.getTrainingScore().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 // Finish training with a result screen
@@ -192,7 +216,7 @@ public class TrainingFragment extends BaseFragment {
             }
         });
 
-        mViewModel.getFirstUnansweredCard().observe(this, new Observer<Integer>() {
+        mViewModel.getFirstUnansweredCard().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer position) {
                 mViewPager2.setCurrentItem(position);
