@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/result_image"
-                android:layout_width="168dp"
-                android:layout_height="168dp"
+                android:layout_width="@dimen/result_image_size"
+                android:layout_height="@dimen/result_image_size"
                 android:layout_marginTop="@dimen/margin_16"
                 android:src="@drawable/image_result" />
 

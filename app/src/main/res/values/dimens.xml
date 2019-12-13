@@ -19,4 +19,5 @@
     <dimen name="dimen_32">32dp</dimen>
     <dimen name="card_font_size">18sp</dimen>
     <dimen name="dimen_192">192dp</dimen>
+    <dimen name="result_image_size">168dp</dimen>
 </resources>
