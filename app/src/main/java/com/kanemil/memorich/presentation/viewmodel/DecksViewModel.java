@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class DecksViewModel extends ViewModel {
@@ -28,6 +29,8 @@ public class DecksViewModel extends ViewModel {
     // inject
     private Repository mRepository;
     private ResourceWrapper mResourceWrapper;
+
+    private CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
     public DecksViewModel(Repository repository, ResourceWrapper resourceWrapper) {
@@ -42,6 +45,7 @@ public class DecksViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -63,7 +67,7 @@ public class DecksViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -83,7 +87,7 @@ public class DecksViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -108,5 +112,10 @@ public class DecksViewModel extends ViewModel {
 
     private void loadDecks() {
         mDecksList = mRepository.getDecks();
+    }
+
+    @Override
+    protected void onCleared() {
+        mDisposables.clear();
     }
 }

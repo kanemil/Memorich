@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.CompletableObserver;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class CardsViewModel extends ViewModel {
@@ -32,6 +33,8 @@ public class CardsViewModel extends ViewModel {
     private SingleLiveEvent<String> mSnackbarMessage = new SingleLiveEvent<>();
 
     private long mDeckId;
+
+    private CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
     CardsViewModel(Repository repository, ResourceWrapper resourceWrapper) {
@@ -53,6 +56,7 @@ public class CardsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -71,7 +75,7 @@ public class CardsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -91,7 +95,7 @@ public class CardsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mDisposables.add(d);
                     }
 
                     @Override
@@ -111,12 +115,11 @@ public class CardsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
+                        mDisposables.add(d);
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete: ");
                         mSnackbarMessage.postValue(mResourceWrapper.getString(R.string.card_deleted));
                     }
 
@@ -133,5 +136,10 @@ public class CardsViewModel extends ViewModel {
 
     public SingleLiveEvent<String> getSnackbarMessage() {
         return mSnackbarMessage;
+    }
+
+    @Override
+    protected void onCleared() {
+        mDisposables.clear();
     }
 }

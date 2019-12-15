@@ -17,6 +17,8 @@ import java.util.TreeSet;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 public class TrainingViewModel extends ViewModel {
 
     // inject
@@ -32,6 +34,8 @@ public class TrainingViewModel extends ViewModel {
     private MutableLiveData<Integer> mFirstUnansweredCard = new MutableLiveData<>();
 
     private long mDeckId;
+
+    private CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
     TrainingViewModel(Repository repository, ResourceWrapper resourceWrapper) {
@@ -130,5 +134,10 @@ public class TrainingViewModel extends ViewModel {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        mDisposables.clear();
     }
 }
