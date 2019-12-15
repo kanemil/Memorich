@@ -6,9 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/colorSepia">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_cards"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        app:titleTextColor="@android:color/white"
+        style="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:title="@string/toolbar_cards"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cards"
         android:layout_width="match_parent"
+        android:layout_marginTop="?actionBarSize"
         android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -7,6 +7,17 @@
     android:background="@color/colorSepia"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_decks"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        app:titleTextColor="@android:color/white"
+        style="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:title="@string/toolbar_decks"
+        />
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_decks"
         android:layout_width="match_parent"

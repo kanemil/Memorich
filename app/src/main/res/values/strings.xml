@@ -37,5 +37,7 @@
     <string name="card_updated">Card was updated!</string>
     <string name="cards_order_modified">Cards order was modified!</string>
     <string name="card_deleted">Card was deleted!</string>
+    <string name="toolbar_cards">Tap or hold to drag-n-drop:</string>
+    <string name="toolbar_decks">My decks - tap to start:</string>
 
 </resources>
