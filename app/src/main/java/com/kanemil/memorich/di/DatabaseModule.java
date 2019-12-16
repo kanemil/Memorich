@@ -46,5 +46,13 @@ public class DatabaseModule {
         db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (8, 'Mother', 'Мама', 2, 2)");
         db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (9, 'Five', 'Пять', 2, 3)");
         db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (10, 'Milk', 'Молоко', 2, 4)");
+
+        db.execSQL("INSERT INTO decks (id, name) VALUES (3, ':-)')");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (11, 'Architecture pattern', 'MVPM (MVVM без Databinding)', 3, 0)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (12, 'Architecture components', 'ViewModel, LiveData', 3, 1)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (13, 'Persistency', 'Room', 3, 2)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (14, 'Async operations', 'RxJava 2\n(android.arch.persistence.room:rxjava2\nio.reactivex.rxjava2:rxandroid)', 3, 3)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (15, 'Clean architecture?', 'No country for domain layer\n(ViewModels talks to the Repository)', 3, 4)");
+        db.execSQL("INSERT INTO cards (id, front, back, deck_id, order_id) VALUES (16, 'Dependency injection', 'Dagger2 for Repository and ResourceWrapper injection', 3, 5)");
     }
 }
